@@ -33,7 +33,6 @@ const createSlotsForPanel = function (panel) {
 
   let wrapperDiv = document.createElement("div");
   wrapperDiv.classList.add("artifactSlotsWrapper");
-  wrapperDiv.innerHTML = "BUTTONS";
 
   let flowerSlot = document.createElement("div");
   flowerSlot.classList.add("artifactSlot", "flowerSlot");
