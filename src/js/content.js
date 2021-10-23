@@ -31,27 +31,32 @@ const createAllSlots = function () {
 
 const createSlotsForPanel = function (panel) {
 
-  let wrapperDiv = document.createElement("div");
-  wrapperDiv.classList.add("artifactSlotsWrapper");
+  let wrapperDiv = document.createElement('div');
+  wrapperDiv.classList.add('artifactSlotsWrapper');
 
-  let flowerSlot = document.createElement("div");
-  flowerSlot.classList.add("artifactSlot", "flowerSlot");
+  let flowerSlot = document.createElement('div');
+  flowerSlot.classList.add('artifactSlot', 'flowerSlot');
+  flowerSlot.title = "Click here to select a flower!";
   wrapperDiv.appendChild(flowerSlot);
 
-  let plumeSlot = document.createElement("div");
-  plumeSlot.classList.add("artifactSlot", "plumeSlot");
+  let plumeSlot = document.createElement('div');
+  plumeSlot.classList.add('artifactSlot', 'plumeSlot');
+  plumeSlot.title = "Click here to select a plume!";
   wrapperDiv.appendChild(plumeSlot);
 
-  let sandsSlot = document.createElement("div");
-  sandsSlot.classList.add("artifactSlot", "sandsSlot");
+  let sandsSlot = document.createElement('div');
+  sandsSlot.classList.add('artifactSlot', 'sandsSlot');
+  sandsSlot.title = "Click here to select a sands!";
   wrapperDiv.appendChild(sandsSlot);
 
-  let gobletSlot = document.createElement("div");
-  gobletSlot.classList.add("artifactSlot", "gobletSlot");
+  let gobletSlot = document.createElement('div');
+  gobletSlot.classList.add('artifactSlot', 'gobletSlot');
+  gobletSlot.title = "Click here to select a goblet!";
   wrapperDiv.appendChild(gobletSlot);
 
-  let circletSlot = document.createElement("div");
-  circletSlot.classList.add("artifactSlot", "circletSlot");
+  let circletSlot = document.createElement('div');
+  circletSlot.classList.add('artifactSlot', 'circletSlot');
+  circletSlot.title = "Click here to select a circlet!";
   wrapperDiv.appendChild(circletSlot);
 
 
@@ -73,9 +78,9 @@ function loadFromCookies() {
 }
 
 // returns whether {panel} is a weapon by checking the source of the panel's image
-// e.g. src="/images/weapons/regular/Deathmatch.png"
+// e.g. src='/images/weapons/regular/Deathmatch.png'
 const isWeapon = function (panel) {
-  return panel.querySelector('.ItemPanel_itemImage__2fZwL > img').src.includes("weapons");
+  return panel.querySelector('.ItemPanel_itemImage__2fZwL > img').src.includes('weapons');
 }
 
 const waitForCharacterList = setInterval(function() {
