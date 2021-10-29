@@ -133,14 +133,17 @@ const isWeapon = function (panel) {
   return panel.querySelector('.ItemPanel_itemImage__2fZwL > img').src.includes('weapons');
 }
 
+// returns the name from the title element of an artifact {slot}
 const getArtifactSlotOwner = function (slot) {
   return slot.parentNode.parentNode.parentNode.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML;
 }
 
+// parses and returns the artifact type from slot's class list
 const getArtifactSlotType = function (slot) {
   return slot.classList.item(1).replace('Slot', '');
 }
 
+// uses custom data attribute data-character to find and return a specific artifact slot of a specific character
 const getArtifactSlotByOwner = function (character, slot) {
   return document.querySelector(`div[data-character=${character}]`).querySelector(`.${slot}Slot`);
 }
@@ -151,10 +154,10 @@ const capitalizeFirstLetter = function (string) {
 
 async function getDataset () {
   const DATASET = await fetch(chrome.extension.getURL('src/js/dataset.json'));
-
   return DATASET.json();
 }
 
+// waits until the character list has loaded and then executes the main function
 export function waitForPageToLoad() {
   const waitForCharacterList = setInterval(function() {
     if (document.querySelector('.Farm_itemList__zk7_j')) {
