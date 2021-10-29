@@ -1,17 +1,17 @@
 .flowerSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/images/flower.png');
+  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/flower.png');
 }
 .plumeSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/images/plume.png');
+  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/plume.png');
 }
 .gobletSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/images/goblet.png');
+  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/goblet.png');
 }
 .sandsSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/images/sands.png');
+  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/sands.png');
 }
 .circletSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/images/circlet.png');
+  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/circlet.png');
 }
 
 .artifactSlotsWrapper {

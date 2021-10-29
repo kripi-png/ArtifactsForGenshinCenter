@@ -3,22 +3,23 @@
     "name": "Artifacts for Genshin Planner",
     "version": "0.0.1",
     "description": "Lorem ipsum dolor sit amet",
-    "icons": { "128": "images/icon.png" },
+    "icons": { "128": "src/images/icon.png" },
     "web_accessible_resources": [
-      "images/*"
+      "src/images/*",
+      "src/js/*"
     ],
     "browser_action": {
-      "default_icon": "images/icon.png"
+      "default_icon": "src/images/icon.png"
     },
     "content_scripts": [
       {
         "matches": [ "https://genshin-center.com/planner" ],
-        "js": [ "js/content.js" ],
-        "css": [ "css/style.css" ],
+        "js": [ "src/js/content_script.js" ],
+        "css": [ "src/css/style.css" ],
         "run_at": "document_end"
       }
     ],
     "background": {
-        "scripts": [ "js/background.js" ]
+        "scripts": [ "src/js/background.js" ]
     }
 }
