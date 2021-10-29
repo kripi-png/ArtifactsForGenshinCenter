@@ -1,8 +1,8 @@
-export const createSlot = function (type, title, clickCallback) {
+export const createSlot = function (type, clickCallback) {
   let SLOT =
     document.createElement('div');
-    SLOT.classList.add('artifactSlot', type);
-    SLOT.title = title;
+    SLOT.classList.add('artifactSlot', type+"Slot");
+    SLOT.title = "Click here to select a " + type;
     SLOT.addEventListener('click', clickCallback);
   return SLOT;
 }

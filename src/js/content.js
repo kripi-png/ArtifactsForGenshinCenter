@@ -44,15 +44,15 @@ const createSlotsForPanel = function (panel) {
   wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replace(' ', '-');
   wrapperDiv.classList.add('artifactSlotsWrapper');
 
-  let flowerSlot = createSlot("flowerSlot", "Click here to select a flower!", openArtifactEditor);
+  let flowerSlot = createSlot("flower", openArtifactEditor);
   wrapperDiv.appendChild(flowerSlot);
-  let plumeSlot = createSlot("plumeSlot", "Click here to select a plume!", openArtifactEditor);
+  let plumeSlot = createSlot("plume", openArtifactEditor);
   wrapperDiv.appendChild(plumeSlot);
-  let sandsSlot = createSlot("sandsSlot", "Click here to select a sands!", openArtifactEditor);
+  let sandsSlot = createSlot("sands", openArtifactEditor);
   wrapperDiv.appendChild(sandsSlot);
-  let gobletSlot = createSlot("gobletSlot", "Click here to select a goblet!", openArtifactEditor);
+  let gobletSlot = createSlot("goblet", openArtifactEditor);
   wrapperDiv.appendChild(gobletSlot);
-  let circletSlot = createSlot("circletSlot", "Click here to select a circlet!", openArtifactEditor);
+  let circletSlot = createSlot("circlet", openArtifactEditor);
   wrapperDiv.appendChild(circletSlot);
 
 
