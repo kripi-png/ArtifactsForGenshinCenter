@@ -33,34 +33,15 @@ const createSlotsForPanel = function (panel) {
   let wrapperDiv = document.createElement('div');
   wrapperDiv.classList.add('artifactSlotsWrapper');
 
-  let flowerSlot = document.createElement('div');
-  flowerSlot.classList.add('artifactSlot', 'flowerSlot');
-  flowerSlot.title = "Click here to select a flower!";
-  flowerSlot.addEventListener('click', openArtifactEditor);
+  let flowerSlot = createSlot("flowerSlot", "Click here to select a flower!", openArtifactEditor);
   wrapperDiv.appendChild(flowerSlot);
-
-  let plumeSlot = document.createElement('div');
-  plumeSlot.classList.add('artifactSlot', 'plumeSlot');
-  plumeSlot.title = "Click here to select a plume!";
-  plumeSlot.addEventListener('click', openArtifactEditor);
+  let plumeSlot = createSlot("plumeSlot", "Click here to select a plume!", openArtifactEditor);
   wrapperDiv.appendChild(plumeSlot);
-
-  let sandsSlot = document.createElement('div');
-  sandsSlot.classList.add('artifactSlot', 'sandsSlot');
-  sandsSlot.title = "Click here to select a sands!";
-  sandsSlot.addEventListener('click', openArtifactEditor);
+  let sandsSlot = createSlot("sandsSlot", "Click here to select a sands!", openArtifactEditor);
   wrapperDiv.appendChild(sandsSlot);
-
-  let gobletSlot = document.createElement('div');
-  gobletSlot.classList.add('artifactSlot', 'gobletSlot');
-  gobletSlot.title = "Click here to select a goblet!";
-  gobletSlot.addEventListener('click', openArtifactEditor);
+  let gobletSlot = createSlot("gobletSlot", "Click here to select a goblet!", openArtifactEditor);
   wrapperDiv.appendChild(gobletSlot);
-
-  let circletSlot = document.createElement('div');
-  circletSlot.classList.add('artifactSlot', 'circletSlot');
-  circletSlot.title = "Click here to select a circlet!";
-  circletSlot.addEventListener('click', openArtifactEditor);
+  let circletSlot = createSlot("circletSlot", "Click here to select a circlet!", openArtifactEditor);
   wrapperDiv.appendChild(circletSlot);
 
 
