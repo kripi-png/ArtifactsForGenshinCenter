@@ -7,7 +7,7 @@ export const createSlot = function (type, title, clickCallback) {
   return SLOT;
 }
 
-const createArtifactInputWrapper = function () {
+const createArtifactInputWrapper = function (ARTIFACT_SET_NAMES) {
   let WRAPPER =
     document.createElement('div');
     WRAPPER.id = 'artifactInputWrapper';
@@ -26,7 +26,7 @@ const createArtifactInputWrapper = function () {
   let datalist =
     document.createElement('datalist');
     datalist.id = 'artifactSelectorDatalist';
-    ['Pale Flame', 'Adventurer', 'Exile'].forEach(a => {
+    ARTIFACT_SET_NAMES.forEach(a => {
       let _artifact = document.createElement('option');
       _artifact.value = a;
       datalist.appendChild(_artifact);
@@ -70,18 +70,18 @@ const createSubStatWrapper = function () {
   return WRAPPER;
 }
 
-const createEditorButton = function (callback) {
+const createEditorButton = function (callback, owner, type) {
   let BUTTON =
     document.createElement('button');
     BUTTON.innerHTML = "OK";
-    BUTTON.onclick = callback;
+    BUTTON.onclick = e => callback(e, owner, type);
 
   return BUTTON;
 }
 
 
 
-export const createArtifactEditor = function (slot, owner, type, callback) {
+export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, type, callback) {
   let WINDOW =
     document.createElement('div');
     WINDOW.id = 'artifactEdit';
@@ -92,10 +92,10 @@ export const createArtifactEditor = function (slot, owner, type, callback) {
     title.innerHTML = `${owner}'s ${type}`;
     WINDOW.appendChild(title);
 
-  WINDOW.appendChild(createArtifactInputWrapper());
+  WINDOW.appendChild(createArtifactInputWrapper(ARTIFACT_SET_NAMES));
   WINDOW.appendChild(createMainStatWrapper());
   WINDOW.appendChild(createSubStatWrapper());
-  WINDOW.appendChild(createEditorButton(callback));
+  WINDOW.appendChild(createEditorButton(callback, owner, type));
 
   return WINDOW;
 }

@@ -1,16 +1,28 @@
-import { createSlot, createArtifactEditor } from './elementManager.js'
+import { createSlot, createArtifactEditor } from './elementManager.js';
+
+const ARTIFACT_DATA = loadFromCookies('userArtifactData') || {};
+const DATASET = await getDataset()
+console.log(DATASET);
+
+const ARTIFACT_SET_NAMES = Object.keys(DATASET)
 
 const main = function () {
   createAllSlots();
+
+  console.log(ARTIFACT_DATA);
+
+  if ( Object.keys(ARTIFACT_DATA).length != 0 ) {
+    Object.entries(ARTIFACT_DATA).forEach(
+      ([character, charData]) => {
+        Object.entries(charData).forEach(
+          ([piece, pieceData]) => {
+            loadArtifact(character, piece)
+          }
+        );
+      }
+    );
+  }
 }
-
-
-
-
-
-
-
-
 
 // create artifact slot elements for each character
 const createAllSlots = function () {
@@ -29,6 +41,7 @@ const createAllSlots = function () {
 const createSlotsForPanel = function (panel) {
 
   let wrapperDiv = document.createElement('div');
+  wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replace(' ', '-');
   wrapperDiv.classList.add('artifactSlotsWrapper');
 
   let flowerSlot = createSlot("flowerSlot", "Click here to select a flower!", openArtifactEditor);
@@ -48,44 +61,70 @@ const createSlotsForPanel = function (panel) {
 
 const openArtifactEditor = function (event) {
   let targetArtifactSlot = event.target;
-  let artifactOwner = getArtifactSlotOwner(targetArtifactSlot);
-  let artifactType = capitalizeFirstLetter(getArtifactSlotType(targetArtifactSlot));
-  console.log(`${artifactOwner}'s ${artifactType}`);
+  let artifactOwner = getArtifactSlotOwner(targetArtifactSlot).toLowerCase();
+  let artifactType = getArtifactSlotType(targetArtifactSlot);
+  console.log(`${capitalizeFirstLetter(artifactOwner)}'s ${capitalizeFirstLetter(artifactType)}`);
 
-  let editWindow = createArtifactEditor(targetArtifactSlot, artifactOwner, artifactType, confirmArtifactEdit);
+  let editWindow = createArtifactEditor(targetArtifactSlot, ARTIFACT_SET_NAMES, artifactOwner, artifactType, confirmArtifactEdit);
 
   document.body.appendChild(editWindow);
 }
 
-const confirmArtifactEdit = function (event) {
+const confirmArtifactEdit = function (event, owner, type) {
   let set = document.querySelector('#selectArtifactInput').value;
   let main = document.querySelector('#mainStatDiv > input').value;
   let sub = document.querySelector('#subStatDiv > input').value;
 
-  if (!set || !main || !sub) /* return */ alert("All fields must be filled!");
+  // if (!set || !main || !sub) /* return */ alert("All fields must be filled!");
+
+  console.log(owner, type);
+
+  if (!ARTIFACT_DATA[owner]) ARTIFACT_DATA[owner] = {}
+  ARTIFACT_DATA[owner][type] = {
+    set: set,
+    main: main,
+    sub: sub,
+  }
+
+  console.log(ARTIFACT_DATA);
+
+  saveToCookies("userArtifactData", ARTIFACT_DATA)
+  loadArtifact(owner, type);
 
   let _editor = document.querySelector('#artifactEdit');
   _editor.parentNode.removeChild(_editor); // delete the editor element once artifact is selected
 }
 
-// const loadArtifact = function (character = null) {
-//   if ( character ) {
-//     // reload artifacts of / for this specific character
-//   } else {
-//     // reload artifacts of / for ALL character
-//   }
-// }
+const loadArtifact = function (character, slot) {
+  slot = getArtifactSlotByOwner(character.replace(' ', '-'), slot);
+  console.log(slot);
+  let type = getArtifactSlotType(slot);
+  let set = ARTIFACT_DATA[character][type]['set'];
+  console.log(character, type, set);
+  let main = ARTIFACT_DATA[character][type]['main'];
+  let sub = ARTIFACT_DATA[character][type]['sub'];
+
+  console.log('https://impact.moe/'+DATASET[set][type]['image']);
+
+  slot.style.backgroundImage = `url(https://impact.moe/${DATASET[set][type]['image']})`;
+}
 
 function createHoverPopup() {
 
 }
 
-function saveToCookies(data) {
-  return ;
+function saveToCookies(name, data, exdays=999) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  const expires = "expires="+d.toUTCString();
+  const cookie = [name, '=', JSON.stringify(data), ';', expires, ' ; domain=.', window.location.host.toString(), '; path=/;'].join('');
+  document.cookie = cookie;
 }
 
-function loadFromCookies() {
-  return ;
+function loadFromCookies(name) {
+  let result = document.cookie.match(new RegExp(name + '=([^;]+)'));
+  result && (result = JSON.parse(result[1]));
+  return result;
 }
 
 // returns whether {panel} is a weapon by checking the source of the panel's image
@@ -102,8 +141,18 @@ const getArtifactSlotType = function (slot) {
   return slot.classList.item(1).replace('Slot', '');
 }
 
+const getArtifactSlotByOwner = function (character, slot) {
+  return document.querySelector(`div[data-character=${character}]`).querySelector(`.${slot}Slot`);
+}
+
 const capitalizeFirstLetter = function (string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+async function getDataset () {
+  const DATASET = await fetch(chrome.extension.getURL('src/js/dataset.json'));
+
+  return DATASET.json();
 }
 
 export function waitForPageToLoad() {
