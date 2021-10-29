@@ -1,9 +1,7 @@
-import { createSlot } from './elementManager.js'
+import { createSlot, createArtifactEditor } from './elementManager.js'
 
 const main = function () {
   createAllSlots();
-
-  createSlot();
 }
 
 
@@ -49,92 +47,14 @@ const createSlotsForPanel = function (panel) {
 }
 
 const openArtifactEditor = function (event) {
-  console.log(event.target);
   let targetArtifactSlot = event.target;
+  let artifactOwner = getArtifactSlotOwner(targetArtifactSlot);
+  let artifactType = capitalizeFirstLetter(getArtifactSlotType(targetArtifactSlot));
+  console.log(`${artifactOwner}'s ${artifactType}`);
 
-  // THESE CLASSES AND STYLES ARE DIRECTRLY YOINKED FROM THE ORIGINAL WEBSITE
+  let editWindow = createArtifactEditor(targetArtifactSlot, artifactOwner, artifactType, confirmArtifactEdit);
 
-  let editWindow = document.createElement('div');
-  editWindow.id = 'artifactEdit';
-  editWindow.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
-
-  let editorBackgroudDiv = document.createElement('div');
-  editorBackgroudDiv.classList.add('Window_window__2tU_Y');
-  editWindow.appendChild(editorBackgroudDiv);
-
-  let editorModal = document.createElement('div');
-  editorModal.classList.add('Window_modal__2xmK7');
-
-  let editorWrapper = document.createElement('div');
-  editorWrapper.classList.add('Edit_edit___eEru');
-
-
-  let title = document.createElement('h3');
-  title.innerHTML = "Sayu's Plume"
-  title.style = "background: linear-gradient(160deg, rgba(89, 84, 130, 0.565) 0%, rgba(120, 102, 157, 0.565) 39%, rgba(183, 133, 201, 0.565) 100%);"
-  editorWrapper.appendChild(title);
-
-  /**
-  * ADD ALL ELEMENTS INSIDE editorContent
-  **/
-
-  let editorContent = document.createElement('div');
-  editorContent.classList.add('Edit_content__LoWoP');
-  editorWrapper.appendChild(editorContent);
-
-  let artifactInputWrapper = document.createElement('div');
-  artifactInputWrapper.id = 'artifactInputWrapper';
-
-  let selectArtifactText = document.createElement('p');
-  selectArtifactText.innerHTML = "Select Artifact Set";
-
-  let selectArtifactInput = document.createElement('input');
-  selectArtifactInput.setAttribute('list', 'artifactSelectorDatalist');
-  selectArtifactInput.id = "selectArtifactInput";
-
-  let selectArtifactDatalist = document.createElement('datalist');
-  selectArtifactDatalist.id = 'artifactSelectorDatalist';
-  ['Pale Flame', 'Adventurer', 'Exile'].forEach(a => {
-    let _artifact = document.createElement('option');
-    _artifact.value = a;
-    selectArtifactDatalist.appendChild(_artifact);
-  });
-
-  artifactInputWrapper.appendChild(selectArtifactText);
-  artifactInputWrapper.appendChild(selectArtifactInput);
-  artifactInputWrapper.append(selectArtifactDatalist);
-
-
-  let mainStat = document.createElement('div');
-  mainStat.id = 'mainStatDiv';
-  let mainStatText = document.createElement('p');
-  mainStatText.innerHTML = "Enter Main Stat";
-  let mainStatInput = document.createElement('input');
-  mainStat.appendChild(mainStatText);
-  mainStat.appendChild(mainStatInput);
-
-  let subStat = document.createElement('div');
-  subStat.id = 'subStatDiv';
-  let subStatText = document.createElement('p');
-  subStatText.innerHTML = "Enter Sub Stat";
-  let subStatInput = document.createElement('input');
-  subStat.appendChild(subStatText);
-  subStat.appendChild(subStatInput);
-
-  editorWrapper.appendChild(artifactInputWrapper);
-  editorWrapper.appendChild(mainStat);
-  editorWrapper.appendChild(subStat);
-
-  let editorButton = document.createElement('div');
-  editorButton.classList.add('Edit_buttonWrapper__28k9J');
-  editorWrapper.appendChild(editorButton);
-  editorButton.innerHTML = '<button class="RectButton_button__P4PnK"><div class="RectButton_inner__1BYot"></div><div class="RectButton_border__1xPUl"></div><div class="RectButton_label__1JD0E">OK</div></button>';
-
-  editorModal.appendChild(editorWrapper);
-  editWindow.appendChild(editorModal);
   document.body.appendChild(editWindow);
-
-  document.querySelector('.Edit_buttonWrapper__28k9J > button.RectButton_button__P4PnK').addEventListener('click', e=>confirmArtifactEdit());
 }
 
 const confirmArtifactEdit = function (event) {
@@ -167,6 +87,18 @@ function loadFromCookies() {
 // e.g. src='/images/weapons/regular/Deathmatch.png'
 const isWeapon = function (panel) {
   return panel.querySelector('.ItemPanel_itemImage__2fZwL > img').src.includes('weapons');
+}
+
+const getArtifactSlotOwner = function (slot) {
+  return slot.parentNode.parentNode.parentNode.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML;
+}
+
+const getArtifactSlotType = function (slot) {
+  return slot.classList.item(1).replace('Slot', '');
+}
+
+const capitalizeFirstLetter = function (string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export function waitForPageToLoad() {
