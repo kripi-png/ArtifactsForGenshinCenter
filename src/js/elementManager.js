@@ -76,7 +76,7 @@ const createEditorButton = function (callback) {
     BUTTON.innerHTML = "OK";
     BUTTON.onclick = callback;
 
-  return BUTTON
+  return BUTTON;
 }
 
 
@@ -92,10 +92,10 @@ export const createArtifactEditor = function (slot, owner, type, callback) {
     title.innerHTML = `${owner}'s ${type}`;
     WINDOW.appendChild(title);
 
-  WINDOW.appendChild(createArtifactInputWrapper())
-  WINDOW.appendChild(createMainStatWrapper())
-  WINDOW.appendChild(createSubStatWrapper())
-  WINDOW.appendChild(createEditorButton(callback))
+  WINDOW.appendChild(createArtifactInputWrapper());
+  WINDOW.appendChild(createMainStatWrapper());
+  WINDOW.appendChild(createSubStatWrapper());
+  WINDOW.appendChild(createEditorButton(callback));
 
-  return WINDOW
+  return WINDOW;
 }
