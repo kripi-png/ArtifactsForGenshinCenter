@@ -62,14 +62,19 @@ const confirmArtifactEdit = function (event) {
   let main = document.querySelector('#mainStatDiv > input').value;
   let sub = document.querySelector('#subStatDiv > input').value;
 
-  if (!set || !main || !sub) {
-    alert("All fields must be filled!");
-    // return;
-  }
+  if (!set || !main || !sub) /* return */ alert("All fields must be filled!");
 
   let _editor = document.querySelector('#artifactEdit');
   _editor.parentNode.removeChild(_editor); // delete the editor element once artifact is selected
 }
+
+// const loadArtifact = function (character = null) {
+//   if ( character ) {
+//     // reload artifacts of / for this specific character
+//   } else {
+//     // reload artifacts of / for ALL character
+//   }
+// }
 
 function createHoverPopup() {
 
