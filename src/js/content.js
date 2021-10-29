@@ -1,11 +1,9 @@
+import { createSlot } from './elementManager.js'
 
-
-
-function main() {
-
+const main = function () {
   createAllSlots();
 
-
+  createSlot();
 }
 
 
@@ -190,11 +188,13 @@ const isWeapon = function (panel) {
   return panel.querySelector('.ItemPanel_itemImage__2fZwL > img').src.includes('weapons');
 }
 
-const waitForCharacterList = setInterval(function() {
-   if (document.querySelector('.Farm_itemList__zk7_j')) {
-     clearInterval(waitForCharacterList);
-     console.log("Character list loaded!");
+export function waitForPageToLoad() {
+  const waitForCharacterList = setInterval(function() {
+    if (document.querySelector('.Farm_itemList__zk7_j')) {
+      clearInterval(waitForCharacterList);
+      console.log("Character list loaded!");
 
-     main();
-   }
-}, 100);
+      main();
+    }
+  }, 100);
+}
