@@ -69,16 +69,24 @@ const createSubStatWrapper = function () {
   return WRAPPER;
 }
 
-const createEditorButton = function (callback, owner, type) {
+// callback:            confirmArtifactEdit function in content.js
+// owner:               character whose artifact slot was clicked
+// piece:               name of the piece that was clicked, e.g. plume
+const createEditorButton = function (confirmArtifactEditCallback, owner, piece) {
   let BUTTON =
     document.createElement('button');
     BUTTON.innerHTML = "OK";
-    BUTTON.onclick = e => callback(e, owner, type);
+    BUTTON.onclick = e => confirmArtifactEditCallback(e, owner, piece);
 
   return BUTTON;
 }
 
-export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, type, callback) {
+// slot                 artifact slot clicked
+// ARTIFACT_SET_NAMES:  list of all artifact sets available
+// owner:               character whose artifact slot was clicked
+// piece:               name of the piece that was clicked, e.g. plume
+// callback:            confirmArtifactEdit function in content.js
+export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, piece, confirmArtifactEditCallback) {
   let WINDOW =
     document.createElement('div');
     WINDOW.id = 'artifactEdit';
@@ -86,17 +94,20 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, t
 
   let title =
     document.createElement('h3');
-    title.innerHTML = `${owner}'s ${type}`;
+    title.innerHTML = `${owner}'s ${piece}`;
     WINDOW.appendChild(title);
 
   WINDOW.appendChild(createArtifactInputWrapper(ARTIFACT_SET_NAMES));
   WINDOW.appendChild(createMainStatWrapper());
   WINDOW.appendChild(createSubStatWrapper());
-  WINDOW.appendChild(createEditorButton(callback, owner, type));
+  WINDOW.appendChild(createEditorButton(confirmArtifactEditCallback, owner, piece));
 
   return WINDOW;
 }
 
+// slot: hovered artifact
+// x, y: location for the popup window
+// set, piece: names of the set and piece
 export const createTooltipBoxWrapper = function (slot, x, y, set, piece) {
   let _setName = set;
   let _pieceName = piece;
@@ -112,10 +123,8 @@ export const createTooltipBoxWrapper = function (slot, x, y, set, piece) {
     WRAPPER.style.position = 'sticky';
     WRAPPER.style.left = x + "px";
     WRAPPER.style.top = y + "px";
-    // WRAPPER.classList.add('MaterialTip_container__3cGEm');
-    // WRAPPER.style = "width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: none;"
 
-  let titleBar =
+  let titleBar = // wrapper for title text & icon
     document.createElement('div');
     titleBar.classList.add('tooltipTitle');
     WRAPPER.appendChild(titleBar);
@@ -126,13 +135,13 @@ export const createTooltipBoxWrapper = function (slot, x, y, set, piece) {
     titleText.innerHTML = `<span>${_pieceName}</span><br>${_setName}`
     titleBar.appendChild(titleText)
 
-  let titleIcon =
+  let titleIcon = // yoink the title icon directly from the hovered element
     document.createElement('img');
     titleIcon.classList.add('tooltipTitleIcon');
     titleIcon.src = slot.style.backgroundImage.replaceAll('"', '').replace('url(', '').replace(')', '');
     titleBar.appendChild(titleIcon);
 
-  let textWrapper =
+  let textWrapper = // wrapper for main stat & sub stat texts
     document.createElement('div');
     textWrapper.classList.add('tooltipTextWrapper')
     WRAPPER.appendChild(textWrapper);

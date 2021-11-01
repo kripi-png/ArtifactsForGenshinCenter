@@ -1,10 +1,10 @@
 import { createSlot, createArtifactEditor, createTooltipBoxWrapper } from './elementManager.js';
 
 const ARTIFACT_DATA = loadFromCookies('userArtifactData') || {};
-const DATASET = await getDataset()
+const DATASET = await getDataset();
 console.log(DATASET);
 
-const ARTIFACT_SET_NAMES = Object.keys(DATASET)
+const ARTIFACT_SET_NAMES = Object.keys(DATASET);
 
 const main = function () {
   createAllSlots();
@@ -16,7 +16,7 @@ const main = function () {
       ([character, charData]) => {
         Object.entries(charData).forEach(
           ([piece, pieceData]) => {
-            loadArtifact(character, piece)
+            loadArtifact(character, piece);
           }
         );
       }
@@ -95,7 +95,7 @@ const loadArtifact = function (character, slot) {
   let type = getArtifactSlotType(slot);
   let set = ARTIFACT_DATA[character][type]['set'];
   if (!set) return; // if no set is set for a reason or another, abort
-  let piece = DATASET[set][type]['name']
+  let piece = DATASET[set][type]['name'];
 
   let image = DATASET[set][type]['image'];
   let main = ARTIFACT_DATA[character][type]['main'];
