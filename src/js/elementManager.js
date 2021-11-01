@@ -2,7 +2,6 @@ export const createSlot = function (type, clickCallback) {
   let SLOT =
     document.createElement('div');
     SLOT.classList.add('artifactSlot', type+"Slot");
-    SLOT.title = "Click here to select a " + type;
     SLOT.addEventListener('click', clickCallback);
   return SLOT;
 }
@@ -79,8 +78,6 @@ const createEditorButton = function (callback, owner, type) {
   return BUTTON;
 }
 
-
-
 export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, type, callback) {
   let WINDOW =
     document.createElement('div');
@@ -96,6 +93,63 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, t
   WINDOW.appendChild(createMainStatWrapper());
   WINDOW.appendChild(createSubStatWrapper());
   WINDOW.appendChild(createEditorButton(callback, owner, type));
+
+  return WINDOW;
+}
+
+export const createTooltipBoxWrapper = function (slot, x, y, set, piece) {
+  let _setName = set;
+  let _pieceName = piece;
+  let WINDOW =
+    document.createElement('div');
+    WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: none;';
+    WINDOW.id = 'artifactTooltipWindow';
+
+  let WRAPPER =
+    document.createElement('div');
+    WRAPPER.classList.add('artifactTooltip');
+
+    WRAPPER.style.position = 'sticky';
+    WRAPPER.style.left = x + "px";
+    WRAPPER.style.top = y + "px";
+    // WRAPPER.classList.add('MaterialTip_container__3cGEm');
+    // WRAPPER.style = "width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: none;"
+
+  let titleBar =
+    document.createElement('div');
+    titleBar.classList.add('tooltipTitle');
+    WRAPPER.appendChild(titleBar);
+
+  let titleText =
+    document.createElement('p');
+    titleText.classList.add('tooltipTitleText');
+    titleText.innerHTML = `<span>${_pieceName}</span><br>${_setName}`
+    titleBar.appendChild(titleText)
+
+  let titleIcon =
+    document.createElement('img');
+    titleIcon.classList.add('tooltipTitleIcon');
+    titleIcon.src = slot.style.backgroundImage.replaceAll('"', '').replace('url(', '').replace(')', '');
+    titleBar.appendChild(titleIcon);
+
+  let textWrapper =
+    document.createElement('div');
+    textWrapper.classList.add('tooltipTextWrapper')
+    WRAPPER.appendChild(textWrapper);
+
+  let main =
+    document.createElement('p');
+    main.classList.add('tooltipText');
+    main.innerHTML = "Main Stat: " + slot.dataset.main;
+    textWrapper.appendChild(main);
+
+  let sub =
+    document.createElement('p');
+    sub.classList.add('tooltipText');
+    sub.innerHTML = "Sub Stat: " + slot.dataset.sub;
+    textWrapper.appendChild(sub);
+
+  WINDOW.appendChild(WRAPPER);
 
   return WINDOW;
 }

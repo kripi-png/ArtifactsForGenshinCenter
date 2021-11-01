@@ -30,3 +30,53 @@
   -webkit-filter: grayscale(70%);
   filter: grayscale(70%);
 }
+
+.artifactTooltip {
+  position: absolute;
+
+  background-color: black;
+
+  width: 300px;
+  font-weight: 600;
+}
+
+.tooltipTitle {
+  background: linear-gradient(160deg, rgba(81, 84, 116, 0.565) 0%, rgba(80, 104, 135, 0.565) 39%, rgba(75, 160, 180, 0.565) 100%);
+  display: flex;
+}
+
+.tooltipTitleText {
+  font-size: 18px;
+  padding: 15px 0 15px 15px;
+  flex-grow: 1;
+  color: #f7f7f7;
+}
+
+.tooltipTitleText > span {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.tooltipTitleIcon {
+  /* float: right; */
+  width: 128px;
+  height: 128px;
+  /* width: 100%;
+  height: auto; */
+
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  display: flex;
+}
+
+.tooltipTextWrapper {
+  background-color: #ece5d8;
+  color: #000;
+  padding: 5px;
+}
+
+.tooltipText {
+  padding: 2px 4px;
+  margin: 2px;
+}

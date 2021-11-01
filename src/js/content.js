@@ -1,4 +1,4 @@
-import { createSlot, createArtifactEditor } from './elementManager.js';
+import { createSlot, createArtifactEditor, createTooltipBoxWrapper } from './elementManager.js';
 
 const ARTIFACT_DATA = loadFromCookies('userArtifactData') || {};
 const DATASET = await getDataset()
@@ -29,7 +29,6 @@ const createAllSlots = function () {
 
   [...document.querySelector('.Farm_itemList__zk7_j').children].forEach( panel => {
     let name = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML;
-    console.log(name, isWeapon(panel));
 
     if ( !isWeapon(panel) ) {
       createSlotsForPanel(panel);
@@ -63,7 +62,6 @@ const openArtifactEditor = function (event) {
   let targetArtifactSlot = event.target;
   let artifactOwner = getArtifactSlotOwner(targetArtifactSlot).toLowerCase();
   let artifactType = getArtifactSlotType(targetArtifactSlot);
-  console.log(`${capitalizeFirstLetter(artifactOwner)}'s ${capitalizeFirstLetter(artifactType)}`);
 
   let editWindow = createArtifactEditor(targetArtifactSlot, ARTIFACT_SET_NAMES, artifactOwner, artifactType, confirmArtifactEdit);
 
@@ -75,9 +73,8 @@ const confirmArtifactEdit = function (event, owner, type) {
   let main = document.querySelector('#mainStatDiv > input').value;
   let sub = document.querySelector('#subStatDiv > input').value;
 
+  // TODO: ADD SOME KIND OF MAX LENGTH MAYBE
   // if (!set || !main || !sub) /* return */ alert("All fields must be filled!");
-
-  console.log(owner, type);
 
   if (!ARTIFACT_DATA[owner]) ARTIFACT_DATA[owner] = {}
   ARTIFACT_DATA[owner][type] = {
@@ -85,8 +82,6 @@ const confirmArtifactEdit = function (event, owner, type) {
     main: main,
     sub: sub,
   }
-
-  console.log(ARTIFACT_DATA);
 
   saveToCookies("userArtifactData", ARTIFACT_DATA)
   loadArtifact(owner, type);
@@ -97,20 +92,31 @@ const confirmArtifactEdit = function (event, owner, type) {
 
 const loadArtifact = function (character, slot) {
   slot = getArtifactSlotByOwner(character.replace(' ', '-'), slot);
-  console.log(slot);
   let type = getArtifactSlotType(slot);
   let set = ARTIFACT_DATA[character][type]['set'];
-  console.log(character, type, set);
+  if (!set) return; // if no set is set for a reason or another, abort
+  let piece = DATASET[set][type]['name']
+
+  let image = DATASET[set][type]['image'];
   let main = ARTIFACT_DATA[character][type]['main'];
   let sub = ARTIFACT_DATA[character][type]['sub'];
 
-  console.log('https://impact.moe/'+DATASET[set][type]['image']);
+  slot.style.backgroundImage = `url(https://i.imgur.com/${image}.png)`;
+  slot.dataset.main = main;
+  slot.dataset.sub = sub;
 
-  slot.style.backgroundImage = `url(https://impact.moe/${DATASET[set][type]['image']})`;
+  slot.onmouseover = e => createHoverPopup(e, slot, set, piece);
+  slot.onmouseleave = e => {
+    let _window = document.querySelector('#artifactTooltipWindow');
+    _window.parentNode.removeChild(_window);
+  }
 }
 
-function createHoverPopup() {
+function createHoverPopup(e, slot, set, piece) {
+  let {x, y} = calculatePopupLocation(slot);
 
+  const tooltipBox = createTooltipBoxWrapper(slot, x, y, set, piece);
+  document.body.appendChild(tooltipBox);
 }
 
 function saveToCookies(name, data, exdays=999) {
@@ -123,7 +129,7 @@ function saveToCookies(name, data, exdays=999) {
 
 function loadFromCookies(name) {
   let result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-  result && (result = JSON.parse(result[1]));
+  result && (result = JSON.parse(result[1])); // frankly no clue what this does
   return result;
 }
 
@@ -155,6 +161,15 @@ const capitalizeFirstLetter = function (string) {
 async function getDataset () {
   const DATASET = await fetch(chrome.extension.getURL('src/js/dataset.json'));
   return DATASET.json();
+}
+
+function calculatePopupLocation(slot) {
+  let rect = slot.getBoundingClientRect();
+
+  let x = rect.left + slot.getBoundingClientRect().width;
+  let y = rect.bottom - rect.height;
+
+  return { x, y };
 }
 
 // waits until the character list has loaded and then executes the main function
