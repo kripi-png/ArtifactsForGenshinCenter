@@ -98,8 +98,10 @@ const loadArtifact = function (character, slot) {
   let check = ARTIFACT_DATA[character][type]['check'];
 
   slot.style.backgroundImage = `url(https://i.imgur.com/${image}.png)`;
+  slot.dataset.set = set;
   slot.dataset.main = main;
   slot.dataset.sub = sub;
+  slot.dataset.check = check;
   if (check) {
     slot.classList.add('check');
   } else {

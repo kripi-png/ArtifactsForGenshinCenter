@@ -12,7 +12,7 @@ export const createSlot = function (piece, callback) {
 // ARTIFACT_SET_NAMES:  list of all artifact sets available
 // inputType:           used to create the input field
 // sectionName:         title for the input field
-const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName) {
+const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, inputValue) {
   // classes and styling used mostly from the original website
   let SECTION =
     document.createElement('div');
@@ -50,6 +50,7 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName) {
     actual_input.name = 'name'; actual_input.type = 'text';
     actual_input.style = 'font-size: 16px; color: black;';
     actual_input.setAttribute('maxlength', '20');
+    actual_input.value = inputValue || '';
 
     // as the function is same for all sections,
     // inputType parameter is used to determine how the input field is created
@@ -87,6 +88,7 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName) {
         actual_input.id = 'artifactCheckbox';
         actual_input.type = 'checkbox';
         actual_input.style.margin = '0';
+        actual_input.checked = JSON.parse(inputValue || 'false'); // parse boolean from string (js pog)
 
         input_input.style.width = '48px';
         input_input.style.marginLeft = 'calc(50% - 24px)';
@@ -160,10 +162,10 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     schedule_content.classList.add('Schedule_taskCreatorContent__3zR8F');
     schedule_creator.appendChild(schedule_content);
 
-    schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'artifact_set_list', "Set Name"));
-    schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat'));
-    schedule_content.appendChild(createSection(null, 'sub_stat', 'Sub Stat'));
-    schedule_content.appendChild(createSection(null, 'checkbox', 'Aquired?'));
+    schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'artifact_set_list', "Set Name", slot.dataset.set));
+    schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat', slot.dataset.main));
+    schedule_content.appendChild(createSection(null, 'sub_stat', 'Sub Stat', slot.dataset.sub));
+    schedule_content.appendChild(createSection(null, 'checkbox', 'Aquired?', slot.dataset.check));
     schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, owner, piece));
 
   return WINDOW;
