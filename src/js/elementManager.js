@@ -53,24 +53,26 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName) {
 
     // as the function is same for all sections,
     // inputType parameter is used to determine how the input field is created
-    if (inputType === 'main_stat') {
-      actual_input.id = 'artifactMainStat';
-      actual_input.placeholder = "Enter main stat...";
-    }
-    else if (inputType === 'sub_stat') {
-      actual_input.id = 'artifactSubStat';
-      actual_input.placeholder = "Enter sub stat(s)...";
-    }
+    switch (inputType) {
+      case 'main_stat':
+        actual_input.id = 'artifactMainStat';
+        actual_input.placeholder = "Enter main stat...";
+        break;
 
-    else {
-      actual_input.id = 'selectArtifactInput';
-      actual_input.placeholder = "Enter set name...";
-      actual_input.setAttribute('list', 'artifactSelectorDatalist');
-      actual_input.setAttribute('maxlength', '40');
+      case 'sub_stat':
+        actual_input.id = 'artifactSubStat';
+        actual_input.placeholder = "Enter sub stat(s)";
+        break;
 
-      // datalist contains all possible artifact sets as options
-      // and is inserted next to the artifact set input field
-      let datalist =
+      case 'artifact_set_list':
+        actual_input.id = 'selectArtifactInput';
+        actual_input.placeholder = "Enter set name...";
+        actual_input.setAttribute('list', 'artifactSelectorDatalist');
+        actual_input.setAttribute('maxlength', '40');
+
+        // datalist contains all possible artifact sets as options
+        // and is inserted next to the artifact set input field
+        let datalist =
         document.createElement('datalist');
         datalist.id = 'artifactSelectorDatalist';
         ARTIFACT_SET_NAMES.forEach(a => {
@@ -79,6 +81,16 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName) {
           datalist.appendChild(_artifact);
         });
         input_input.appendChild(datalist);
+        break;
+
+      case 'checkbox':
+        actual_input.id = 'artifactCheckbox';
+        actual_input.type = 'checkbox';
+        actual_input.style.margin = '0';
+
+        input_input.style.width = '48px';
+        input_input.style.marginLeft = 'calc(50% - 24px)';
+        break;
     }
     input_input.appendChild(actual_input);
 
@@ -151,6 +163,7 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'artifact_set_list', "Set Name"));
     schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat'));
     schedule_content.appendChild(createSection(null, 'sub_stat', 'Sub Stat'));
+    schedule_content.appendChild(createSection(null, 'checkbox', 'Aquired?'));
     schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, owner, piece));
 
   return WINDOW;

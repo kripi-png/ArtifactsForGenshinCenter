@@ -70,10 +70,12 @@ const confirmArtifactEdit = function (event, owner, type) {
   let set = document.querySelector('#selectArtifactInput').value;
   let main = document.querySelector('#artifactMainStat').value;
   let sub = document.querySelector('#artifactSubStat').value;
+  let check = document.querySelector('#artifactCheckbox').checked;
 
   if (!ARTIFACT_DATA[owner]) ARTIFACT_DATA[owner] = {}
   ARTIFACT_DATA[owner][type] = {
     set: set, main: main, sub: sub,
+    check: check,
   }
 
   saveToCookies("userArtifactData", ARTIFACT_DATA)
@@ -93,10 +95,16 @@ const loadArtifact = function (character, slot) {
   let image = DATASET[set][type]['image'];
   let main = ARTIFACT_DATA[character][type]['main'];
   let sub = ARTIFACT_DATA[character][type]['sub'];
+  let check = ARTIFACT_DATA[character][type]['check'];
 
   slot.style.backgroundImage = `url(https://i.imgur.com/${image}.png)`;
   slot.dataset.main = main;
   slot.dataset.sub = sub;
+  if (check) {
+    slot.classList.add('check');
+  } else {
+    slot.classList.remove('check');
+  }
 
   slot.onmouseover = e => createHoverPopup(e, slot, set, piece);
   slot.onmouseleave = e => {
