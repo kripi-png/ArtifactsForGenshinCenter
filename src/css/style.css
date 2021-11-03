@@ -41,7 +41,7 @@
 }
 
 .tooltipTitle {
-  background: linear-gradient(160deg, rgba(81, 84, 116, 0.565) 0%, rgba(80, 104, 135, 0.565) 39%, rgba(75, 160, 180, 0.565) 100%);
+  background: linear-gradient(160deg, rgba(105, 84, 83, 0.565) 0%, rgba(161, 112, 78, 0.565) 39%, rgba(228, 171, 82, 0.565) 100%);
   display: flex;
 }
 
