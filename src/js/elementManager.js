@@ -88,7 +88,7 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, inpu
         actual_input.id = 'artifactCheckbox';
         actual_input.type = 'checkbox';
         actual_input.style.margin = '0';
-        actual_input.checked = JSON.parse(inputValue || 'false'); // parse boolean from string (js pog)
+        actual_input.checked = true ? inputValue === 'true' : false; // fail-safe in case value is undefined
 
         input_input.style.width = '48px';
         input_input.style.marginLeft = 'calc(50% - 24px)';
@@ -102,17 +102,24 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, inpu
 // callback:            confirmArtifactEdit function in content.js
 // owner:               character whose artifact slot was clicked
 // piece:               name of the piece that was clicked, e.g. plume
-const createEditorButton = function (confirmArtifactEditCallback, owner, piece) {
+const createEditorButton = function (confirmArtifactEditCallback, deleteArtifactCallback, owner, piece) {
   // classes and styling used mostly from the original website
   let BUTTON_WRAPPER =
     document.createElement('div');
     BUTTON_WRAPPER.classList.add('Schedule_buttonsWrapper__3QM49');
 
-  let button =
+  let deleteButton =
     document.createElement('button');
-    button.innerHTML = "OK";
-    button.onclick = e => confirmArtifactEditCallback(e, owner, piece);
-    BUTTON_WRAPPER.append(button)
+    deleteButton.innerHTML = "Delete";
+    deleteButton.onclick = e => deleteArtifactCallback(e, owner, piece);
+    BUTTON_WRAPPER.append(deleteButton)
+
+  let createButton =
+    document.createElement('button');
+    createButton.innerHTML = "OK";
+    createButton.onclick = e => confirmArtifactEditCallback(e, owner, piece);
+    BUTTON_WRAPPER.append(createButton);
+
 
   return BUTTON_WRAPPER;
 }
@@ -122,7 +129,7 @@ const createEditorButton = function (confirmArtifactEditCallback, owner, piece) 
 // owner:               character whose artifact slot was clicked
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            confirmArtifactEdit function in content.js
-export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, piece, confirmArtifactEditCallback) {
+export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, piece, confirmArtifactEditCallback, deleteArtifactCallback) {
   // classes and styling used mostly from the original website
   let WINDOW =
     document.createElement('div');
@@ -166,7 +173,7 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat', slot.dataset.main));
     schedule_content.appendChild(createSection(null, 'sub_stat', 'Sub Stat', slot.dataset.sub));
     schedule_content.appendChild(createSection(null, 'checkbox', 'Aquired?', slot.dataset.check));
-    schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, owner, piece));
+    schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, deleteArtifactCallback, owner, piece));
 
   return WINDOW;
 }

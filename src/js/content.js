@@ -61,7 +61,7 @@ const openArtifactEditor = function (event) {
   let artifactType = getArtifactSlotType(targetArtifactSlot);
 
   let editWindow = createArtifactEditor(targetArtifactSlot, ARTIFACT_SET_NAMES,
-                                        artifactOwner, artifactType, confirmArtifactEdit);
+                                        artifactOwner, artifactType, confirmArtifactEdit, deleteArtifact);
 
   document.body.appendChild(editWindow);
 }
@@ -85,10 +85,33 @@ const confirmArtifactEdit = function (event, owner, type) {
   _editor.parentNode.removeChild(_editor); // delete the editor element once artifact is selected
 }
 
+const deleteArtifact = function (event, owner, type) {
+  if (ARTIFACT_DATA[owner]) {
+    delete ARTIFACT_DATA[owner][type]
+  }
+
+  let slot = getArtifactSlotByOwner(owner, type);
+  console.log(owner, slot);
+  slot.dataset.set = '';
+  slot.dataset.main = '';
+  slot.dataset.sub = '';
+  slot.dataset.check = '';
+  slot.style.backgroundImage = '';
+  slot.classList.remove('check');
+
+  console.log(ARTIFACT_DATA[owner]);
+
+  saveToCookies("userArtifactData", ARTIFACT_DATA)
+  loadArtifact(owner, type);
+
+  let _editor = document.querySelector('#artifactEdit');
+  _editor.parentNode.removeChild(_editor); // delete the editor element once artifact is selected
+}
+
 const loadArtifact = function (character, slot) {
-  slot = getArtifactSlotByOwner(character.replace(' ', '-'), slot);
+  slot = getArtifactSlotByOwner(character, slot);
   let type = getArtifactSlotType(slot);
-  let set = ARTIFACT_DATA[character][type]['set'];
+  let set = ARTIFACT_DATA[character][type] ? ARTIFACT_DATA[character][type]['set'] : '';
   if (!set) return; // if no set is set for a reason or another, abort
   let piece = DATASET[set][type]['name'];
 
@@ -154,7 +177,7 @@ const getArtifactSlotType = function (slot) {
 
 // uses custom data attribute data-character to find and return a specific artifact slot of a specific character
 const getArtifactSlotByOwner = function (character, slot) {
-  return document.querySelector(`div[data-character=${character}]`).querySelector(`.${slot}Slot`);
+  return document.querySelector(`div[data-character=${character.replace(' ', '-')}]`).querySelector(`.${slot}Slot`);
 }
 
 const capitalizeFirstLetter = function (string) {
