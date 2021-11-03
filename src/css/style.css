@@ -1,18 +1,8 @@
-.flowerSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/flower.png');
-}
-.plumeSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/plume.png');
-}
-.gobletSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/goblet.png');
-}
-.sandsSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/sands.png');
-}
-.circletSlot {
-  background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/circlet.png');
-}
+.flowerSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/flower.png'); }
+.plumeSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/plume.png'); }
+.gobletSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/goblet.png'); }
+.sandsSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/sands.png'); }
+.circletSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/circlet.png'); }
 
 .artifactSlotsWrapper {
   display: flex;
@@ -33,9 +23,7 @@
 
 .artifactTooltip {
   position: absolute;
-
   background-color: black;
-
   width: 300px;
   font-weight: 600;
 }
@@ -58,12 +46,8 @@
 }
 
 .tooltipTitleIcon {
-  /* float: right; */
   width: 128px;
   height: 128px;
-  /* width: 100%;
-  height: auto; */
-
   justify-content: center;
   align-items: center;
   padding: 10px 0;

@@ -26,7 +26,6 @@ const main = function () {
 
 // create artifact slot elements for each character
 const createAllSlots = function () {
-
   [...document.querySelector('.Farm_itemList__zk7_j').children].forEach( panel => {
     let name = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML;
 
@@ -38,7 +37,6 @@ const createAllSlots = function () {
 
 // create all 5 artifact slots for a single {panel}
 const createSlotsForPanel = function (panel) {
-
   let wrapperDiv = document.createElement('div');
   wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replace(' ', '-');
   wrapperDiv.classList.add('artifactSlotsWrapper');
@@ -62,7 +60,8 @@ const openArtifactEditor = function (event) {
   let artifactOwner = getArtifactSlotOwner(targetArtifactSlot).toLowerCase();
   let artifactType = getArtifactSlotType(targetArtifactSlot);
 
-  let editWindow = createArtifactEditor(targetArtifactSlot, ARTIFACT_SET_NAMES, artifactOwner, artifactType, confirmArtifactEdit);
+  let editWindow = createArtifactEditor(targetArtifactSlot, ARTIFACT_SET_NAMES,
+                                        artifactOwner, artifactType, confirmArtifactEdit);
 
   document.body.appendChild(editWindow);
 }
@@ -72,14 +71,9 @@ const confirmArtifactEdit = function (event, owner, type) {
   let main = document.querySelector('#artifactMainStat').value;
   let sub = document.querySelector('#artifactSubStat').value;
 
-  // TODO: ADD SOME KIND OF MAX LENGTH MAYBE
-  // if (!set || !main || !sub) /* return */ alert("All fields must be filled!");
-
   if (!ARTIFACT_DATA[owner]) ARTIFACT_DATA[owner] = {}
   ARTIFACT_DATA[owner][type] = {
-    set: set,
-    main: main,
-    sub: sub,
+    set: set, main: main, sub: sub,
   }
 
   saveToCookies("userArtifactData", ARTIFACT_DATA)
@@ -128,7 +122,7 @@ function saveToCookies(name, data, exdays=999) {
 
 function loadFromCookies(name) {
   let result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-  result && (result = JSON.parse(result[1])); // frankly no clue what this does
+  result && (result = JSON.parse(result[1]));
   return result;
 }
 
