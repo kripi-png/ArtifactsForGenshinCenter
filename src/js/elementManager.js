@@ -6,79 +6,98 @@ export const createSlot = function (type, clickCallback) {
   return SLOT;
 }
 
-const createArtifactInputWrapper = function (ARTIFACT_SET_NAMES) {
-  let WRAPPER =
+// ARTIFACT_SET_NAMES:  list of all artifact sets available
+// inputType:           used to create the input field
+// sectionName:         title for the input field
+const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName) {
+  // classes and styling used mostly from the original website
+  let SECTION =
     document.createElement('div');
-    WRAPPER.id = 'artifactInputWrapper';
+    SECTION.classList.add('Schedule_section__6vicf');
 
-  let title =
+  let section_name =
     document.createElement('p');
-    title.innerHTML = "Select Artifact Set";
-    WRAPPER.appendChild(title);
+    section_name.classList.add('Schedule_sectionName__3vtrn');
+    section_name.innerHTML = sectionName;
+    SECTION.appendChild(section_name);
 
-  let input =
-    document.createElement('input');
-    input.setAttribute('list', 'artifactSelectorDatalist');
-    input.id = "selectArtifactInput";
-    WRAPPER.appendChild(input);
-
-  let datalist =
-    document.createElement('datalist');
-    datalist.id = 'artifactSelectorDatalist';
-    ARTIFACT_SET_NAMES.forEach(a => {
-      let _artifact = document.createElement('option');
-      _artifact.value = a;
-      datalist.appendChild(_artifact);
-    });
-    WRAPPER.appendChild(datalist);
-
-  return WRAPPER;
-}
-
-const createMainStatWrapper = function () {
-  let WRAPPER =
+  let input_wrapper =
     document.createElement('div');
-    WRAPPER.id = 'mainStatDiv';
+    input_wrapper.classList.add('Schedule_inputWrapper__GzY8Y');
+    SECTION.appendChild(input_wrapper);
 
-  let text =
-    document.createElement('p');
-    text.innerHTML = "Enter Main Stat";
-    WRAPPER.appendChild(text);
-
-  let input =
-    document.createElement('input');
-    WRAPPER.appendChild(input);
-
-  return WRAPPER;
-}
-
-const createSubStatWrapper = function () {
-  let WRAPPER =
+  let input_input =
     document.createElement('div');
-    WRAPPER.id = 'subStatDiv';
+    input_input.classList.add('Input_input__AuQWE');
+    input_wrapper.appendChild(input_input);
 
-  let text =
-    document.createElement('p');
-    text.innerHTML = "Enter Sub Stat";
-    WRAPPER.appendChild(text);
+  let input_glow =
+    document.createElement('div');
+    input_glow.classList.add('Input_glow__2lh0b');
+    input_input.appendChild(input_glow);
 
-  let input =
+  let input_innerborder =
+    document.createElement('div');
+    input_innerborder.classList.add('Input_innerborder__2Gail');
+    input_input.appendChild(input_innerborder);
+
+  let actual_input =
     document.createElement('input');
-    WRAPPER.appendChild(input);
+    actual_input.classList.add('Input_inner__3ObeW');
+    actual_input.name = 'name'; actual_input.type = 'text';
+    actual_input.style = 'font-size: 16px; color: black;';
+    actual_input.setAttribute('maxlength', '20');
 
-  return WRAPPER;
+    // as the function is same for all sections,
+    // inputType parameter is used to determine how the input field is created
+    if (inputType === 'main_stat') {
+      actual_input.id = 'artifactMainStat';
+      actual_input.placeholder = "Enter main stat...";
+    }
+    else if (inputType === 'sub_stat') {
+      actual_input.id = 'artifactSubStat';
+      actual_input.placeholder = "Enter sub stat(s)...";
+    }
+
+    else {
+      actual_input.id = 'selectArtifactInput';
+      actual_input.placeholder = "Enter set name...";
+      actual_input.setAttribute('list', 'artifactSelectorDatalist');
+      actual_input.setAttribute('maxlength', '40');
+
+      // datalist contains all possible artifact sets as options
+      // and is inserted next to the artifact set input field
+      let datalist =
+        document.createElement('datalist');
+        datalist.id = 'artifactSelectorDatalist';
+        ARTIFACT_SET_NAMES.forEach(a => {
+          let _artifact = document.createElement('option');
+          _artifact.value = a;
+          datalist.appendChild(_artifact);
+        });
+        input_input.appendChild(datalist);
+    }
+    input_input.appendChild(actual_input);
+
+  return SECTION
 }
 
 // callback:            confirmArtifactEdit function in content.js
 // owner:               character whose artifact slot was clicked
 // piece:               name of the piece that was clicked, e.g. plume
 const createEditorButton = function (confirmArtifactEditCallback, owner, piece) {
-  let BUTTON =
-    document.createElement('button');
-    BUTTON.innerHTML = "OK";
-    BUTTON.onclick = e => confirmArtifactEditCallback(e, owner, piece);
+  // classes and styling used mostly from the original website
+  let BUTTON_WRAPPER =
+    document.createElement('div');
+    BUTTON_WRAPPER.classList.add('Schedule_buttonsWrapper__3QM49');
 
-  return BUTTON;
+  let button =
+    document.createElement('button');
+    button.innerHTML = "OK";
+    button.onclick = e => confirmArtifactEditCallback(e, owner, piece);
+    BUTTON_WRAPPER.append(button)
+
+  return BUTTON_WRAPPER;
 }
 
 // slot                 artifact slot clicked
@@ -87,20 +106,49 @@ const createEditorButton = function (confirmArtifactEditCallback, owner, piece) 
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            confirmArtifactEdit function in content.js
 export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, piece, confirmArtifactEditCallback) {
+  // classes and styling used mostly from the original website
   let WINDOW =
     document.createElement('div');
     WINDOW.id = 'artifactEdit';
     WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
 
-  let title =
-    document.createElement('h3');
-    title.innerHTML = `${owner}'s ${piece}`;
-    WINDOW.appendChild(title);
+  let window_window =
+    document.createElement('div');
+    window_window.classList.add('Window_window__2tU_Y');
+    window_window.style.opacity = '1';
+    WINDOW.appendChild(window_window);
 
-  WINDOW.appendChild(createArtifactInputWrapper(ARTIFACT_SET_NAMES));
-  WINDOW.appendChild(createMainStatWrapper());
-  WINDOW.appendChild(createSubStatWrapper());
-  WINDOW.appendChild(createEditorButton(confirmArtifactEditCallback, owner, piece));
+  let window_center =
+    document.createElement('div');
+    window_center.classList.add('Window_center__1F9yr');
+    WINDOW.appendChild(window_center);
+
+  let window_modal =
+    document.createElement('div');
+    window_modal.classList.add('Window_modal__2xmK7');
+    window_modal.style = 'opacity: 1; pointer-events: all;';
+    window_center.appendChild(window_modal);
+
+  let schedule_creator =
+    document.createElement('div');
+    schedule_creator.classList.add('Schedule_taskCreator__2MSUu');
+    window_modal.appendChild(schedule_creator);
+
+  let schedule_topBar =
+    document.createElement('div');
+    schedule_topBar.classList.add('Schedule_taskTopBar__2qHzE');
+    schedule_topBar.innerHTML = "<h3>Edit Artifact</h3>";
+    schedule_creator.appendChild(schedule_topBar);
+
+  let schedule_content =
+    document.createElement('div');
+    schedule_content.classList.add('Schedule_taskCreatorContent__3zR8F');
+    schedule_creator.appendChild(schedule_content);
+
+    schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'artifact_set_list', "Set Name"));
+    schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat'));
+    schedule_content.appendChild(createSection(null, 'sub_stat', 'Sub Stat'));
+    schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, owner, piece));
 
   return WINDOW;
 }

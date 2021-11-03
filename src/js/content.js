@@ -70,8 +70,8 @@ const openArtifactEditor = function (event) {
 
 const confirmArtifactEdit = function (event, owner, type) {
   let set = document.querySelector('#selectArtifactInput').value;
-  let main = document.querySelector('#mainStatDiv > input').value;
-  let sub = document.querySelector('#subStatDiv > input').value;
+  let main = document.querySelector('#artifactMainStat').value;
+  let sub = document.querySelector('#artifactSubStat').value;
 
   // TODO: ADD SOME KIND OF MAX LENGTH MAYBE
   // if (!set || !main || !sub) /* return */ alert("All fields must be filled!");
