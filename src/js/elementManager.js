@@ -1,8 +1,11 @@
-export const createSlot = function (type, clickCallback) {
+
+// piece:               name of the piece that was clicked, e.g. plume
+// callback:            openArtifactEditor function in content.js
+export const createSlot = function (piece, callback) {
   let SLOT =
     document.createElement('div');
-    SLOT.classList.add('artifactSlot', type+"Slot");
-    SLOT.addEventListener('click', clickCallback);
+    SLOT.classList.add('artifactSlot', piece+"Slot");
+    SLOT.addEventListener('click', callback);
   return SLOT;
 }
 
