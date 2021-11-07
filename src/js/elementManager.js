@@ -153,9 +153,15 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     window_modal.style = 'opacity: 1; pointer-events: all;';
     window_center.appendChild(window_modal);
 
+  let window_edit =
+    document.createElement('div');
+    window_edit.classList.add('Edit_edit___eEru');
+
+
   let schedule_creator =
     document.createElement('div');
     schedule_creator.classList.add('Schedule_taskCreator__2MSUu');
+    schedule_creator.style.width = '360px';
     window_modal.appendChild(schedule_creator);
 
   let schedule_topBar =
@@ -167,6 +173,7 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
   let schedule_content =
     document.createElement('div');
     schedule_content.classList.add('Schedule_taskCreatorContent__3zR8F');
+    schedule_content.style.padding = '0 10px 15px';
     schedule_creator.appendChild(schedule_content);
 
     schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'artifact_set_list', "Set Name", slot.dataset.set));
