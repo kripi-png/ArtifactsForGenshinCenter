@@ -99,6 +99,9 @@ const deleteArtifact = function (event, owner, type) {
   slot.style.backgroundImage = '';
   slot.classList.remove('check');
 
+  slot.onmouseover = e => false
+  slot.onmouseleave = e => false
+
   console.log(ARTIFACT_DATA[owner]);
 
   saveToCookies("userArtifactData", ARTIFACT_DATA)
