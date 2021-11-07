@@ -242,3 +242,48 @@ export const createTooltipBoxWrapper = function (slot, x, y, set, piece) {
 
   return WINDOW;
 }
+
+export const createHidingButton = function (panel, owner, callback) {
+  let BUTTON_WRAPPER =
+    document.createElement('div');
+    // get slotWrapper element by owner's name and check whether it has disabled class
+    // set title using ternary operator based on that value
+    BUTTON_WRAPPER.title =
+        panel.querySelector(`.artifactSlotsWrapper[data-character=${owner}]`)
+        .classList.contains('disabled')
+          ? 'Show Artifacts'
+          : 'Hide Artifacts';
+    BUTTON_WRAPPER.classList.add('ItemPanel_buttonWrapper__T2Pof');
+    BUTTON_WRAPPER.style.right = '80px';
+    BUTTON_WRAPPER.dataset.character = owner;
+    // not quite sure why but without this line the button stays focused and
+    // the buttons won't disappear when panel is unhovered
+    BUTTON_WRAPPER.onmousedown = e => e.preventDefault();
+
+  let button =
+    document.createElement('button');
+    button.classList.add('CircleButton_button__2q1kt');
+    button.onclick = e => callback(e);
+    BUTTON_WRAPPER.appendChild(button);
+
+  let button_glow =
+    document.createElement('div');
+    button_glow.classList.add('CircleButton_glow__19phK');
+    button.appendChild(button_glow);
+  let button_innerborder =
+    document.createElement('div');
+    button_innerborder.classList.add('CircleButton_innerborder__2HyhF');
+    button.appendChild(button_innerborder);
+  let button_inner =
+    document.createElement('div');
+    button_inner.classList.add('CircleButton_inner__2223j');
+    button.appendChild(button_inner);
+
+  let button_image =
+    document.createElement('img');
+    button_image.src = 'https://i.imgur.com/liC3uM6.png';
+    button.appendChild(button_image);
+
+  let bar = panel.querySelector('.ItemPanel_item__38QUF')
+  bar.insertBefore(BUTTON_WRAPPER, bar.querySelector('div[title=Active]'));
+}

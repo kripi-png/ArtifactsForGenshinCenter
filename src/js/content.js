@@ -1,4 +1,9 @@
-import { createSlot, createArtifactEditor, createTooltipBoxWrapper } from './elementManager.js';
+import {
+  createSlot,
+  createArtifactEditor,
+  createTooltipBoxWrapper,
+  createHidingButton
+} from './elementManager.js';
 
 const ARTIFACT_DATA = loadFromCookies('userArtifactData') || {};
 const DATASET = await getDataset();
@@ -22,21 +27,19 @@ const main = function () {
       }
     );
   }
+
+  createAllHidingButtons();
 }
 
 // create artifact slot elements for each character
 const createAllSlots = function () {
-  [...document.querySelector('.Farm_itemList__zk7_j').children].forEach( panel => {
-    if ( !isWeapon(panel) ) {
-      createSlotsForPanel(panel);
-    }
-  });
+  getAllCharacterPanels().forEach( panel => createSlotsForPanel(panel) );
 }
 
 // create all 5 artifact slots for a single {panel}
 const createSlotsForPanel = function (panel) {
   let wrapperDiv = document.createElement('div');
-  wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replace(' ', '-');
+  wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replaceAll(' ', '-');
   wrapperDiv.classList.add('artifactSlotsWrapper');
 
   let flowerSlot = createSlot('flower', openArtifactEditor);
@@ -76,7 +79,7 @@ const confirmArtifactEdit = function (event, owner, type) {
     check: check,
   }
 
-  saveToCookies("userArtifactData", ARTIFACT_DATA)
+  saveToCookies("userArtifactData", ARTIFACT_DATA);
   loadArtifact(owner, type);
 
   let _editor = document.querySelector('#artifactEdit');
@@ -102,7 +105,7 @@ const deleteArtifact = function (event, owner, type) {
 
   console.log(ARTIFACT_DATA[owner]);
 
-  saveToCookies("userArtifactData", ARTIFACT_DATA)
+  saveToCookies("userArtifactData", ARTIFACT_DATA);
   loadArtifact(owner, type);
 
   let _editor = document.querySelector('#artifactEdit');
@@ -111,6 +114,7 @@ const deleteArtifact = function (event, owner, type) {
 
 const loadArtifact = function (character, slot) {
   slot = getArtifactSlotByOwner(character, slot);
+  if (!slot) return;
   let type = getArtifactSlotType(slot);
   let set = ARTIFACT_DATA[character][type] ? ARTIFACT_DATA[character][type]['set'] : '';
   if (!set) return; // if no set is set for a reason or another, abort
@@ -137,6 +141,38 @@ const loadArtifact = function (character, slot) {
     let _window = document.querySelector('#artifactTooltipWindow');
     _window.parentNode.removeChild(_window);
   }
+
+  if (ARTIFACT_DATA[character]['disabled']) {
+    slot.parentNode.classList.add('disabled');
+  }
+}
+
+const createAllHidingButtons = function () {
+  getAllCharacterPanels().forEach( panel => {
+    // get owner's name to be stored into dataset for later
+    let owner = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replaceAll(' ', '-');
+    createHidingButton(panel, owner, hidingButtonCallback);
+  });
+}
+
+const hidingButtonCallback = function (e) {
+  // e.target is div.CircleButton_inner__2223j so get the div element
+  let button = e.target.parentNode.parentNode;
+  // find the artifact slot wrapper by the character name stored in the button div element
+  let slotWrapper = document.querySelector(`.artifactSlotsWrapper[data-character=${e.target.parentNode.parentNode.dataset.character}]`);
+  // ARTIFACT_DATA doesn't use hypens in character names (yet) so replace them
+  hideArtifacts(button, slotWrapper, button.dataset.character.replaceAll('-', ' '));
+}
+
+const hideArtifacts = function (button, slotWrapper, character) {
+  if (slotWrapper.classList.contains('disabled')) {
+    button.title = "Hide Artifacts"
+  } else {
+    button.title = "Show Artifacts"
+  }
+  slotWrapper.classList.toggle('disabled');
+  ARTIFACT_DATA[character]['disabled'] = !ARTIFACT_DATA[character]['disabled'] || false;
+  saveToCookies("userArtifactData", ARTIFACT_DATA);
 }
 
 function createHoverPopup(e, slot, set, piece) {
@@ -178,7 +214,7 @@ const getArtifactSlotType = function (slot) {
 
 // uses custom data attribute data-character to find and return a specific artifact slot of a specific character
 const getArtifactSlotByOwner = function (character, slot) {
-  return document.querySelector(`div[data-character=${character.replace(' ', '-')}]`).querySelector(`.${slot}Slot`);
+  return document.querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`).querySelector(`.${slot}Slot`);
 }
 
 const capitalizeFirstLetter = function (string) {
@@ -197,6 +233,10 @@ function calculatePopupLocation(slot) {
   let y = rect.bottom - rect.height;
 
   return { x, y };
+}
+
+function getAllCharacterPanels() {
+  return [...document.querySelector('.Farm_itemList__zk7_j').children].filter( panel => !isWeapon(panel) );
 }
 
 // waits until the character list has loaded and then executes the main function
