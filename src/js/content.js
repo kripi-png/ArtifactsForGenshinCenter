@@ -27,8 +27,6 @@ const main = function () {
 // create artifact slot elements for each character
 const createAllSlots = function () {
   [...document.querySelector('.Farm_itemList__zk7_j').children].forEach( panel => {
-    let name = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML;
-
     if ( !isWeapon(panel) ) {
       createSlotsForPanel(panel);
     }
