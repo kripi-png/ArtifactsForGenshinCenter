@@ -92,7 +92,7 @@ const deleteArtifact = function (event, owner, type) {
   }
 
   let slot = getArtifactSlotByOwner(owner, type);
-  console.log(owner, slot);
+  if (!slot) return;
   slot.dataset.set = '';
   slot.dataset.main = '';
   slot.dataset.sub = '';
@@ -214,7 +214,12 @@ const getArtifactSlotType = function (slot) {
 
 // uses custom data attribute data-character to find and return a specific artifact slot of a specific character
 const getArtifactSlotByOwner = function (character, slot) {
-  return document.querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`).querySelector(`.${slot}Slot`);
+  // if character is removed from the planner, return false
+  try {
+    return document.querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`).querySelector(`.${slot}Slot`);
+  } catch (e) {
+    return false;
+  }
 }
 
 const capitalizeFirstLetter = function (string) {
