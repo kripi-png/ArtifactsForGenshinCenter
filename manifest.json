@@ -18,8 +18,5 @@
         "css": [ "src/css/style.css" ],
         "run_at": "document_end"
       }
-    ],
-    "background": {
-        "scripts": [ "src/js/background.js" ]
-    }
+    ]
 }
