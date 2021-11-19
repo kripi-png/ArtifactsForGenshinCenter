@@ -2,18 +2,17 @@ import {
   createSlot,
   createArtifactEditor,
   createTooltipBoxWrapper,
-  createHidingButton
+  createArtifactHidingButton,
 } from './elementManager.js';
 
-const ARTIFACT_DATA = loadFromCookies('userArtifactData') || {};
 const DATASET = await getDataset();
-console.log(DATASET);
-
 const ARTIFACT_SET_NAMES = Object.keys(DATASET);
+const ARTIFACT_DATA = loadFromCookies('userArtifactData') || {};
 
 const main = function () {
   createAllSlots();
 
+  console.log(DATASET);
   console.log(ARTIFACT_DATA);
 
   if ( Object.keys(ARTIFACT_DATA).length != 0 ) {
@@ -28,7 +27,7 @@ const main = function () {
     );
   }
 
-  createAllHidingButtons();
+  createAllArtifactHidingButtons();
 }
 
 // create artifact slot elements for each character
@@ -147,11 +146,11 @@ const loadArtifact = function (character, slot) {
   }
 }
 
-const createAllHidingButtons = function () {
+const createAllArtifactHidingButtons = function () {
   getAllCharacterPanels().forEach( panel => {
     // get owner's name to be stored into dataset for later
     let owner = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replaceAll(' ', '-');
-    createHidingButton(panel, owner, hidingButtonCallback);
+    createArtifactHidingButton(panel, owner, hidingButtonCallback);
   });
 }
 
@@ -175,7 +174,7 @@ const hideArtifacts = function (button, slotWrapper, character) {
   saveToCookies("userArtifactData", ARTIFACT_DATA);
 }
 
-function createHoverPopup(e, slot, set, piece) {
+const createHoverPopup = function (event, slot, set, piece) {
   let {x, y} = calculatePopupLocation(slot);
 
   const tooltipBox = createTooltipBoxWrapper(slot, x, y, set, piece);
@@ -196,25 +195,30 @@ function loadFromCookies(name) {
   return result;
 }
 
+// returns the character name from the title element of a {slot}
+const getArtifactSlotOwner = function (slot) {
+  return slot.parentNode.parentNode.parentNode.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML;
+}
+
+// returns the type (plume, sands) of the artifact in a slot
+const getArtifactSlotType = function (slot) {
+  return slot.classList.item(1).replace('Slot', '');
+}
+
+const getAllCharacterPanels = function () {
+  return [...document.querySelector('.Farm_itemList__zk7_j').children].filter( panel => !isWeapon(panel) );
+}
+
 // returns whether {panel} is a weapon by checking the source of the panel's image
 // e.g. src='/images/weapons/regular/Deathmatch.png'
 const isWeapon = function (panel) {
   return panel.querySelector('.ItemPanel_itemImage__2fZwL > img').src.includes('weapons');
 }
 
-// returns the name from the title element of an artifact {slot}
-const getArtifactSlotOwner = function (slot) {
-  return slot.parentNode.parentNode.parentNode.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML;
-}
-
-// parses and returns the artifact type from slot's class list
-const getArtifactSlotType = function (slot) {
-  return slot.classList.item(1).replace('Slot', '');
-}
-
-// uses custom data attribute data-character to find and return a specific artifact slot of a specific character
+// uses custom data attribute data-character to find
+// and return a specific artifact slot of a character
 const getArtifactSlotByOwner = function (character, slot) {
-  // if character is removed from the planner, return false
+  // fails e.g. when character has been removed but artifact data still exists
   try {
     return document.querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`).querySelector(`.${slot}Slot`);
   } catch (e) {
@@ -222,16 +226,8 @@ const getArtifactSlotByOwner = function (character, slot) {
   }
 }
 
-const capitalizeFirstLetter = function (string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
-async function getDataset () {
-  const DATASET = await fetch(chrome.extension.getURL('src/js/dataset.json'));
-  return DATASET.json();
-}
-
-function calculatePopupLocation(slot) {
+// calculates the location of the hover pop up in relation to the hovered slot
+const calculatePopupLocation = function (slot) {
   let rect = slot.getBoundingClientRect();
 
   let x = rect.left + slot.getBoundingClientRect().width;
@@ -240,11 +236,17 @@ function calculatePopupLocation(slot) {
   return { x, y };
 }
 
-function getAllCharacterPanels() {
-  return [...document.querySelector('.Farm_itemList__zk7_j').children].filter( panel => !isWeapon(panel) );
+async function getDataset () {
+  const DATASET = await fetch(chrome.extension.getURL('src/js/dataset.json'));
+  return DATASET.json();
+}
+
+const capitalizeFirstLetter = function (string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 // waits until the character list has loaded and then executes the main function
+// called from content_script.js
 export function waitForPageToLoad() {
   const waitForCharacterList = setInterval(function() {
     if (document.querySelector('.Farm_itemList__zk7_j')) {

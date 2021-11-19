@@ -185,9 +185,9 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
   return WINDOW;
 }
 
-// slot: hovered artifact
-// x, y: location for the popup window
-// set, piece: names of the set and piece
+// slot:                 hovered artifact
+// x, y:                 location for the popup window
+// set, piece:           names of the set and piece
 export const createTooltipBoxWrapper = function (slot, x, y, set, piece) {
   let _setName = set;
   let _pieceName = piece;
@@ -243,7 +243,11 @@ export const createTooltipBoxWrapper = function (slot, x, y, set, piece) {
   return WINDOW;
 }
 
-export const createHidingButton = function (panel, owner, callback) {
+
+// panel:                 character panel
+// owner:                 name of the character
+// callback:              hidingButtonCallback function in content.js
+export const createArtifactHidingButton = function (panel, owner, callback) {
   let BUTTON_WRAPPER =
     document.createElement('div');
     // get slotWrapper element by owner's name and check whether it has disabled class
