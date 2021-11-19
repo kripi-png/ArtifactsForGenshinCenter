@@ -1,9 +1,11 @@
 {
     "manifest_version": 2,
     "name": "Artifacts for Genshin Planner",
-    "version": "0.0.1",
-    "description": "Lorem ipsum dolor sit amet",
-    "icons": { "128": "src/images/icon.png" },
+    "version": "1.0",
+    "description": "A chrome extension that allows users to add artifacts and set their stats.",
+    "icons": {
+      "128": "src/images/icon.png"
+    },
     "web_accessible_resources": [
       "src/images/*",
       "src/js/*"
