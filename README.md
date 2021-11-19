@@ -9,6 +9,6 @@ Artifact icons (src/js/dataset.json) are originally from https://impact.moe/ usi
 
 
 ## Plans, maybe?
-[ ] export to / import from a text file
-[ ] option to remove all artifacts from all characters
-[ ] Show artifacts-checkbox to the Options menu
+- [ ] export to / import from a text file
+- [ ] option to remove all artifacts from all characters
+- [ ] Show artifacts-checkbox to the Options menu
