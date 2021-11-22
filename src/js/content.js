@@ -7,7 +7,7 @@ import {
 
 const DATASET = await getDataset();
 const ARTIFACT_SET_NAMES = Object.keys(DATASET);
-const ARTIFACT_DATA = loadFromCookies('userArtifactData') || {};
+const ARTIFACT_DATA = await loadFromStorage('userArtifactData') || {};
 
 const main = function () {
   createAllSlots();
@@ -78,7 +78,7 @@ const confirmArtifactEdit = function (event, owner, type) {
     check: check,
   }
 
-  saveToCookies("userArtifactData", ARTIFACT_DATA);
+  saveToStorage("userArtifactData", ARTIFACT_DATA);
   loadArtifact(owner, type);
 
   let _editor = document.querySelector('#artifactEdit');
@@ -104,7 +104,7 @@ const deleteArtifact = function (event, owner, type) {
 
   console.log(ARTIFACT_DATA[owner]);
 
-  saveToCookies("userArtifactData", ARTIFACT_DATA);
+  saveToStorage("userArtifactData", ARTIFACT_DATA);
   loadArtifact(owner, type);
 
   let _editor = document.querySelector('#artifactEdit');
@@ -171,7 +171,7 @@ const hideArtifacts = function (button, slotWrapper, character) {
   }
   slotWrapper.classList.toggle('disabled');
   ARTIFACT_DATA[character]['disabled'] = !ARTIFACT_DATA[character]['disabled'] || false;
-  saveToCookies("userArtifactData", ARTIFACT_DATA);
+  saveToStorage("userArtifactData", ARTIFACT_DATA);
 }
 
 const createHoverPopup = function (event, slot, set, piece) {
@@ -181,18 +181,28 @@ const createHoverPopup = function (event, slot, set, piece) {
   document.body.appendChild(tooltipBox);
 }
 
-function saveToCookies(name, data, exdays=999) {
-  const d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  const expires = "expires="+d.toUTCString();
-  const cookie = [name, '=', JSON.stringify(data), ';', expires, ' ; domain=.', window.location.host.toString(), '; path=/;'].join('');
-  document.cookie = cookie;
+function saveToStorage(name, data) {
+  chrome.storage.local.set({[name]: JSON.stringify(data)});
 }
 
-function loadFromCookies(name) {
-  let result = document.cookie.match(new RegExp(name + '=([^;]+)'));
-  result && (result = JSON.parse(result[1]));
-  return result;
+function loadFromStorage(name) {
+  // check if the cookie from previous versions exist
+  if ( document.cookie.indexOf(name) > -1 ) {
+    // load & parse the cookie, then save it to the local storage
+    let _cookie = document.cookie.match(new RegExp(name + '=([^;]+)'));
+    _cookie && (_cookie = JSON.parse(_cookie[1]));
+    // make sure the cookie also contains information before saving
+    if ( _cookie ) saveToStorage(name, _cookie)
+    // delete the cookie
+    document.cookie = [name, '=', '', ';', -1, ' ; domain=.', window.location.host.toString(), '; path=/;'].join('');
+  }
+  // chrome.storage.local.get cannot return anything unless
+  // it is wrapped inside a promise
+  return new Promise( resolve => {
+    chrome.storage.local.get([name], result => {
+      resolve(JSON.parse(result[name]))
+    });
+  });
 }
 
 // returns the character name from the title element of a {slot}
