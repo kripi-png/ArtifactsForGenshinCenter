@@ -200,6 +200,13 @@ function loadFromStorage(name) {
   // it is wrapped inside a promise
   return new Promise( resolve => {
     chrome.storage.local.get([name], result => {
+      // if user uses the extension for the first time
+      // key doesn't exist and the extension would crash
+      if (!result[name]) {
+        resolve(false)
+        return ;
+      }
+
       resolve(JSON.parse(result[name]))
     });
   });
