@@ -266,7 +266,7 @@ const capitalizeFirstLetter = function (string) {
 // called from content_script.js
 export function waitForPageToLoad() {
   const waitForCharacterList = setInterval(function() {
-    if (document.querySelector('.Farm_itemList__zk7_j')) {
+    if (document.querySelector('.Farm_itemList__zk7_j > div')) {
       clearInterval(waitForCharacterList);
       console.log("Character list loaded!");
 
