@@ -8,7 +8,6 @@ A chrome extension for [Genshin Center's Ascension Planner](https://genshin-cent
 ![Edit window](https://i.imgur.com/X4QRLsH.png)
 
 ## Todo
-- Include the artifact type and character's name in the title of the edit window (e.g. Edit Ningguang's Plume)
 - Rework the dataset.json to use numeric keys instead (requires less space)
 - Rework the save system to use numeric indexes instead (requires less space)
 
@@ -17,7 +16,6 @@ A chrome extension for [Genshin Center's Ascension Planner](https://genshin-cent
 - After changing the priority of characters, artifacts stay on the previous panel (save-data is safe however); reload is required
 
 ## Ideas under consideration
-- [ ] option to remove all artifacts from all characters
 - [ ] option to remove all artifacts from a single character
 - [ ] Show artifacts-checkbox to the Options menu
 
