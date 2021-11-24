@@ -1,4 +1,3 @@
-
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            openArtifactEditor function in content.js
 export const createSlot = function (piece, callback) {
@@ -157,17 +156,20 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     document.createElement('div');
     window_edit.classList.add('Edit_edit___eEru');
 
-
   let schedule_creator =
     document.createElement('div');
     schedule_creator.classList.add('Schedule_taskCreator__2MSUu');
     schedule_creator.style.width = '360px';
     window_modal.appendChild(schedule_creator);
 
+  // TITLE
   let schedule_topBar =
     document.createElement('div');
     schedule_topBar.classList.add('Schedule_taskTopBar__2qHzE');
-    schedule_topBar.innerHTML = "<h3>Edit Artifact</h3>";
+    schedule_topBar.style = "flex-direction: column;";
+    schedule_topBar.innerHTML =
+        `<h3>Edit Artifact</h3>
+        <h4 style="padding-bottom: 10px; text-transform: capitalize;">${owner}'s ${piece}</h4>`;
     schedule_creator.appendChild(schedule_topBar);
 
   let schedule_content =
