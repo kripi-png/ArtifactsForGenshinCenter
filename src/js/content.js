@@ -50,6 +50,7 @@ const importArtifactData = function () {
   let data = prompt("Copy and paste the data here:");
   // if user presses cancel
   if ( data === null ) return ;
+
   try {
     // if the field is empty, go to catch
     if (!data) throw Error
@@ -62,10 +63,13 @@ const importArtifactData = function () {
     let confirmation = prompt("Note: This will override all previous artifacts! Type SURE to continue.").toLowerCase() == "sure";
     if (!confirmation) return ;
 
+    // override previous artifacts in the local storage, then reload the page
     saveToStorage('userArtifactData', data);
-    console.log("Data override was successful!");
+    alert("Artifact data imported! The webpage will now reload.");
+    window.location.reload();
 
   } catch (e) {
+    // if any errors were encountered, inform the user and recall the function
     alert("Invalid data! Try again.");
     importArtifactData();
   }
