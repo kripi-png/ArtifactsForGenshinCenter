@@ -308,10 +308,6 @@ async function getDataset () {
   return DATASET.json();
 }
 
-const capitalizeFirstLetter = function (string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 // waits until the character list has loaded and then executes the main function
 // called from content_script.js
 export function waitForPageToLoad() {
