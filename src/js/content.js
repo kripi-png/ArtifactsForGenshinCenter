@@ -3,6 +3,7 @@ import {
   createArtifactEditor,
   createTooltipBoxWrapper,
   createArtifactHidingButton,
+  addExportImportToOptionsWindow,
 } from './elementManager.js';
 
 const DATASET = await getDataset();
@@ -28,6 +29,51 @@ const main = function () {
   }
 
   createAllArtifactHidingButtons();
+
+  // the options window element does not exist before the user
+  // presses the More Options button, thus we listen for changes in the DOM
+  // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+  const observer = new MutationObserver( mutation_list => {
+    mutation_list.forEach( mutation => {
+      mutation.addedNodes.forEach( added_node => {
+        if ( added_node.id == 'options') {
+          addExportImportToOptionsWindow(added_node, importArtifactData, exportArtifactData);
+        }
+      });
+    });
+  });
+
+  observer.observe(document.querySelector("body"), {subtree: false, childList: true});
+}
+
+const importArtifactData = function () {
+  let data = prompt("Copy and paste the data here:");
+  // if user presses cancel
+  if ( data === null ) return ;
+  try {
+    // if the field is empty, go to catch
+    if (!data) throw Error
+
+    data = JSON.parse(data);
+    console.log("data is valid");
+    console.log(data);
+
+    // cancel if user does not type "sure"
+    let confirmation = prompt("Note: This will override all previous artifacts! Type SURE to continue.").toLowerCase() == "sure";
+    if (!confirmation) return ;
+
+    saveToStorage('userArtifactData', data);
+    console.log("Data override was successful!");
+
+  } catch (e) {
+    alert("Invalid data! Try again.");
+    importArtifactData();
+  }
+}
+
+const exportArtifactData = function () {
+  const data = JSON.stringify(ARTIFACT_DATA);
+  prompt("Copy and paste this to a text file:", data);
 }
 
 // create artifact slot elements for each character

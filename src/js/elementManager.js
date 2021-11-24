@@ -291,3 +291,50 @@ export const createArtifactHidingButton = function (panel, owner, callback) {
   let bar = panel.querySelector('.ItemPanel_item__38QUF')
   bar.insertBefore(BUTTON_WRAPPER, bar.querySelector('div[title=Active]'));
 }
+
+// options_window:        div#options element
+// importCallback:        importArtifactData function in content.js
+// exportCallback:        exportArtifactData function in content.js
+export const addExportImportToOptionsWindow = function (options_window, importCallback, exportCallback) {
+  let OPTION_SECTION =
+    document.createElement('div');
+    OPTION_SECTION.classList.add('PlannerOptions_section__3lgqe');
+
+  let WRAPPER =
+    document.createElement('div');
+    WRAPPER.classList.add('Radio_radio__1S7b1');
+    OPTION_SECTION.appendChild(WRAPPER);
+
+  let title =
+    document.createElement('div');
+    title.classList.add('Radio_radioLabel__3ECTP');
+    title.innerHTML = "Extension Setting: Import / Export Artifact Data";
+    WRAPPER.appendChild(title);
+
+  let buttonWrapper =
+    document.createElement('div');
+    buttonWrapper.classList.add('Radio_options__1lESR', 'import_export_wrapper');
+    buttonWrapper.style = "max-width: 440px";
+    WRAPPER.appendChild(buttonWrapper);
+
+  let importButton =
+    document.createElement('button');
+    importButton.classList.add('Radio_option__27kFi');
+    importButton.title = "Import Data";
+    importButton.onclick = e => importCallback()
+    importButton.innerHTML =
+      "<div class='Radio_selected__1QOl-' style='visibility: visible; opacity: 1;" +
+      "transform-origin: 50% 50% 0px;'></div>" +
+      "Import Data";
+    buttonWrapper.appendChild(importButton)
+
+  let exportButton =
+    document.createElement('button');
+    exportButton.classList.add('Radio_option__27kFi');
+    exportButton.title = "Export Data";
+    exportButton.onclick = e => exportCallback()
+    exportButton.innerHTML = "Export Data";
+    buttonWrapper.appendChild(exportButton)
+
+  options_window.querySelector('.PlannerOptions_content__T5_lg').appendChild(OPTION_SECTION);
+}
