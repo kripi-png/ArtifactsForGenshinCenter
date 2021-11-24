@@ -181,7 +181,7 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'artifact_set_list', "Set Name", slot.dataset.set));
     schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat', slot.dataset.main));
     schedule_content.appendChild(createSection(null, 'sub_stat', 'Sub Stat', slot.dataset.sub));
-    schedule_content.appendChild(createSection(null, 'checkbox', 'Aquired?', slot.dataset.check));
+    schedule_content.appendChild(createSection(null, 'checkbox', 'Acquired?', slot.dataset.check));
     schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, deleteArtifactCallback, owner, piece));
 
   return WINDOW;

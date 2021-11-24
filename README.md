@@ -5,7 +5,7 @@ A chrome extension for [Genshin Center's Ascension Planner](https://genshin-cent
 
 
 ![Ningguang's Artifacts](https://i.imgur.com/aZwUY54.png "Ningguang's Artifacts")
-![Edit window](https://i.imgur.com/X4QRLsH.png)
+![Edit window](https://i.imgur.com/f2Kxnq7.png)
 
 ## Todo
 - Rework the dataset.json to use numeric keys instead (requires less space)
