@@ -1,5 +1,7 @@
 A chrome extension for [Genshin Center's Ascension Planner](https://genshin-center.com/planner) that allows users to add artifacts and set their stats.
 
+**The extension is now available on [Chrome Web Store](https://chrome.google.com/webstore/detail/artifacts-for-genshin-pla/jleonalkkhbfeafkmfgofopiadjkalno)!**
+
 ### NOTE: This is an unofficial extension developed by me, kripi, and **NOT** Genshin Center.
 
 
