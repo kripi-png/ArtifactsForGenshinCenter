@@ -1,8 +1,8 @@
-.flowerSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/flower.png'); }
-.plumeSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/plume.png'); }
-.gobletSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/goblet.png'); }
-.sandsSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/sands.png'); }
-.circletSlot { background-image:url('chrome-extension://__MSG_@@extension_id__/src/images/circlet.png'); }
+.flowerSlot { background-image:url('https://i.imgur.com/GqSEgvB.png'); }
+.plumeSlot { background-image:url('https://i.imgur.com/FpKdZFQ.png'); }
+.gobletSlot { background-image:url('https://i.imgur.com/0XhOfPS.png'); }
+.sandsSlot { background-image:url('https://i.imgur.com/C1kloPS.png'); }
+.circletSlot { background-image:url('https://i.imgur.com/AO6dMV6.png'); }
 
 .artifactSlotsWrapper {
   display: flex;
