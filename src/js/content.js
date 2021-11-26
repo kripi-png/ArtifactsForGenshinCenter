@@ -60,7 +60,7 @@ const importArtifactData = function () {
     console.log(data);
 
     // cancel if user does not type "sure"
-    let confirmation = prompt("Note: This will override all previous artifacts! Type SURE to continue.").toLowerCase() == "sure";
+    let confirmation = prompt("Note: This will override all previous artifacts! Type CONFIRM to continue.").toLowerCase() == "confirm";
     if (!confirmation) return ;
 
     // override previous artifacts in the local storage, then reload the page
@@ -236,16 +236,6 @@ function saveToStorage(name, data) {
 }
 
 function loadFromStorage(name) {
-  // check if the cookie from previous versions exist
-  if ( document.cookie.indexOf(name) > -1 ) {
-    // load & parse the cookie, then save it to the local storage
-    let _cookie = document.cookie.match(new RegExp(name + '=([^;]+)'));
-    _cookie && (_cookie = JSON.parse(_cookie[1]));
-    // make sure the cookie also contains information before saving
-    if ( _cookie ) saveToStorage(name, _cookie)
-    // delete the cookie
-    document.cookie = [name, '=', '', ';', -1, ' ; domain=.', window.location.host.toString(), '; path=/;'].join('');
-  }
   // chrome.storage.local.get cannot return anything unless
   // it is wrapped inside a promise
   return new Promise( resolve => {
