@@ -162,15 +162,16 @@ const deleteArtifact = function (event, owner, type) {
 }
 
 const loadArtifact = function (character, slot) {
-  const indexes = { flower: 0, plume: 1, goblet: 2, sands: 3, circlet: 4 }
+  const pieceIndex = { flower: 0, plume: 1, sands: 2, goblet: 3, circlet: 4 }
+
   slot = getArtifactSlotByOwner(character, slot);
   if (!slot) return;
   let type = getArtifactSlotType(slot);
   let set = ARTIFACT_DATA[character][type] ? ARTIFACT_DATA[character][type]['set'] : '';
-  if (!set) return; // if no set is set for a reason or another, abort
-  let piece = DATASET[set][indexes[type]][0];
+  if (!set) return; // if no set is selected, abort
+  let piece = DATASET[set][pieceIndex[type]][0];
 
-  let image = DATASET[set][indexes[type]][1];
+  let image = DATASET[set][pieceIndex[type]][1];
   let main = ARTIFACT_DATA[character][type]['main'];
   let sub = ARTIFACT_DATA[character][type]['sub'];
   let check = ARTIFACT_DATA[character][type]['check'];
