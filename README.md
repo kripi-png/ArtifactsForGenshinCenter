@@ -3,24 +3,23 @@ A chrome extension for [Genshin Center's Ascension Planner](https://genshin-cent
 **The extension is now available on [Chrome Web Store](https://chrome.google.com/webstore/detail/artifacts-for-genshin-pla/jleonalkkhbfeafkmfgofopiadjkalno)!**
 
 ### NOTE: This is an unofficial extension developed by me, kripi, and **NOT** Genshin Center.
+Questions can be asked preferably via Discord DMs (kripi#6436); the same goes for possible bug reports and feedback.
 
-
+## Features
+- Each character has 5 slots for artifacts.
+- When clicked, the user can select the set (from a list) and set the main and sub stats to whatever they wish.
+- When a slot with an artifact is hovered, a pop-up will show the stats along with the name of the set
+- In the options window (Options -> More Options) there are buttons for exporting and importing artifact save data. It can be copy & pasted to/from a text file or such
 
 ![Ningguang's Artifacts](https://i.imgur.com/aZwUY54.png "Ningguang's Artifacts")
 ![Edit window](https://i.imgur.com/f2Kxnq7.png)
 
 ## Todo
-- Rework the dataset.json to use numeric keys instead (requires less space)
-- Rework the save system to use numeric indexes instead (requires less space)
+- Show artifacts-checkbox to the Options menu
 
 ## Known issues
 - Adding a new character does not create artifact slots for the character automatically; reload is required
 - After changing the priority of characters, artifacts stay on the previous panel (save-data is safe however); reload is required
-
-## Ideas under consideration
-- [ ] option to remove all artifacts from a single character
-- [ ] Show artifacts-checkbox to the Options menu
-
 
 ## Credits
 Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com for faster loading times (original 256x256 .WebP images loaded quite slowly).
