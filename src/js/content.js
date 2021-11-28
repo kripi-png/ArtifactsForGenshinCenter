@@ -20,7 +20,7 @@ const main = function () {
     Object.entries(ARTIFACT_DATA).forEach(
       ([character, charData]) => {
         Object.entries(charData).forEach(
-          ([piece, pieceData]) => {
+          ([piece]) => {
             loadArtifact(character, piece);
           }
         );
@@ -49,11 +49,11 @@ const main = function () {
 const importArtifactData = function () {
   let data = window.prompt("Copy and paste the data here:");
   // if user presses cancel
-  if ( data === null ) return;
+  if ( data === null ) { return; }
 
   try {
     // if the field is empty, go to catch
-    if (!data) throw Error;
+    if (!data) { throw Error; }
 
     data = JSON.parse(data);
     console.log("data is valid");
@@ -61,7 +61,7 @@ const importArtifactData = function () {
 
     // cancel if user does not type "sure"
     const confirmation = window.prompt("Note: This will override all previous artifacts! Type CONFIRM to continue.").toLowerCase() === 'confirm';
-    if (!confirmation) return;
+    if (!confirmation) { return; }
 
     // override previous artifacts in the local storage, then reload the page
     saveToStorage('userArtifactData', data);
@@ -122,7 +122,7 @@ const confirmArtifactEdit = function (event, owner, type) {
   const sub = document.querySelector('#artifactSubStat').value;
   const check = document.querySelector('#artifactCheckbox').checked;
 
-  if (!ARTIFACT_DATA[owner]) ARTIFACT_DATA[owner] = {};
+  if (!ARTIFACT_DATA[owner]) { ARTIFACT_DATA[owner] = {}; }
   ARTIFACT_DATA[owner][type] = { set: set, main: main, sub: sub, check: check };
 
   saveToStorage('userArtifactData', ARTIFACT_DATA);
@@ -138,7 +138,7 @@ const deleteArtifact = function (event, owner, type) {
   }
 
   const slot = getArtifactSlotByOwner(owner, type);
-  if (!slot) return;
+  if (!slot) { return; }
 
   slot.dataset.set = '';
   slot.dataset.main = '';
@@ -147,8 +147,8 @@ const deleteArtifact = function (event, owner, type) {
   slot.style.backgroundImage = '';
   slot.classList.remove('check');
 
-  slot.onmouseover = e => false;
-  slot.onmouseleave = e => false;
+  slot.onmouseover = () => false;
+  slot.onmouseleave = () => false;
 
   console.log(ARTIFACT_DATA[owner]);
 
@@ -163,11 +163,11 @@ const loadArtifact = function (character, slot) {
   const pieceIndex = { flower: 0, plume: 1, sands: 2, goblet: 3, circlet: 4 };
 
   slot = getArtifactSlotByOwner(character, slot);
-  if (!slot) return;
+  if (!slot) { return; }
 
   const type = getArtifactSlotType(slot);
   const set = ARTIFACT_DATA[character][type] ? ARTIFACT_DATA[character][type]['set'] : '';
-  if (!set) return; // if no set is selected, abort
+  if (!set) { return; } // if no set is selected, abort
   const piece = DATASET[set][pieceIndex[type]][0];
 
   const image = DATASET[set][pieceIndex[type]][1];
@@ -188,7 +188,7 @@ const loadArtifact = function (character, slot) {
   }
 
   slot.onmouseover = e => createHoverPopup(e, slot, set, piece);
-  slot.onmouseleave = e => {
+  slot.onmouseleave = () => {
     const window = document.querySelector('#artifactTooltipWindow');
     window.parentNode.removeChild(window);
   };

@@ -326,7 +326,7 @@ export const addExportImportToOptionsWindow = function (options_window, importCa
     document.createElement('button');
     import_button.classList.add('Radio_option__27kFi');
     import_button.title = "Import Data";
-    import_button.onclick = e => importCallback();
+    import_button.onclick = () => importCallback();
     import_button.innerHTML =
       "<div class='Radio_selected__1QOl-' style='visibility: visible; opacity: 1;" +
       "transform-origin: 50% 50% 0px;'></div>" +
@@ -337,7 +337,7 @@ export const addExportImportToOptionsWindow = function (options_window, importCa
     document.createElement('button');
     export_button.classList.add('Radio_option__27kFi');
     export_button.title = "Export Data";
-    export_button.onclick = e => exportCallback();
+    export_button.onclick = () => exportCallback();
     export_button.innerHTML = "Export Data";
     button_wrapper.appendChild(export_button);
 
