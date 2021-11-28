@@ -296,7 +296,7 @@ const calculatePopupLocation = function (slot) {
 };
 
 async function getDataset () {
-  const DATASET = await fetch(chrome.extension.getURL('src/js/dataset.json'));
+  const DATASET = await fetch(chrome.runtime.getURL('src/js/dataset.json'));
   return DATASET.json();
 }
 
