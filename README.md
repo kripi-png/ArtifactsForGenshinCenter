@@ -2,7 +2,7 @@ A chrome extension for [Genshin Center's Ascension Planner](https://genshin-cent
 
 **The extension is now available on [Chrome Web Store](https://chrome.google.com/webstore/detail/artifacts-for-genshin-pla/jleonalkkhbfeafkmfgofopiadjkalno)!**
 
-### NOTE: This is an unofficial extension developed by me, kripi, and **NOT** Genshin Center.
+### NOTE: This is an unofficial extension developed by me (kripi), and **NOT** Genshin Center.
 Questions can be asked preferably via Discord DMs (kripi#6436); the same goes for possible bug reports and feedback.
 
 ## Features
@@ -15,7 +15,7 @@ Questions can be asked preferably via Discord DMs (kripi#6436); the same goes fo
 ![Edit window](https://i.imgur.com/f2Kxnq7.png)
 
 ## Todo
-- Show artifacts-checkbox to the Options menu
+-
 
 ## Known issues
 - Adding a new character does not create artifact slots for the character automatically; reload is required

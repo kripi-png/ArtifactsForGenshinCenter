@@ -343,3 +343,34 @@ export const addExportImportToOptionsWindow = function (options_window, importCa
 
   options_window.querySelector('.PlannerOptions_content__T5_lg').appendChild(OPTION_SECTION);
 };
+
+// options_menu:          the dropdown Options-list
+// hideAllArtifacts:      importArtifactData function in content.js
+export const createShowAllArtifactCheckbox = function (options_menu, toggleCallback, currentMode) {
+  console.log(currentMode);
+  const BUTTON_SECTION =
+    document.createElement('div');
+    BUTTON_SECTION.classList.add('PlannerOptions_quickSection__QP_pF');
+    BUTTON_SECTION.innerHTML =
+      `<div class="PlannerOptions_titleWrapper__35VjC">Extension Settings</div>
+      <div class="Checkbox_checkbox__3JC7e">
+        <h3>Show all artifacts</h3>
+        <div class="Checkbox_buttonWrapper__1Q0kT">
+          <button>
+            <svg class="Checkbox_checkmark__wYzQF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+              <path id="toggleVisibilityCheckboxPath" class="Checkbox_checkmarkCheck__35cAh" d="m14 27 7 7 16-16" stroke-dashoffset="0px" stroke-dasharray=''></path>
+            </svg>
+          </button>
+        </div>
+      </div>`;
+
+    // set the dasharray attribute afterwards as for some reason it
+    // turns to <path stroke-dasharray='0x' [rest as attribute name]>
+    // because of the space
+    BUTTON_SECTION.querySelector('.Checkbox_checkmarkCheck__35cAh').setAttribute('stroke-dasharray', currentMode);
+    // assign the callback function
+    BUTTON_SECTION.querySelector('button').onclick = () => toggleCallback();
+
+  // last element is the More Options button
+  options_menu.insertBefore(BUTTON_SECTION, options_menu.lastElementChild);
+};

@@ -4,31 +4,41 @@ import {
   createTooltipBoxWrapper,
   createArtifactHidingButton,
   addExportImportToOptionsWindow,
+  createShowAllArtifactCheckbox,
 } from './elementManager.js';
 
 const DATASET = await getDataset();
 const ARTIFACT_SET_NAMES = Object.keys(DATASET);
 const ARTIFACT_DATA = await loadFromStorage('userArtifactData') || {};
 
-const main = function () {
-  createAllSlots();
+// used for the Show all artifacts checkbox in options menu
+const CHECKBOX_VALUES = {
+  on: '32.526912689208984px 32.526912689208984px',
+  off: '0px 32.526912689208984px'
+};
 
+// define __DISABLED attribute if not done previously
+// used to disabled/enable ALL artifacts, toggled via checkbox in options menu
+if ( !ARTIFACT_DATA['__DISABLED'] ) {
+  ARTIFACT_DATA['__DISABLED'] = false;
+}
+
+const main = function () {
   console.log(DATASET);
   console.log(ARTIFACT_DATA);
 
-  if ( Object.keys(ARTIFACT_DATA).length !== 0 ) {
-    Object.entries(ARTIFACT_DATA).forEach(
-      ([character, charData]) => {
-        Object.entries(charData).forEach(
-          ([piece]) => {
-            loadArtifact(character, piece);
-          }
-        );
-      }
-    );
+  // do not create the slots or the hiding buttons if artifacts are disabled
+  if ( ARTIFACT_DATA['__DISABLED'] === false ) {
+    loadAndCreateAllArtifacts();
   }
 
-  createAllArtifactHidingButtons();
+  // get option menu list element and append the section for the checkbox
+  const options_menu = document.querySelector('.PlannerOptions_optionContent__1ZN2G');
+  // currentMode is used to set the initial state
+  const currentMode = ARTIFACT_DATA['__DISABLED']
+                        ? CHECKBOX_VALUES.off
+                        : CHECKBOX_VALUES.on;
+  createShowAllArtifactCheckbox(options_menu, hideAllArtifactsToggle, currentMode);
 
   // the options window element does not exist before the user
   // presses the More Options button, thus we listen for changes in the DOM
@@ -44,6 +54,59 @@ const main = function () {
   });
 
   observer.observe(document.querySelector('body'), { subtree: false, childList: true });
+};
+
+// create all slots and buttons for hiding artifacts of a single character
+// loop through user's save data and load artifacts
+const loadAndCreateAllArtifacts = function () {
+  createAllSlots();
+  createAllArtifactHidingButtons();
+
+  // if there is data for characters
+  if ( Object.keys(ARTIFACT_DATA).length !== 0 ) {
+    // loop through all characters
+    Object.entries(ARTIFACT_DATA).forEach(
+      ([character, charData]) => {
+        // loop through all artifact pieces
+        Object.entries(charData).forEach(
+          ([piece]) => {
+            loadArtifact(character, piece);
+          }
+        );
+      }
+    );
+  }
+};
+
+// remove artifacts and buttons
+const removeAllArtifacts = function () {
+  [...document.querySelectorAll('.artifactSlotsWrapper')]
+    .forEach( slots => slots.parentNode.removeChild(slots) );
+  // remove all invidual disable buttons
+  [...document.querySelectorAll('.ItemPanel_buttonWrapper__T2Pof[title="Hide Artifacts"]')]
+    .forEach( buttons => buttons.parentNode.removeChild(buttons) );
+};
+
+// callback for toggling visibility when the setting is un/checked
+const hideAllArtifactsToggle = function () {
+  const checkbox_element = document.querySelector('#toggleVisibilityCheckboxPath');
+  const checkbox_current = checkbox_element.getAttribute('stroke-dasharray');
+
+  // toggle the check mark
+  // unfortunately the animation would (probably) be quite hard to implement
+  if ( checkbox_current === CHECKBOX_VALUES.on ) {
+    // hide artifact
+    checkbox_element.setAttribute('stroke-dasharray', CHECKBOX_VALUES.off);
+    ARTIFACT_DATA['__DISABLED'] = true;
+    removeAllArtifacts();
+  } else {
+    // show artifacts
+    checkbox_element.setAttribute('stroke-dasharray', CHECKBOX_VALUES.on);
+    ARTIFACT_DATA['__DISABLED'] = false;
+    loadAndCreateAllArtifacts();
+  }
+
+  saveToStorage('userArtifactData', ARTIFACT_DATA);
 };
 
 const importArtifactData = function () {
@@ -189,8 +252,10 @@ const loadArtifact = function (character, slot) {
 
   slot.onmouseover = e => createHoverPopup(e, slot, set, piece);
   slot.onmouseleave = () => {
-    const window = document.querySelector('#artifactTooltipWindow');
-    window.parentNode.removeChild(window);
+    // wrapper_window is the the wrapper for the actual pop up
+    const wrapper_window = document.querySelector('#artifactTooltipWindow');
+    // parentNode is <body>
+    wrapper_window.parentNode.removeChild(wrapper_window);
   };
 
   if (ARTIFACT_DATA[character]['disabled']) {
