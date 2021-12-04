@@ -173,6 +173,15 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
         <h4 style="padding-bottom: 10px; text-transform: capitalize;">${owner}'s ${piece}</h4>`;
     schedule_creator.appendChild(schedule_top_bar);
 
+  const warning_text =
+    document.createElement('div');
+    warning_text.classList.add('Schedule_section__6vicf');
+    warning_text.style.textAlign = 'center';
+    warning_text.style.color = 'red';
+    warning_text.innerHTML = `Artifact data will be wiped when extension
+                              is uninstalled. Consider exporting
+                              data from Options menu.`;
+
   const schedule_content =
     document.createElement('div');
     schedule_content.classList.add('Schedule_taskCreatorContent__3zR8F');
@@ -183,6 +192,7 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat', slot.dataset.main));
     schedule_content.appendChild(createSection(null, 'sub_stat', 'Sub Stat', slot.dataset.sub));
     schedule_content.appendChild(createSection(null, 'checkbox', 'Acquired?', slot.dataset.check));
+    schedule_content.appendChild(warning_text);
     schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, deleteArtifactCallback, owner, piece));
 
   return WINDOW;
