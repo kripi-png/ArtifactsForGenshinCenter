@@ -225,6 +225,14 @@ const deleteArtifact = function (event, owner, type) {
 const loadArtifact = function (character, slot) {
   const pieceIndex = { flower: 0, plume: 1, sands: 2, goblet: 3, circlet: 4 };
 
+  // OPTIMIZE: disabling is now done for every piece
+  // disabling has to be done here because if character has no artifacts
+  // slot is only ever 'disabled' (aloy: { disabled: true })
+  // and function thus returns because no such slot exist
+  if (ARTIFACT_DATA[character]['disabled']) {
+    getArtifactSlotByOwner(character, 'plume').parentNode.classList.add('disabled');
+  }
+
   slot = getArtifactSlotByOwner(character, slot);
   if (!slot) { return; }
 
@@ -257,10 +265,6 @@ const loadArtifact = function (character, slot) {
     // parentNode is <body>
     wrapper_window.parentNode.removeChild(wrapper_window);
   };
-
-  if (ARTIFACT_DATA[character]['disabled']) {
-    slot.parentNode.classList.add('disabled');
-  }
 };
 
 const createAllArtifactHidingButtons = function () {
@@ -287,7 +291,11 @@ const hideArtifacts = function (button, slotWrapper, character) {
     button.title = "Show Artifacts";
   }
   slotWrapper.classList.toggle('disabled');
-  ARTIFACT_DATA[character]['disabled'] = !ARTIFACT_DATA[character]['disabled'] || false;
+
+  // make sure object for character exists
+  if (!ARTIFACT_DATA[character]) { ARTIFACT_DATA[character] = { disabled: false }; }
+  ARTIFACT_DATA[character]['disabled'] = !ARTIFACT_DATA[character]['disabled'];
+
   saveToStorage('userArtifactData', ARTIFACT_DATA);
 };
 
