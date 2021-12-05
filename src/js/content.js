@@ -230,7 +230,8 @@ const loadArtifact = function (character, slot) {
   // slot is only ever 'disabled' (aloy: { disabled: true })
   // and function thus returns because no such slot exist
   if (ARTIFACT_DATA[character]['disabled']) {
-    getArtifactSlotByOwner(character, 'plume').parentNode.classList.add('disabled');
+    // optional chaining in case disabled panels are hidden
+    getArtifactSlotByOwner(character, 'plume')?.parentNode?.classList.add('disabled');
   }
 
   slot = getArtifactSlotByOwner(character, slot);
