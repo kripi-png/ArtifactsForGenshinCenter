@@ -16,11 +16,12 @@ Questions can be asked preferably via Discord DMs (kripi#6436); the same goes fo
 
 ## Todo
 - Rewrite some of element functions using one string rather than multiple createElement functions
-- Move export/import buttons from More options window to the quick menu
+- Rewrite the export function to create a window rather than using the prompt which has max character length which corrupts the export string
 
 ## Known issues
 - Adding a new character does not create artifact slots for the character automatically; reload is required
 - After changing the priority of characters, artifacts stay on the previous panel (save-data is safe however); reload is required
+- Exporting uses chrome's native prompt function which has max length of 2000 or so; if user has multiple characters and artifacts set up, export string is minified and it gets corrupted.
 
 ## Credits
 Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com for faster loading times (original 256x256 .WebP images loaded quite slowly).

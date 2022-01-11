@@ -4,21 +4,21 @@ import {
   createTooltipBoxWrapper,
   createArtifactHidingButton,
   addExportImportToOptionsWindow,
-  createShowAllArtifactCheckbox,
+  createExtensionSettingsSection,
 } from './elementManager.js';
 
-const DATASET = await getDataset();
+const DATASET = await getDataset(); // jshint ignore:line
 const ARTIFACT_SET_NAMES = Object.keys(DATASET);
-const ARTIFACT_DATA = await loadFromStorage('userArtifactData') || {};
+const ARTIFACT_DATA = await loadFromStorage('userArtifactData') || {}; // jshint ignore:line
 
-// used for the Show all artifacts checkbox in options menu
-const CHECKBOX_VALUES = {
+// used to draw the Show all artifacts checkbox in options menu
+const CHECKMARK_VALUES = {
   on: '32.526912689208984px 32.526912689208984px',
   off: '0px 32.526912689208984px'
 };
 
 // define __DISABLED attribute if not done previously
-// used to disabled/enable ALL artifacts, toggled via checkbox in options menu
+// used to disable/enable ALL artifacts, toggled via checkbox in options menu
 if ( !ARTIFACT_DATA['__DISABLED'] ) {
   ARTIFACT_DATA['__DISABLED'] = false;
 }
@@ -32,28 +32,56 @@ const main = function () {
     loadAndCreateAllArtifacts();
   }
 
-  // get option menu list element and append the section for the checkbox
+  // decide which values to use for the check mark icon
+  const currentCheckmarkValues = ARTIFACT_DATA['__DISABLED']
+                        ? CHECKMARK_VALUES.off
+                        : CHECKMARK_VALUES.on;
+  // mutation observer cannot track elements created before
+  // it's been initialized so the function must be called once on startup
   const options_menu = document.querySelector('.PlannerOptions_optionContent__1ZN2G');
-  // currentMode is used to set the initial state
-  const currentMode = ARTIFACT_DATA['__DISABLED']
-                        ? CHECKBOX_VALUES.off
-                        : CHECKBOX_VALUES.on;
-  createShowAllArtifactCheckbox(options_menu, hideAllArtifactsToggle, currentMode);
+  createExtensionSettingsSection(
+    options_menu,
+    hideAllArtifactsToggle,
+    currentCheckmarkValues,
+    importArtifactData,
+    exportArtifactData
+  );
 
-  // the options window element does not exist before the user
-  // presses the More Options button, thus we listen for changes in the DOM
+  // MutationObserver is used to monitor when
+  // a) the user opens the options window
+  // b) the quick menu is created on screens wide enough (laptop and wider)
   // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
   const observer = new MutationObserver( mutationList => {
     mutationList.forEach( mutation => {
       mutation.addedNodes.forEach( addedNode => {
-        if ( addedNode.id === 'options') {
+        // options window
+        console.log(addedNode);
+        console.log(addedNode.classList);
+        if ( addedNode.id === 'options' ) {
           addExportImportToOptionsWindow(addedNode, importArtifactData, exportArtifactData);
+        }
+        // quick menu
+        else if ( addedNode.classList.contains('PlannerOptions_options__1S0RD')) {
+          // options_menu element does not exist until
+          // quick menu is created thus it has to be (re)defined here
+          const options_menu = document.querySelector('.PlannerOptions_optionContent__1ZN2G');
+          createExtensionSettingsSection(
+            options_menu,
+            hideAllArtifactsToggle,
+            currentCheckmarkValues,
+            importArtifactData,
+            exportArtifactData
+          );
         }
       });
     });
   });
 
-  observer.observe(document.querySelector('body'), { subtree: false, childList: true });
+  const config = { subtree: false, childList: true };
+  // options window, opened manually
+  observer.observe(document.querySelector('body'), config);
+  // quick menu, accessible only on screens wide enough
+  observer.observe(document.querySelector('.Farm_sideBar__3yAr8'), config);
 };
 
 // create all slots and buttons for hiding artifacts of a single character
@@ -94,14 +122,16 @@ const hideAllArtifactsToggle = function () {
 
   // toggle the check mark
   // unfortunately the animation would (probably) be quite hard to implement
-  if ( checkbox_current === CHECKBOX_VALUES.on ) {
+  // I might look into it at some point
+  // but currently it's very high on the priority list
+  if ( checkbox_current === CHECKMARK_VALUES.on ) {
     // hide artifact
-    checkbox_element.setAttribute('stroke-dasharray', CHECKBOX_VALUES.off);
+    checkbox_element.setAttribute('stroke-dasharray', CHECKMARK_VALUES.off);
     ARTIFACT_DATA['__DISABLED'] = true;
     removeAllArtifacts();
   } else {
     // show artifacts
-    checkbox_element.setAttribute('stroke-dasharray', CHECKBOX_VALUES.on);
+    checkbox_element.setAttribute('stroke-dasharray', CHECKMARK_VALUES.on);
     ARTIFACT_DATA['__DISABLED'] = false;
     loadAndCreateAllArtifacts();
   }
@@ -118,11 +148,11 @@ const importArtifactData = function () {
     // if the field is empty, go to catch
     if (!data) { throw Error; }
 
+    console.log(data);
     data = JSON.parse(data);
     console.log("data is valid");
-    console.log(data);
 
-    // cancel if user does not type "sure"
+    // cancel if user does not type "confirm"
     const confirmation = window.prompt("Note: This will override all previous artifacts! Type CONFIRM to continue.").toLowerCase() === 'confirm';
     if (!confirmation) { return; }
 
@@ -139,6 +169,7 @@ const importArtifactData = function () {
 
 const exportArtifactData = function () {
   const data = JSON.stringify(ARTIFACT_DATA);
+  console.log(data);
   window.prompt("Copy and paste this to a text file:", data);
 };
 
@@ -231,7 +262,7 @@ const loadArtifact = function (character, slot) {
   // and function thus returns because no such slot exist
   if (ARTIFACT_DATA[character]['disabled']) {
     // optional chaining in case disabled panels are hidden
-    getArtifactSlotByOwner(character, 'plume')?.parentNode?.classList.add('disabled');
+    getArtifactSlotByOwner(character, 'plume')?.parentNode?.classList.add('disabled'); // jshint ignore:line
   }
 
   slot = getArtifactSlotByOwner(character, slot);

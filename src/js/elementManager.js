@@ -12,7 +12,6 @@ export const createSlot = function (piece, callback) {
 // inputType:           used to create the input field
 // sectionName:         title for the input field
 const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, inputValue) {
-  // classes and styling used mostly from the original website
   const SECTION =
     document.createElement('div');
     SECTION.classList.add('Schedule_section__6vicf');
@@ -104,7 +103,6 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, inpu
 // owner:               character whose artifact slot was clicked
 // piece:               name of the piece that was clicked, e.g. plume
 const createEditorButton = function (confirmArtifactEditCallback, deleteArtifactCallback, owner, piece) {
-  // classes and styling used mostly from the original website
   const BUTTON_WRAPPER =
     document.createElement('div');
     BUTTON_WRAPPER.classList.add('Schedule_buttonsWrapper__3QM49');
@@ -130,7 +128,6 @@ const createEditorButton = function (confirmArtifactEditCallback, deleteArtifact
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            confirmArtifactEdit function in content.js
 export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, piece, confirmArtifactEditCallback, deleteArtifactCallback) {
-  // classes and styling used mostly from the original website
   const WINDOW =
     document.createElement('div');
     WINDOW.id = 'artifactEdit';
@@ -179,8 +176,8 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     warning_text.style.textAlign = 'center';
     warning_text.style.color = 'red';
     warning_text.innerHTML = `Artifact data will be wiped when extension
-                              is uninstalled. Consider exporting
-                              data from Options menu.`;
+                              is uninstalled. Exporting and importing can
+                              be done in Options menu.`;
 
   const schedule_content =
     document.createElement('div');
@@ -355,32 +352,59 @@ export const addExportImportToOptionsWindow = function (options_window, importCa
 };
 
 // options_menu:          the dropdown Options-list
-// hideAllArtifacts:      importArtifactData function in content.js
-export const createShowAllArtifactCheckbox = function (options_menu, toggleCallback, currentMode) {
-  console.log(currentMode);
-  const BUTTON_SECTION =
+// toggleCallback:        hideAllArtifactsToggle function in content.js
+// hideAllCheckboxValues: values for the stroke-dasharray attribute
+export const createExtensionSettingsSection = function (options_menu, toggleCallback, hideAllCheckboxValues, importCallback, exportCallback) {
+  console.log(options_menu);
+  const SECTION_WRAPPER =
     document.createElement('div');
-    BUTTON_SECTION.classList.add('PlannerOptions_quickSection__QP_pF');
-    BUTTON_SECTION.innerHTML =
+    SECTION_WRAPPER.classList.add('PlannerOptions_quickSection__QP_pF');
+    SECTION_WRAPPER.innerHTML =
       `<div class="PlannerOptions_titleWrapper__35VjC">Extension Settings</div>
       <div class="Checkbox_checkbox__3JC7e">
         <h3>Show all artifacts</h3>
         <div class="Checkbox_buttonWrapper__1Q0kT">
           <button>
-            <svg class="Checkbox_checkmark__wYzQF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-              <path id="toggleVisibilityCheckboxPath" class="Checkbox_checkmarkCheck__35cAh" d="m14 27 7 7 16-16" stroke-dashoffset="0px" stroke-dasharray=''></path>
+            <svg
+              class="Checkbox_checkmark__wYzQF"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 52 52">
+              <path
+                id="toggleVisibilityCheckboxPath"
+                class="Checkbox_checkmarkCheck__35cAh"
+                d="m14 27 7 7 16-16"
+                stroke-dashoffset="0px"
+                stroke-dasharray=''>
+              </path>
             </svg>
           </button>
         </div>
       </div>`;
 
+    const import_export_wrapper =
+      document.createElement('div');
+      import_export_wrapper.innerHTML =
+        `<div class="Radio_radio__1S7b1 ">
+          <div class="Radio_radioLabel__3ECTP" style="text-align: left;">Import / Export artifact data</div>
+          <div class="Radio_options__1lESR import_export_wrapper" style="max-width: 660px;">
+            <button id="importButton" class="Radio_option__27kFi" style="width: 50%;">Import Data</button>
+            <button id="exportButton" class="Radio_option__27kFi" style="width: 50%;">Export Data</button>
+          </div>
+        </div>`;
+      import_export_wrapper.querySelector('#importButton').onclick = () => importCallback();
+      import_export_wrapper.querySelector('#exportButton').onclick = () => exportCallback();
+
+      SECTION_WRAPPER.appendChild(import_export_wrapper);
+
     // set the dasharray attribute afterwards as for some reason it
-    // turns to <path stroke-dasharray='0x' [rest as attribute name]>
+    // turns to <path stroke-dasharray='0x' [rest as attribute key]>
     // because of the space
-    BUTTON_SECTION.querySelector('.Checkbox_checkmarkCheck__35cAh').setAttribute('stroke-dasharray', currentMode);
+    SECTION_WRAPPER
+      .querySelector('.Checkbox_checkmarkCheck__35cAh')
+      .setAttribute('stroke-dasharray', hideAllCheckboxValues);
     // assign the callback function
-    BUTTON_SECTION.querySelector('button').onclick = () => toggleCallback();
+    SECTION_WRAPPER.querySelector('button').onclick = () => toggleCallback();
 
   // last element is the More Options button
-  options_menu.insertBefore(BUTTON_SECTION, options_menu.lastElementChild);
+  options_menu.insertBefore(SECTION_WRAPPER, options_menu.lastElementChild);
 };
