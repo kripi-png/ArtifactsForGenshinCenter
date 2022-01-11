@@ -133,11 +133,11 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     WINDOW.id = 'artifactEdit';
     WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
 
-  const window_window = // element for the dark background behind the actual editor
+  const window_background = // element for the dark background behind the actual editor
     document.createElement('div');
-    window_window.classList.add('Window_window__2tU_Y');
-    window_window.style.opacity = '1';
-    WINDOW.appendChild(window_window);
+    window_background.classList.add('Window_window__2tU_Y');
+    window_background.style.opacity = '1';
+    WINDOW.appendChild(window_background);
 
   const window_center =
     document.createElement('div');
@@ -149,10 +149,6 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     window_modal.classList.add('Window_modal__2xmK7');
     window_modal.style = 'opacity: 1; pointer-events: all;';
     window_center.appendChild(window_modal);
-
-  const window_edit =
-    document.createElement('div');
-    window_edit.classList.add('Edit_edit___eEru');
 
   const schedule_creator =
     document.createElement('div');
@@ -407,4 +403,74 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
 
   // last element is the More Options button
   options_menu.insertBefore(SECTION_WRAPPER, options_menu.lastElementChild);
+};
+
+// options_menu:          the dropdown Options-list
+// toggleCallback:        hideAllArtifactsToggle function in content.js
+// hideAllCheckboxValues: values for the stroke-dasharray attribute
+export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCallback) {
+  const WINDOW =
+    document.createElement('div');
+    WINDOW.id = 'exportWindow';
+    WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
+
+  const window_background = // element for the dark background
+    document.createElement('div');
+    window_background.classList.add('Window_window__2tU_Y');
+    window_background.style.opacity = '1';
+    WINDOW.appendChild(window_background);
+
+  const window_center =
+    document.createElement('div');
+    window_center.classList.add('Window_center__1F9yr');
+    WINDOW.appendChild(window_center);
+
+  const window_modal =
+    document.createElement('div');
+    window_modal.classList.add('Window_modal__2xmK7');
+    window_modal.style = 'opacity: 1; pointer-events: all;';
+    window_center.appendChild(window_modal);
+
+  const schedule_creator =
+    document.createElement('div');
+    schedule_creator.classList.add('Schedule_taskCreator__2MSUu');
+    schedule_creator.style.width = '360px';
+    window_modal.appendChild(schedule_creator);
+
+  // TITLE
+  const schedule_top_bar =
+    document.createElement('div');
+    schedule_top_bar.classList.add('Schedule_taskTopBar__2qHzE');
+    schedule_top_bar.style = 'flex-direction: column;';
+    schedule_top_bar.innerHTML = "<h3>Export Artifact Data</h3>";
+    schedule_creator.appendChild(schedule_top_bar);
+
+  // const warning_text =
+  //   document.createElement('div');
+  //   warning_text.classList.add('Schedule_section__6vicf');
+  //   warning_text.style.textAlign = 'center';
+  //   warning_text.style.color = 'red';
+  //   warning_text.innerHTML = `Artifact data will be wiped when extension
+  //                             is uninstalled. Exporting and importing can
+  //                             be done in Options menu.`;
+
+  const schedule_content =
+    document.createElement('div');
+    schedule_content.classList.add('Schedule_taskCreatorContent__3zR8F');
+    schedule_content.style.padding = '0 10px 15px';
+    schedule_creator.appendChild(schedule_content);
+
+    schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat', ARTIFACT_DATA));
+    // schedule_content.appendChild(warning_text);
+
+    const close_button =
+      document.createElement('div');
+      close_button.innerHTML = `
+        <div class="Schedule_buttonsWrapper__3QM49">
+          <button id="closeButton">Close</button>
+        </div>`;
+    close_button.querySelector('#closeButton').onclick = e => closeExportWindowCallback(e);
+    schedule_content.appendChild(close_button);
+
+  document.body.appendChild(WINDOW);
 };

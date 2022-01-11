@@ -5,6 +5,7 @@ import {
   createArtifactHidingButton,
   addExportImportToOptionsWindow,
   createExtensionSettingsSection,
+  createExportWindow,
 } from './elementManager.js';
 
 const DATASET = await getDataset(); // jshint ignore:line
@@ -170,7 +171,12 @@ const importArtifactData = function () {
 const exportArtifactData = function () {
   const data = JSON.stringify(ARTIFACT_DATA);
   console.log(data);
-  window.prompt("Copy and paste this to a text file:", data);
+  createExportWindow(data, closeExportWindow);
+  // window.prompt("Copy and paste this to a text file:", data);
+};
+
+const closeExportWindow = function () {
+  document.body.removeChild(document.querySelector('#exportWindow')); // delete the editor element once artifact is selected
 };
 
 // create artifact slot elements for each character
