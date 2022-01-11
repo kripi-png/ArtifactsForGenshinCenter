@@ -15,8 +15,9 @@ Questions can be asked preferably via Discord DMs (kripi#6436); the same goes fo
 ![Edit window](https://i.imgur.com/f2Kxnq7.png)
 
 ## Todo
-- Rewrite some of element functions using one string rather than multiple createElement functions
 - Rewrite the export function to create a window rather than using the prompt which has max character length which corrupts the export string
+- Rewrite some of element functions using one string rather than multiple createElement functions
+- Make it so clicking on the background of Edit Artifact window saves and closes the window; same as clicking ok
 
 ## Known issues
 - Adding a new character does not create artifact slots for the character automatically; reload is required
