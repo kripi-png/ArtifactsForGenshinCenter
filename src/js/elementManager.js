@@ -445,15 +445,6 @@ export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCall
     schedule_top_bar.innerHTML = "<h3>Export Artifact Data</h3>";
     schedule_creator.appendChild(schedule_top_bar);
 
-  // const warning_text =
-  //   document.createElement('div');
-  //   warning_text.classList.add('Schedule_section__6vicf');
-  //   warning_text.style.textAlign = 'center';
-  //   warning_text.style.color = 'red';
-  //   warning_text.innerHTML = `Artifact data will be wiped when extension
-  //                             is uninstalled. Exporting and importing can
-  //                             be done in Options menu.`;
-
   const schedule_content =
     document.createElement('div');
     schedule_content.classList.add('Schedule_taskCreatorContent__3zR8F');
@@ -461,7 +452,6 @@ export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCall
     schedule_creator.appendChild(schedule_content);
 
     schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat', ARTIFACT_DATA));
-    // schedule_content.appendChild(warning_text);
 
     const close_button =
       document.createElement('div');
