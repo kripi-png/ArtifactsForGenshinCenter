@@ -8,9 +8,20 @@ import {
   createExportWindow,
 } from './elementManager.js';
 
-const DATASET = await getDataset(); // jshint ignore:line
-const ARTIFACT_SET_NAMES = Object.keys(DATASET);
-const ARTIFACT_DATA = await loadFromStorage('userArtifactData') || {}; // jshint ignore:line
+// top level await is not (yet) supported by
+// javascript minifiers so the awaits are wrapped inside async
+let DATASET, ARTIFACT_SET_NAMES, ARTIFACT_DATA;
+const loadArtifactData = async function () {
+  DATASET = await getDataset();
+  ARTIFACT_SET_NAMES = Object.keys(DATASET);
+  ARTIFACT_DATA = await loadFromStorage('userArtifactData') || {};
+
+  // define __DISABLED attribute if not done previously
+  // used to disable/enable ALL artifacts, toggled via checkbox in options menu
+  if ( !ARTIFACT_DATA['__DISABLED'] ) {
+    ARTIFACT_DATA['__DISABLED'] = false;
+  }
+};
 
 // used to draw the Show all artifacts checkbox in options menu
 const CHECKMARK_VALUES = {
@@ -18,13 +29,8 @@ const CHECKMARK_VALUES = {
   off: '0px 32.526912689208984px'
 };
 
-// define __DISABLED attribute if not done previously
-// used to disable/enable ALL artifacts, toggled via checkbox in options menu
-if ( !ARTIFACT_DATA['__DISABLED'] ) {
-  ARTIFACT_DATA['__DISABLED'] = false;
-}
-
-const main = function () {
+const main = async function () {
+  await loadArtifactData();
   console.log(DATASET);
   console.log(ARTIFACT_DATA);
 
