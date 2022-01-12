@@ -130,7 +130,7 @@ const hideAllArtifactsToggle = function () {
   // toggle the check mark
   // unfortunately the animation would (probably) be quite hard to implement
   // I might look into it at some point
-  // but currently it's very high on the priority list
+  // but currently it's not very high on the priority list
   if ( checkbox_current === CHECKMARK_VALUES.on ) {
     // hide artifact
     checkbox_element.setAttribute('stroke-dasharray', CHECKMARK_VALUES.off);
