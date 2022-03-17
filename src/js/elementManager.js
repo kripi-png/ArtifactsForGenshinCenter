@@ -375,22 +375,18 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
             </svg>
           </button>
         </div>
+      </div>
+      <br>
+      <div class="Radio_radio__1S7b1 ">
+        <div class="Radio_radioLabel__3ECTP" style="text-align: left;">Import / Export artifact data</div>
+        <div class="Radio_options__1lESR import_export_wrapper" style="max-width: 660px;">
+          <button id="importButton" class="Radio_option__27kFi" style="width: 50%;">Import Data</button>
+          <button id="exportButton" class="Radio_option__27kFi" style="width: 50%;">Export Data</button>
+        </div>
       </div>`;
 
-    const import_export_wrapper =
-      document.createElement('div');
-      import_export_wrapper.innerHTML =
-        `<div class="Radio_radio__1S7b1 ">
-          <div class="Radio_radioLabel__3ECTP" style="text-align: left;">Import / Export artifact data</div>
-          <div class="Radio_options__1lESR import_export_wrapper" style="max-width: 660px;">
-            <button id="importButton" class="Radio_option__27kFi" style="width: 50%;">Import Data</button>
-            <button id="exportButton" class="Radio_option__27kFi" style="width: 50%;">Export Data</button>
-          </div>
-        </div>`;
-      import_export_wrapper.querySelector('#importButton').onclick = () => importCallback();
-      import_export_wrapper.querySelector('#exportButton').onclick = () => exportCallback();
-
-      SECTION_WRAPPER.appendChild(import_export_wrapper);
+    SECTION_WRAPPER.querySelector('#importButton').onclick = () => importCallback();
+    SECTION_WRAPPER.querySelector('#exportButton').onclick = () => exportCallback();
 
     // set the dasharray attribute afterwards as for some reason it
     // turns to <path stroke-dasharray='0x' [rest as attribute key]>
@@ -400,6 +396,19 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
       .setAttribute('stroke-dasharray', hideAllCheckboxValues);
     // assign the callback function
     SECTION_WRAPPER.querySelector('button').onclick = () => toggleCallback();
+
+    const reviewNotif =
+      document.createElement('div');
+      reviewNotif.classList.add('Radio_radioLabel__3ECTP');
+      reviewNotif.style.color = '#38a6c2';
+      const storeLink = "https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno";
+      const gitLink = "https://github.com/kripi-png/ArtifactsForGenshinCenter";
+      reviewNotif.innerHTML = `
+        <br>Enjoying the extension?<br>Consider reviewing on
+        <a href=${storeLink}>Webstore</a>
+        or starring on <a href=${gitLink}>GitHub</a>.
+        Thanks! <span style="color: #ccc"><3</span>`;
+      SECTION_WRAPPER.appendChild(reviewNotif);
 
   // last element is the More Options button
   options_menu.insertBefore(SECTION_WRAPPER, options_menu.lastElementChild);

@@ -62,8 +62,8 @@ const main = async function () {
     mutationList.forEach( mutation => {
       mutation.addedNodes.forEach( addedNode => {
         // options window
-        console.log(addedNode);
-        console.log(addedNode.classList);
+        // console.log(addedNode);
+        // console.log(addedNode.classList);
         if ( addedNode.id === 'options' ) {
           addExportImportToOptionsWindow(addedNode, importArtifactData, exportArtifactData);
         }
