@@ -8,6 +8,14 @@ import {
   createExportWindow,
 } from './elementManager.js';
 
+const CHAR_LIST = '.Farm_itemList__EgRFB';
+const CHAR_IMAGE = '.ItemPanel_itemImage__ndELA > span > img';
+const CHAR_NAME_ELEM = '.ItemPanel_itemName__jxpO4 > p';
+const CHAR_PANEL = '.ItemPanel_itemContent__M9oCy';
+const OPTIONS_MENU = '.PlannerOptions_options__t3nvI';
+const MUTATION_OPT_QUICK_MENU = '.Farm_sideBar__yXGVR';
+const BUTTON_BAR_BUTTON_CLASS = '.HideArtifactsButton';
+
 // top level await is not (yet) supported by
 // javascript minifiers so the awaits are wrapped inside async
 let DATASET, ARTIFACT_SET_NAMES, ARTIFACT_DATA;
@@ -45,7 +53,7 @@ const main = async function () {
                         : CHECKMARK_VALUES.on;
   // mutation observer cannot track elements created before
   // it's been initialized so the function must be called once on startup
-  const options_menu = document.querySelector('.PlannerOptions_optionContent__1ZN2G');
+  const options_menu = document.querySelector(OPTIONS_MENU);
   createExtensionSettingsSection(
     options_menu,
     hideAllArtifactsToggle,
@@ -68,10 +76,10 @@ const main = async function () {
           addExportImportToOptionsWindow(addedNode, importArtifactData, exportArtifactData);
         }
         // quick menu
-        else if ( addedNode.classList.contains('PlannerOptions_options__1S0RD')) {
+        else if ( addedNode.classList.contains(OPTIONS_MENU)) {
           // options_menu element does not exist until
           // quick menu is created thus it has to be (re)defined here
-          const options_menu = document.querySelector('.PlannerOptions_optionContent__1ZN2G');
+          const options_menu = document.querySelector(OPTIONS_MENU);
           createExtensionSettingsSection(
             options_menu,
             hideAllArtifactsToggle,
@@ -88,7 +96,7 @@ const main = async function () {
   // options window, opened manually
   observer.observe(document.querySelector('body'), config);
   // quick menu, accessible only on screens wide enough
-  observer.observe(document.querySelector('.Farm_sideBar__3yAr8'), config);
+  observer.observe(document.querySelector(MUTATION_OPT_QUICK_MENU), config);
 };
 
 // create all slots and buttons for hiding artifacts of a single character
@@ -118,7 +126,7 @@ const removeAllArtifacts = function () {
   [...document.querySelectorAll('.artifactSlotsWrapper')]
     .forEach( slots => slots.parentNode.removeChild(slots) );
   // remove all invidual disable buttons
-  [...document.querySelectorAll('.ItemPanel_buttonWrapper__T2Pof[title="Hide Artifacts"]')]
+  [...document.querySelectorAll(BUTTON_BAR_BUTTON_CLASS)]
     .forEach( buttons => buttons.parentNode.removeChild(buttons) );
 };
 
@@ -193,7 +201,7 @@ const createAllSlots = function () {
 // create all 5 artifact slots for a single {panel}
 const createSlotsForPanel = function (panel) {
   const wrapperDiv = document.createElement('div');
-  wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replaceAll(' ', '-');
+  wrapperDiv.dataset.character = panel.querySelector(CHAR_NAME_ELEM).innerHTML.toLowerCase().replaceAll(' ', '-');
   wrapperDiv.classList.add('artifactSlotsWrapper');
 
   const flowerSlot = createSlot('flower', openArtifactEditor);
@@ -207,7 +215,7 @@ const createSlotsForPanel = function (panel) {
   const circletSlot = createSlot('circlet', openArtifactEditor);
     wrapperDiv.appendChild(circletSlot);
 
-  panel.querySelector('.ItemPanel_itemContent__1D5XB').appendChild(wrapperDiv);
+  panel.querySelector(CHAR_PANEL).appendChild(wrapperDiv);
 };
 
 const openArtifactEditor = function (event) {
@@ -314,13 +322,13 @@ const loadArtifact = function (character, slot) {
 const createAllArtifactHidingButtons = function () {
   getAllCharacterPanels().forEach( panel => {
     // get owner's name to be stored into dataset for later
-    const owner = panel.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML.toLowerCase().replaceAll(' ', '-');
+    const owner = panel.querySelector(CHAR_NAME_ELEM).innerHTML.toLowerCase().replaceAll(' ', '-');
     createArtifactHidingButton(panel, owner, hidingButtonCallback);
   });
 };
 
 const hidingButtonCallback = function (e) {
-  // e.target is div.CircleButton_inner__2223j so get the div element
+  // e.target is div.CircleButton_inner__'something' so get the div element
   const button = e.target.parentNode.parentNode;
   // find the artifact slot wrapper by the character name stored in the button div element
   const slotWrapper = document.querySelector(`.artifactSlotsWrapper[data-character=${e.target.parentNode.parentNode.dataset.character}]`);
@@ -373,7 +381,7 @@ function loadFromStorage (name) {
 
 // returns the character name from the title element of a {slot}
 const getArtifactSlotOwner = function (slot) {
-  return slot.parentNode.parentNode.parentNode.querySelector('.ItemPanel_itemName__3SNcx > p').innerHTML;
+  return slot.parentNode.parentNode.parentNode.querySelector(CHAR_NAME_ELEM).innerHTML;
 };
 
 // returns the type (plume, sands) of the artifact in a slot
@@ -382,13 +390,13 @@ const getArtifactSlotType = function (slot) {
 };
 
 const getAllCharacterPanels = function () {
-  return [...document.querySelector('.Farm_itemList__zk7_j').children].filter( panel => !isWeapon(panel) );
+  return [...document.querySelector(CHAR_LIST).children].filter( panel => !isWeapon(panel) );
 };
 
 // returns whether {panel} is a weapon by checking the source of the panel's image
 // e.g. src='/images/weapons/regular/Deathmatch.png'
 const isWeapon = function (panel) {
-  return panel.querySelector('.ItemPanel_itemImage__2fZwL > img').src.includes('weapons');
+  return panel.querySelector(CHAR_IMAGE).src.includes('weapons');
 };
 
 // uses custom data attribute data-character to find
@@ -421,7 +429,7 @@ async function getDataset () {
 // called from content_script.js
 export function waitForPageToLoad () {
   const waitForCharacterList = setInterval(function () {
-    if ( document.querySelector('.Farm_itemList__zk7_j > div') ) {
+    if ( document.querySelector(CHAR_LIST + '> div') ) {
       clearInterval(waitForCharacterList);
       console.log("Character list loaded!");
 

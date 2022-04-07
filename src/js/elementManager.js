@@ -1,3 +1,43 @@
+const BUTTON_BAR_WRAPPER_ELEM = '.ItemPanel_item__6lLWZ';
+const BUTTON_BAR_BUTTON_CLASS = ['ItemPanel_buttonWrapper__KgdUz', 'ItemPanel_pauseButton__hI9FU', 'HideArtifactsButton'];
+const SCHEDULE_SECTION = 'Schedule_section__8Bf3I';
+const SCHEDULE_NAME = 'Schedule_sectionName___uDY_';
+const SCHEDULE_INPUT_WRAPPER = 'Schedule_inputWrapper__uMtN0';
+const SCHEDULE_INPUT = 'Input_input__aT3TM';
+const SCHEDULE_INPUT_GLOW = 'Input_glow__nybES';
+const SCHEDULE_INPUT_INNERBORDER = 'Input_innerborder__MMhtd';
+const SCHEDULE_INPUT_INNER = 'Input_inner__SXgrG';
+const SCHEDULE_BUTTON_WRAPPER = 'Schedule_buttonsWrapper__fdOV_';
+
+const WINDOW_BACKGROUND = 'Window_window__0zdsm';
+const WINDOW_CENTER = 'Window_center__oA34u';
+const WINDOW_MODAL = 'Window_modal__2s0yi';
+const SCHEDULE_TASK_CREATOR = 'Schedule_taskCreator__bA_eq';
+const SCHEDULE_TASK_CREATOR_CONTENT = 'Schedule_taskCreatorContent__3tCoD';
+const SCHEDULE_TOP_BAR = 'Schedule_taskTopBar__lV1W8';
+const SCHEDULE_WARNING_TEXT = 'Schedule_warning__ea_RU';
+
+const HIDING_BUTTON = 'CircleButton_button__WO_pU';
+const HIDING_BUTTON_GLOW = 'CircleButton_glow__dQqlu';
+const HIDING_BUTTON_INNERBORDER = 'CircleButton_innerborder__OFRXM';
+const HIDING_BUTTON_INNER = 'CircleButton_inner__VXFE7';
+
+const OPTIONS_WINDOW_SECTION = 'PlannerOptions_section__y90n3';
+const OPTIONS_WINDOW_CONTENT = '.PlannerOptions_content__kBajJ';
+const OPTIONS_RADIO = 'Radio_radio__t_pCN';
+const OPTIONS_RADIO_LABEL = 'Radio_radioLabel__FlU7k';
+const RADIO_OPTIONS = 'Radio_options__vJPry';
+const RADIO_OPTION = 'Radio_option__6A9gc';
+const RADIO_OPTION_SELECTED = 'Radio_selected__oB7Tk';
+const OPTIONS_CONTENT = '.PlannerOptions_optionContent__2_jPR';
+
+const QUICKMENU_SECTION = 'PlannerOptions_quickSection__pWVYz';
+const QUICKMENU_TITLEWRAPPER = 'PlannerOptions_titleWrapper__pAkcp';
+const QUICKMENU_CHECKBOX = 'Checkbox_checkbox__yM8Z5';
+const QUICKMENU_CHECKBOX_BUTTON_WRAPPER = 'Checkbox_buttonWrapper__P_Q_b';
+const QUICKMENU_CHECKBOX_SVG = 'Checkbox_checkmark__wYzQF';
+const QUICKMENU_CHECKBOX_PATH = 'Checkbox_checkmarkCheck__ZKcSz';
+
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            openArtifactEditor function in content.js
 export const createSlot = function (piece, callback) {
@@ -14,37 +54,37 @@ export const createSlot = function (piece, callback) {
 const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, inputValue) {
   const SECTION =
     document.createElement('div');
-    SECTION.classList.add('Schedule_section__6vicf');
+    SECTION.classList.add(SCHEDULE_SECTION);
 
   const section_name =
     document.createElement('p');
-    section_name.classList.add('Schedule_sectionName__3vtrn');
+    section_name.classList.add(SCHEDULE_NAME);
     section_name.innerHTML = sectionName;
     SECTION.appendChild(section_name);
 
   const input_wrapper =
     document.createElement('div');
-    input_wrapper.classList.add('Schedule_inputWrapper__GzY8Y');
+    input_wrapper.classList.add(SCHEDULE_INPUT_WRAPPER);
     SECTION.appendChild(input_wrapper);
 
   const input_input =
     document.createElement('div');
-    input_input.classList.add('Input_input__AuQWE');
+    input_input.classList.add(SCHEDULE_INPUT);
     input_wrapper.appendChild(input_input);
 
   const input_glow =
     document.createElement('div');
-    input_glow.classList.add('Input_glow__2lh0b');
+    input_glow.classList.add(SCHEDULE_INPUT_GLOW);
     input_input.appendChild(input_glow);
 
   const input_innerborder =
     document.createElement('div');
-    input_innerborder.classList.add('Input_innerborder__2Gail');
+    input_innerborder.classList.add(SCHEDULE_INPUT_INNERBORDER);
     input_input.appendChild(input_innerborder);
 
   const actual_input =
     document.createElement('input');
-    actual_input.classList.add('Input_inner__3ObeW');
+    actual_input.classList.add(SCHEDULE_INPUT_INNER);
     actual_input.name = 'name'; actual_input.type = 'text';
     actual_input.style = 'font-size: 16px; color: black;';
     actual_input.setAttribute('maxlength', '20');
@@ -105,7 +145,7 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, inpu
 const createEditorButton = function (confirmArtifactEditCallback, deleteArtifactCallback, owner, piece) {
   const BUTTON_WRAPPER =
     document.createElement('div');
-    BUTTON_WRAPPER.classList.add('Schedule_buttonsWrapper__3QM49');
+    BUTTON_WRAPPER.classList.add(SCHEDULE_BUTTON_WRAPPER);
 
   const delete_button =
     document.createElement('button');
@@ -135,31 +175,31 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
 
   const window_background = // element for the dark background behind the actual editor
     document.createElement('div');
-    window_background.classList.add('Window_window__2tU_Y');
+    window_background.classList.add(WINDOW_BACKGROUND);
     window_background.style.opacity = '1';
     WINDOW.appendChild(window_background);
 
   const window_center =
     document.createElement('div');
-    window_center.classList.add('Window_center__1F9yr');
+    window_center.classList.add(WINDOW_CENTER);
     WINDOW.appendChild(window_center);
 
   const window_modal =
     document.createElement('div');
-    window_modal.classList.add('Window_modal__2xmK7');
+    window_modal.classList.add(WINDOW_MODAL);
     window_modal.style = 'opacity: 1; pointer-events: all;';
     window_center.appendChild(window_modal);
 
   const schedule_creator =
     document.createElement('div');
-    schedule_creator.classList.add('Schedule_taskCreator__2MSUu');
+    schedule_creator.classList.add(SCHEDULE_TASK_CREATOR);
     schedule_creator.style.width = '360px';
     window_modal.appendChild(schedule_creator);
 
   // TITLE
   const schedule_top_bar =
     document.createElement('div');
-    schedule_top_bar.classList.add('Schedule_taskTopBar__2qHzE');
+    schedule_top_bar.classList.add(SCHEDULE_TOP_BAR);
     schedule_top_bar.style = 'flex-direction: column;';
     schedule_top_bar.innerHTML =
         `<h3>Edit Artifact</h3>
@@ -168,16 +208,16 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
 
   const warning_text =
     document.createElement('div');
-    warning_text.classList.add('Schedule_section__6vicf');
-    warning_text.style.textAlign = 'center';
-    warning_text.style.color = 'red';
+    warning_text.classList.add(SCHEDULE_WARNING_TEXT);
+    // warning_text.style.textAlign = 'center';
+    // warning_text.style.color = 'red';
     warning_text.innerHTML = `Artifact data will be wiped when extension
                               is uninstalled. Exporting and importing can
                               be done in Options menu.`;
 
   const schedule_content =
     document.createElement('div');
-    schedule_content.classList.add('Schedule_taskCreatorContent__3zR8F');
+    schedule_content.classList.add(SCHEDULE_TASK_CREATOR_CONTENT);
     schedule_content.style.padding = '0 10px 15px';
     schedule_creator.appendChild(schedule_content);
 
@@ -262,7 +302,7 @@ export const createArtifactHidingButton = function (panel, owner, callback) {
         .classList.contains('disabled')
           ? "Show Artifacts"
           : "Hide Artifacts";
-    BUTTON_WRAPPER.classList.add('ItemPanel_buttonWrapper__T2Pof');
+    BUTTON_WRAPPER.classList.add(...BUTTON_BAR_BUTTON_CLASS);
     BUTTON_WRAPPER.style.right = '80px';
     BUTTON_WRAPPER.dataset.character = owner;
     // not quite sure why but without this line the button stays focused and
@@ -271,21 +311,21 @@ export const createArtifactHidingButton = function (panel, owner, callback) {
 
   const button =
     document.createElement('button');
-    button.classList.add('CircleButton_button__2q1kt');
+    button.classList.add(HIDING_BUTTON);
     button.onclick = e => callback(e);
     BUTTON_WRAPPER.appendChild(button);
 
   const button_glow =
     document.createElement('div');
-    button_glow.classList.add('CircleButton_glow__19phK');
+    button_glow.classList.add(HIDING_BUTTON_GLOW);
     button.appendChild(button_glow);
   const button_innerborder =
     document.createElement('div');
-    button_innerborder.classList.add('CircleButton_innerborder__2HyhF');
+    button_innerborder.classList.add(HIDING_BUTTON_INNERBORDER);
     button.appendChild(button_innerborder);
   const button_inner =
     document.createElement('div');
-    button_inner.classList.add('CircleButton_inner__2223j');
+    button_inner.classList.add(HIDING_BUTTON_INNER);
     button.appendChild(button_inner);
 
   const button_image =
@@ -295,7 +335,7 @@ export const createArtifactHidingButton = function (panel, owner, callback) {
     button_image.src = 'https://i.imgur.com/liC3uM6.png';
     button.appendChild(button_image);
 
-  const bar = panel.querySelector('.ItemPanel_item__38QUF');
+  const bar = panel.querySelector(BUTTON_BAR_WRAPPER_ELEM);
   // div[title=Active] is the disable/enable button
   bar.insertBefore( BUTTON_WRAPPER, bar.querySelector('div[title=Active]') );
 };
@@ -306,45 +346,45 @@ export const createArtifactHidingButton = function (panel, owner, callback) {
 export const addExportImportToOptionsWindow = function (options_window, importCallback, exportCallback) {
   const OPTION_SECTION =
     document.createElement('div');
-    OPTION_SECTION.classList.add('PlannerOptions_section__3lgqe');
+    OPTION_SECTION.classList.add(OPTIONS_WINDOW_SECTION);
 
   const WRAPPER =
     document.createElement('div');
-    WRAPPER.classList.add('Radio_radio__1S7b1');
+    WRAPPER.classList.add(OPTIONS_RADIO);
     OPTION_SECTION.appendChild(WRAPPER);
 
   const title =
     document.createElement('div');
-    title.classList.add('Radio_radioLabel__3ECTP');
+    title.classList.add(OPTIONS_RADIO_LABEL);
     title.innerHTML = "Extension Setting: Import / Export Artifact Data";
     WRAPPER.appendChild(title);
 
   const button_wrapper =
     document.createElement('div');
-    button_wrapper.classList.add('Radio_options__1lESR', 'import_export_wrapper');
+    button_wrapper.classList.add(RADIO_OPTIONS, 'import_export_wrapper');
     button_wrapper.style = 'max-width: 440px';
     WRAPPER.appendChild(button_wrapper);
 
   const import_button =
     document.createElement('button');
-    import_button.classList.add('Radio_option__27kFi');
+    import_button.classList.add(RADIO_OPTION);
     import_button.title = "Import Data";
     import_button.onclick = () => importCallback();
     import_button.innerHTML =
-      "<div class='Radio_selected__1QOl-' style='visibility: visible; opacity: 1;" +
+      `<div class='${RADIO_OPTION_SELECTED}' style='visibility: visible; opacity: 1;` +
       "transform-origin: 50% 50% 0px;'></div>" +
       "Import Data";
     button_wrapper.appendChild(import_button);
 
   const export_button =
     document.createElement('button');
-    export_button.classList.add('Radio_option__27kFi');
+    export_button.classList.add(RADIO_OPTION);
     export_button.title = "Export Data";
     export_button.onclick = () => exportCallback();
     export_button.innerHTML = "Export Data";
     button_wrapper.appendChild(export_button);
 
-  options_window.querySelector('.PlannerOptions_content__T5_lg').appendChild(OPTION_SECTION);
+  options_window.querySelector(OPTIONS_WINDOW_CONTENT).appendChild(OPTION_SECTION);
 };
 
 // options_menu:          the dropdown Options-list
@@ -354,20 +394,19 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
   console.log(options_menu);
   const SECTION_WRAPPER =
     document.createElement('div');
-    SECTION_WRAPPER.classList.add('PlannerOptions_quickSection__QP_pF');
+    SECTION_WRAPPER.classList.add(QUICKMENU_SECTION);
     SECTION_WRAPPER.innerHTML =
-      `<div class="PlannerOptions_titleWrapper__35VjC">Extension Settings</div>
-      <div class="Checkbox_checkbox__3JC7e">
-        <h3>Show all artifacts</h3>
-        <div class="Checkbox_buttonWrapper__1Q0kT">
+      `<div class="${QUICKMENU_TITLEWRAPPER}">Extension Settings</div>
+      <div class="${QUICKMENU_CHECKBOX}">
+        <div class="${QUICKMENU_CHECKBOX_BUTTON_WRAPPER}">
           <button>
             <svg
-              class="Checkbox_checkmark__wYzQF"
+              class="${QUICKMENU_CHECKBOX_SVG}"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 52 52">
               <path
                 id="toggleVisibilityCheckboxPath"
-                class="Checkbox_checkmarkCheck__35cAh"
+                class="${QUICKMENU_CHECKBOX_PATH}"
                 d="m14 27 7 7 16-16"
                 stroke-dashoffset="0px"
                 stroke-dasharray=''>
@@ -375,13 +414,14 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
             </svg>
           </button>
         </div>
+        <h3>Show all artifacts</h3>
       </div>
       <br>
-      <div class="Radio_radio__1S7b1 ">
-        <div class="Radio_radioLabel__3ECTP" style="text-align: left;">Import / Export artifact data</div>
-        <div class="Radio_options__1lESR import_export_wrapper" style="max-width: 660px;">
-          <button id="importButton" class="Radio_option__27kFi" style="width: 50%;">Import Data</button>
-          <button id="exportButton" class="Radio_option__27kFi" style="width: 50%;">Export Data</button>
+      <div class="${OPTIONS_RADIO}">
+        <div class="${OPTIONS_RADIO_LABEL}"" style="text-align: left;">Import / Export artifact data</div>
+        <div class="${RADIO_OPTIONS} import_export_wrapper" style="max-width: 660px;">
+          <button id="importButton" class="${RADIO_OPTION}" style="width: 50%;">Import Data</button>
+          <button id="exportButton" class="${RADIO_OPTION}" style="width: 50%;">Export Data</button>
         </div>
       </div>`;
 
@@ -392,14 +432,14 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
     // turns to <path stroke-dasharray='0x' [rest as attribute key]>
     // because of the space
     SECTION_WRAPPER
-      .querySelector('.Checkbox_checkmarkCheck__35cAh')
+      .querySelector('.' + QUICKMENU_CHECKBOX_PATH)
       .setAttribute('stroke-dasharray', hideAllCheckboxValues);
     // assign the callback function
     SECTION_WRAPPER.querySelector('button').onclick = () => toggleCallback();
 
     const reviewNotif =
       document.createElement('div');
-      reviewNotif.classList.add('Radio_radioLabel__3ECTP');
+      reviewNotif.classList.add(OPTIONS_RADIO_LABEL);
       reviewNotif.style.color = '#38a6c2';
       const storeLink = "https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno";
       const gitLink = "https://github.com/kripi-png/ArtifactsForGenshinCenter";
@@ -411,7 +451,8 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
       SECTION_WRAPPER.appendChild(reviewNotif);
 
   // last element is the More Options button
-  options_menu.insertBefore(SECTION_WRAPPER, options_menu.lastElementChild);
+  const options_content = options_menu.querySelector(OPTIONS_CONTENT);
+  options_content.insertBefore(SECTION_WRAPPER, options_content.lastElementChild);
 };
 
 // options_menu:          the dropdown Options-list
@@ -425,38 +466,38 @@ export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCall
 
   const window_background = // element for the dark background
     document.createElement('div');
-    window_background.classList.add('Window_window__2tU_Y');
+    window_background.classList.add(WINDOW_BACKGROUND);
     window_background.style.opacity = '1';
     WINDOW.appendChild(window_background);
 
   const window_center =
     document.createElement('div');
-    window_center.classList.add('Window_center__1F9yr');
+    window_center.classList.add(WINDOW_CENTER);
     WINDOW.appendChild(window_center);
 
   const window_modal =
     document.createElement('div');
-    window_modal.classList.add('Window_modal__2xmK7');
+    window_modal.classList.add(WINDOW_MODAL);
     window_modal.style = 'opacity: 1; pointer-events: all;';
     window_center.appendChild(window_modal);
 
   const schedule_creator =
     document.createElement('div');
-    schedule_creator.classList.add('Schedule_taskCreator__2MSUu');
+    schedule_creator.classList.add(SCHEDULE_TASK_CREATOR);
     schedule_creator.style.width = '360px';
     window_modal.appendChild(schedule_creator);
 
   // TITLE
   const schedule_top_bar =
     document.createElement('div');
-    schedule_top_bar.classList.add('Schedule_taskTopBar__2qHzE');
+    schedule_top_bar.classList.add(SCHEDULE_TOP_BAR);
     schedule_top_bar.style = 'flex-direction: column;';
     schedule_top_bar.innerHTML = "<h3>Export Artifact Data</h3>";
     schedule_creator.appendChild(schedule_top_bar);
 
   const schedule_content =
     document.createElement('div');
-    schedule_content.classList.add('Schedule_taskCreatorContent__3zR8F');
+    schedule_content.classList.add(SCHEDULE_TASK_CREATOR_CONTENT);
     schedule_content.style.padding = '0 10px 15px';
     schedule_creator.appendChild(schedule_content);
 
@@ -465,7 +506,7 @@ export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCall
     const close_button =
       document.createElement('div');
       close_button.innerHTML = `
-        <div class="Schedule_buttonsWrapper__3QM49">
+        <div class="${SCHEDULE_BUTTON_WRAPPER}">
           <button id="closeButton">Close</button>
         </div>`;
     close_button.querySelector('#closeButton').onclick = e => closeExportWindowCallback(e);
