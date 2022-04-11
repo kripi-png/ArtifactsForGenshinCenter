@@ -25,4 +25,4 @@ Questions can be asked preferably via Discord DMs (kripi#6436); the same goes fo
 
 ## Credits
 Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com for faster loading times (original 256x256 .WebP images loaded quite slowly).
-A few of them may also be from [Honey Impact](https://genshin.honeyhunterworld.com/) if impact.moe didn't have the images.
+A few of them may also be from [Honey Impact](https://genshin.honeyhunterworld.com/) or [Project Amber](https://ambr.top/en) if impact.moe didn't have the images at the time.
