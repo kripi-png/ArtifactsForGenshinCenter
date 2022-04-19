@@ -9,7 +9,7 @@ import {
 } from './elementManager.js';
 
 const CHAR_LIST = '.Farm_itemList__EgRFB';
-const CHAR_IMAGE = '.ItemPanel_itemImage__ndELA > span > img';
+const CHAR_IMAGE = '.ItemPanel_itemImage__ndELA > div';
 const CHAR_NAME_ELEM = '.ItemPanel_itemName__jxpO4 > p';
 const CHAR_PANEL = '.ItemPanel_itemContent__M9oCy';
 const OPTIONS_MENU = '.PlannerOptions_options__t3nvI';
@@ -396,7 +396,7 @@ const getAllCharacterPanels = function () {
 // returns whether {panel} is a weapon by checking the source of the panel's image
 // e.g. src='/images/weapons/regular/Deathmatch.png'
 const isWeapon = function (panel) {
-  return panel.querySelector(CHAR_IMAGE).src.includes('weapons');
+  return panel.querySelector(CHAR_IMAGE).style.backgroundImage.includes('weapons');
 };
 
 // uses custom data attribute data-character to find

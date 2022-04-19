@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Artifacts for Genshin Center",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "Plan which artifacts to get for your Genshin Impact character via Genshin Center's planner tool and this extension.",
     "icons": {
       "128": "src/images/icon.png"
