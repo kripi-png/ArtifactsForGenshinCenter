@@ -328,12 +328,16 @@ export const createArtifactHidingButton = function (panel, owner, callback) {
     button_inner.classList.add(HIDING_BUTTON_INNER);
     button.appendChild(button_inner);
 
+  const button_image_holder =
+    document.createElement('div');
+    button_image_holder.classList.add('CircleButton_img__OGgKs');
+    button.appendChild(button_image_holder);
+
   const button_image =
-    document.createElement('img');
-    button_image.width = 18;
-    button_image.height = 18;
-    button_image.src = 'https://i.imgur.com/liC3uM6.png';
-    button.appendChild(button_image);
+    document.createElement('div');
+    button_image.classList.add('containedImage');
+    button_image.style.backgroundImage = 'url("https://i.imgur.com/liC3uM6.png")';
+    button_image_holder.appendChild(button_image);
 
   const bar = panel.querySelector(BUTTON_BAR_WRAPPER_ELEM);
   // div[title=Active] is the disable/enable button
