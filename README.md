@@ -16,6 +16,7 @@ Questions can be asked preferably via Discord DMs (kripi#6436); the same goes fo
 ![Edit window](https://i.imgur.com/f2Kxnq7.png)
 
 ## Todo
+- Fix Extension Settings not being (re-)created after resizing the browser window
 - Rewrite some of element functions using one string rather than multiple createElement functions
 - Make it so clicking on the background of Edit Artifact window saves and closes the window; same as clicking ok
 
