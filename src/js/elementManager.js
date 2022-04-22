@@ -1,11 +1,3 @@
-const BUTTON_BAR_WRAPPER_ELEM = '.ItemPanel_item__6lLWZ';
-const BUTTON_BAR_BUTTON_CLASS = ['ItemPanel_buttonWrapper__KgdUz', 'ItemPanel_pauseButton__hI9FU', 'HideArtifactsButton'];
-
-const HIDING_BUTTON = 'CircleButton_button__WO_pU';
-const HIDING_BUTTON_GLOW = 'CircleButton_glow__dQqlu';
-const HIDING_BUTTON_INNERBORDER = 'CircleButton_innerborder__OFRXM';
-const HIDING_BUTTON_INNER = 'CircleButton_inner__VXFE7';
-
 const OPTIONS_WINDOW_SECTION = 'PlannerOptions_section__y90n3';
 const OPTIONS_WINDOW_CONTENT = '.PlannerOptions_content__kBajJ';
 const OPTIONS_RADIO = 'Radio_radio__t_pCN';
@@ -177,56 +169,41 @@ export const createTooltipBoxWrapper = function (slot, loc_x, loc_y, setName, pi
 // panel:                 character panel
 // owner:                 name of the character
 // callback:              hidingButtonCallback function in content.js
-export const createArtifactHidingButton = function (panel, owner, callback) {
-  const BUTTON_WRAPPER =
-    document.createElement('div');
-    // get slotWrapper element by owner's name and check whether it has disabled class
-    // set title using ternary operator based on that value
-    BUTTON_WRAPPER.title =
-        panel.querySelector(`.artifactSlotsWrapper[data-character=${owner}]`)
-        .classList.contains('disabled')
-          ? "Show Artifacts"
-          : "Hide Artifacts";
-    BUTTON_WRAPPER.classList.add(...BUTTON_BAR_BUTTON_CLASS);
-    BUTTON_WRAPPER.style.right = '80px';
-    BUTTON_WRAPPER.dataset.character = owner;
-    // not quite sure why but without this line the button stays focused and
-    // the buttons won't disappear when panel is unhovered
-    BUTTON_WRAPPER.onmousedown = e => e.preventDefault();
+export const createArtifactHidingButton = function (panel, character, callback) {
+  const ARTIFACT_HIDING_BTN = document.createElement('div');
+  ARTIFACT_HIDING_BTN.classList.add('ItemPanel_buttonWrapper__KgdUz', 'ItemPanel_pauseButton__hI9FU', 'HideArtifactsButton');
+  ARTIFACT_HIDING_BTN.style = 'right: 80px';
+  ARTIFACT_HIDING_BTN.dataset.character = character;
 
-  const button =
-    document.createElement('button');
-    button.classList.add(HIDING_BUTTON);
-    button.onclick = e => callback(e);
-    BUTTON_WRAPPER.appendChild(button);
+  // get slotWrapper element by character's name and check whether it has disabled class
+  // set title using ternary operator based on that value
+  const disabled = panel
+    .querySelector(`.artifactSlotsWrapper[data-character=${character}]`).classList
+    .contains('disabled');
+  ARTIFACT_HIDING_BTN.title = disabled ? "Show Artifacts" : "Hide Artifacts";
 
-  const button_glow =
-    document.createElement('div');
-    button_glow.classList.add(HIDING_BUTTON_GLOW);
-    button.appendChild(button_glow);
-  const button_innerborder =
-    document.createElement('div');
-    button_innerborder.classList.add(HIDING_BUTTON_INNERBORDER);
-    button.appendChild(button_innerborder);
-  const button_inner =
-    document.createElement('div');
-    button_inner.classList.add(HIDING_BUTTON_INNER);
-    button.appendChild(button_inner);
+  // not quite sure why but without this the button stays focused and
+  // the buttons won't disappear when panel is unhovered
+  ARTIFACT_HIDING_BTN.onmousedown = e => e.preventDefault();
 
-  const button_image_holder =
-    document.createElement('div');
-    button_image_holder.classList.add('CircleButton_img__OGgKs');
-    button.appendChild(button_image_holder);
+  ARTIFACT_HIDING_BTN.innerHTML = `
+    <button class="CircleButton_button__WO_pU">
+      <div class="CircleButton_glow__dQqlu"></div>
+      <div class="CircleButton_innerborder__OFRXM"></div>
+      <div class="CircleButton_inner__VXFE7"></div>
+      <div class="CircleButton_img__OGgKs">
+        <div class="containedImage" style="background-image: url('https://i.imgur.com/liC3uM6.png')"></div>
+      </div>
+    </button>
+  `;
 
-  const button_image =
-    document.createElement('div');
-    button_image.classList.add('containedImage');
-    button_image.style.backgroundImage = 'url("https://i.imgur.com/liC3uM6.png")';
-    button_image_holder.appendChild(button_image);
+  // add callback
+  ARTIFACT_HIDING_BTN.querySelector('.CircleButton_button__WO_pU').onclick = e => callback(e);
 
-  const bar = panel.querySelector(BUTTON_BAR_WRAPPER_ELEM);
-  // div[title=Active] is the disable/enable button
-  bar.insertBefore( BUTTON_WRAPPER, bar.querySelector('div[title=Active]') );
+  // insert artifact hiding button before the active button
+  const BUTTON_PANEL = panel.querySelector('.ItemPanel_item__6lLWZ');
+  const ACTIVE_BUTTON = BUTTON_PANEL.querySelector('div[title=Active]');
+  BUTTON_PANEL.insertBefore( ARTIFACT_HIDING_BTN, ACTIVE_BUTTON );
 };
 
 // options_window:        div#options element
