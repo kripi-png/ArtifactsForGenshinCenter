@@ -186,11 +186,11 @@ const exportArtifactData = function () {
   const data = JSON.stringify(ARTIFACT_DATA);
   console.log(data);
   createExportWindow(data, closeExportWindow);
-  // window.prompt("Copy and paste this to a text file:", data);
 };
 
 const closeExportWindow = function () {
-  document.body.removeChild(document.querySelector('#exportWindow')); // delete the editor element once artifact is selected
+  // delete the editor element once artifact is selected
+  document.body.removeChild(document.querySelector('#exportWindow'));
 };
 
 // create artifact slot elements for each character
@@ -201,19 +201,15 @@ const createAllSlots = function () {
 // create all 5 artifact slots for a single {panel}
 const createSlotsForPanel = function (panel) {
   const wrapperDiv = document.createElement('div');
+  // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
   wrapperDiv.dataset.character = panel.querySelector(CHAR_NAME_ELEM).innerHTML.toLowerCase().replaceAll(' ', '-');
   wrapperDiv.classList.add('artifactSlotsWrapper');
 
-  const flowerSlot = createSlot('flower', openArtifactEditor);
-    wrapperDiv.appendChild(flowerSlot);
-  const plumeSlot = createSlot('plume', openArtifactEditor);
-    wrapperDiv.appendChild(plumeSlot);
-  const sandsSlot = createSlot('sands', openArtifactEditor);
-    wrapperDiv.appendChild(sandsSlot);
-  const gobletSlot = createSlot('goblet', openArtifactEditor);
-    wrapperDiv.appendChild(gobletSlot);
-  const circletSlot = createSlot('circlet', openArtifactEditor);
-    wrapperDiv.appendChild(circletSlot);
+  wrapperDiv.appendChild(createSlot('flower', openArtifactEditor));
+  wrapperDiv.appendChild(createSlot('plume', openArtifactEditor));
+  wrapperDiv.appendChild(createSlot('sands', openArtifactEditor));
+  wrapperDiv.appendChild(createSlot('goblet', openArtifactEditor));
+  wrapperDiv.appendChild(createSlot('circlet', openArtifactEditor));
 
   panel.querySelector(CHAR_PANEL).appendChild(wrapperDiv);
 };
@@ -322,6 +318,7 @@ const loadArtifact = function (character, slot) {
 const createAllArtifactHidingButtons = function () {
   getAllCharacterPanels().forEach( panel => {
     // get owner's name to be stored into dataset for later
+    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
     const owner = panel.querySelector(CHAR_NAME_ELEM).innerHTML.toLowerCase().replaceAll(' ', '-');
     createArtifactHidingButton(panel, owner, hidingButtonCallback);
   });
@@ -331,7 +328,8 @@ const hidingButtonCallback = function (e) {
   // e.target is div.CircleButton_inner__'something' so get the div element
   const button = e.target.parentNode.parentNode;
   // find the artifact slot wrapper by the character name stored in the button div element
-  const slotWrapper = document.querySelector(`.artifactSlotsWrapper[data-character=${e.target.parentNode.parentNode.dataset.character}]`);
+  const character = e.target.parentNode.parentNode.dataset.character;
+  const slotWrapper = document .querySelector(`.artifactSlotsWrapper[data-character=${character}]`);
   // ARTIFACT_DATA doesn't use hypens in character names (yet) so replace them
   hideArtifacts(button, slotWrapper, button.dataset.character.replaceAll('-', ' '));
 };
@@ -404,7 +402,10 @@ const isWeapon = function (panel) {
 const getArtifactSlotByOwner = function (character, slot) {
   // fails e.g. when character has been removed but artifact data still exists
   try {
-    return document.querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`).querySelector(`.${slot}Slot`);
+    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
+    return document
+      .querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`)
+      .querySelector(`.${slot}Slot`);
   } catch (e) {
     return false;
   }
