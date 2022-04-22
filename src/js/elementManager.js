@@ -69,7 +69,6 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, plac
         <input
           class="Input_inner__SXgrG" name="name" type="text"
           style="font-size: 16px; color: black;" maxlength="20"
-          value="${inputValue || ''}"
         />
       </div>
     </div>
@@ -80,6 +79,8 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, plac
 
   // set ID
   INPUT_FIELD.id = inputType;
+  // set field value
+  INPUT_FIELD.value = inputValue || '';
   // set placeholder if one's given
   if ( placeholder ) { INPUT_FIELD.placeholder = placeholder; }
 
@@ -186,7 +187,6 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     schedule_content.classList.add(SCHEDULE_TASK_CREATOR_CONTENT);
     schedule_content.style.padding = '0 10px 15px';
     schedule_creator.appendChild(schedule_content);
-
 
     schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'selectArtifactInput', 'Set Name', 'Enter set name...', slot.dataset.set));
     schedule_content.appendChild(createSection(null, 'artifactMainStat', 'Main Stat', 'Enter main stat...', slot.dataset.main));
