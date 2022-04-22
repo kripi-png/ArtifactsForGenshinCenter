@@ -1,14 +1,6 @@
 const BUTTON_BAR_WRAPPER_ELEM = '.ItemPanel_item__6lLWZ';
 const BUTTON_BAR_BUTTON_CLASS = ['ItemPanel_buttonWrapper__KgdUz', 'ItemPanel_pauseButton__hI9FU', 'HideArtifactsButton'];
 
-const WINDOW_BACKGROUND = 'Window_window__0zdsm';
-const WINDOW_CENTER = 'Window_center__oA34u';
-const WINDOW_MODAL = 'Window_modal__2s0yi';
-const SCHEDULE_TASK_CREATOR = 'Schedule_taskCreator__bA_eq';
-const SCHEDULE_TASK_CREATOR_CONTENT = 'Schedule_taskCreatorContent__3tCoD';
-const SCHEDULE_TOP_BAR = 'Schedule_taskTopBar__lV1W8';
-const SCHEDULE_WARNING_TEXT = 'Schedule_warning__ea_RU';
-
 const HIDING_BUTTON = 'CircleButton_button__WO_pU';
 const HIDING_BUTTON_GLOW = 'CircleButton_glow__dQqlu';
 const HIDING_BUTTON_INNERBORDER = 'CircleButton_innerborder__OFRXM';
@@ -105,87 +97,45 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, plac
   return SECTION;
 };
 
-// callback:            confirmArtifactEdit function in content.js
-// owner:               character whose artifact slot was clicked
-// piece:               name of the piece that was clicked, e.g. plume
-const createEditorButton = function (confirmArtifactEditCallback, deleteArtifactCallback, owner, piece) {
-  const BUTTON_WRAPPER = document.createElement('div');
-  BUTTON_WRAPPER.classList.add('Schedule_buttonsWrapper__fdOV_');
-  BUTTON_WRAPPER.innerHTML = `
-    <button id="editorBtnDelete">Delete</button>
-    <button id="editorBtnConfirm">OK</button>
-  `;
-  BUTTON_WRAPPER.querySelector('#editorBtnDelete').onclick = e => deleteArtifactCallback(e, owner, piece);
-  BUTTON_WRAPPER.querySelector('#editorBtnConfirm').onclick = e => confirmArtifactEditCallback(e, owner, piece);
-
-  return BUTTON_WRAPPER;
-};
-
 // slot                 artifact slot clicked
 // ARTIFACT_SET_NAMES:  list of all artifact sets available
 // owner:               character whose artifact slot was clicked
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            confirmArtifactEdit function in content.js
 export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, piece, confirmArtifactEditCallback, deleteArtifactCallback) {
-  const WINDOW =
-    document.createElement('div');
-    WINDOW.id = 'artifactEdit';
-    WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
-
-  const window_background = // element for the dark background behind the actual editor
-    document.createElement('div');
-    window_background.classList.add(WINDOW_BACKGROUND);
-    window_background.style.opacity = '1';
-    WINDOW.appendChild(window_background);
-
-  const window_center =
-    document.createElement('div');
-    window_center.classList.add(WINDOW_CENTER);
-    WINDOW.appendChild(window_center);
-
-  const window_modal =
-    document.createElement('div');
-    window_modal.classList.add(WINDOW_MODAL);
-    window_modal.style = 'opacity: 1; pointer-events: all;';
-    window_center.appendChild(window_modal);
-
-  const schedule_creator =
-    document.createElement('div');
-    schedule_creator.classList.add(SCHEDULE_TASK_CREATOR);
-    schedule_creator.style.width = '360px';
-    window_modal.appendChild(schedule_creator);
-
-  // TITLE
-  const schedule_top_bar =
-    document.createElement('div');
-    schedule_top_bar.classList.add(SCHEDULE_TOP_BAR);
-    schedule_top_bar.style = 'flex-direction: column;';
-    schedule_top_bar.innerHTML =
-        `<h3>Edit Artifact</h3>
-        <h4 style="padding-bottom: 10px; text-transform: capitalize;">${owner}'s ${piece}</h4>`;
-    schedule_creator.appendChild(schedule_top_bar);
-
-  const warning_text =
-    document.createElement('div');
-    warning_text.classList.add(SCHEDULE_WARNING_TEXT);
-    // warning_text.style.textAlign = 'center';
-    // warning_text.style.color = 'red';
-    warning_text.innerHTML = `Artifact data will be wiped when extension
-                              is uninstalled. Exporting and importing can
-                              be done in Options menu.`;
-
-  const schedule_content =
-    document.createElement('div');
-    schedule_content.classList.add(SCHEDULE_TASK_CREATOR_CONTENT);
-    schedule_content.style.padding = '0 10px 15px';
-    schedule_creator.appendChild(schedule_content);
-
-    schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'selectArtifactInput', 'Set Name', 'Enter set name...', slot.dataset.set));
-    schedule_content.appendChild(createSection(null, 'artifactMainStat', 'Main Stat', 'Enter main stat...', slot.dataset.main));
-    schedule_content.appendChild(createSection(null, 'artifactSubStat', 'Sub Stat', 'Enter sub stat(s)...', slot.dataset.sub));
-    schedule_content.appendChild(createSection(null, 'artifactCheckbox', 'Obtained in-game?', null, slot.dataset.check));
-    schedule_content.appendChild(warning_text);
-    schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, deleteArtifactCallback, owner, piece));
+  const WINDOW = document.createElement('div');
+  WINDOW.id = 'artifactEdit';
+  WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
+  WINDOW.innerHTML = `
+    <div class="Window_window__0zdsm" style="opacity: 1;"></div>
+    <div class="Window_center__oA34u">
+      <div class="Window_modal__2s0yi" style="opacity: 1; pointer-events: all;">
+        <div class="Schedule_taskCreator__bA_eq" style="width: 360px">
+          <div class="Schedule_taskTopBar__lV1W8" style="flex-direction: column;">
+            <h3>Edit Artifact</h3>
+            <h4 style="padding-bottom: 10px; text-transform: capitalize;">${owner}'s ${piece}</h4>
+          </div>
+          <div class="Schedule_taskCreatorContent__3tCoD" style="padding: 0 10px 15px">
+            ${createSection(ARTIFACT_SET_NAMES, 'selectArtifactInput', 'Set Name', 'Enter set name...', slot.dataset.set).outerHTML}
+            ${createSection(null, 'artifactMainStat', 'Main Stat', 'Enter main stat...', slot.dataset.main).outerHTML}
+            ${createSection(null, 'artifactSubStat', 'Sub Stat', 'Enter sub stat(s)...', slot.dataset.sub).outerHTML}
+            ${createSection(null, 'artifactCheckbox', 'Obtained in-game?', null, slot.dataset.check).outerHTML}
+            <div class="Ascension_missing__FaHoD" style="font-size: 16px;">
+              <p>Artifact data will be wiped when extension is uninstalled.</p>
+              <p>Exporting and importing can be done in Options menu.</p>
+            </div>
+            <div class="Schedule_buttonsWrapper__fdOV_">
+              <button id="editorBtnDelete">Delete</button>
+              <button id="editorBtnConfirm">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  // add callbacks
+  WINDOW.querySelector('#editorBtnDelete').onclick = e => deleteArtifactCallback(e, owner, piece);
+  WINDOW.querySelector('#editorBtnConfirm').onclick = e => confirmArtifactEditCallback(e, owner, piece);
 
   return WINDOW;
 };
@@ -429,38 +379,38 @@ export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCall
 
   const window_background = // element for the dark background
     document.createElement('div');
-    window_background.classList.add(WINDOW_BACKGROUND);
+    window_background.classList.add('Window_window__0zdsm');
     window_background.style.opacity = '1';
     WINDOW.appendChild(window_background);
 
   const window_center =
     document.createElement('div');
-    window_center.classList.add(WINDOW_CENTER);
+    window_center.classList.add('Window_center__oA34u');
     WINDOW.appendChild(window_center);
 
   const window_modal =
     document.createElement('div');
-    window_modal.classList.add(WINDOW_MODAL);
+    window_modal.classList.add('Window_modal__2s0yi');
     window_modal.style = 'opacity: 1; pointer-events: all;';
     window_center.appendChild(window_modal);
 
   const schedule_creator =
     document.createElement('div');
-    schedule_creator.classList.add(SCHEDULE_TASK_CREATOR);
+    schedule_creator.classList.add('Schedule_taskCreator__bA_eq');
     schedule_creator.style.width = '360px';
     window_modal.appendChild(schedule_creator);
 
   // TITLE
   const schedule_top_bar =
     document.createElement('div');
-    schedule_top_bar.classList.add(SCHEDULE_TOP_BAR);
+    schedule_top_bar.classList.add('Schedule_taskTopBar__lV1W8');
     schedule_top_bar.style = 'flex-direction: column;';
     schedule_top_bar.innerHTML = "<h3>Export Artifact Data</h3>";
     schedule_creator.appendChild(schedule_top_bar);
 
   const schedule_content =
     document.createElement('div');
-    schedule_content.classList.add(SCHEDULE_TASK_CREATOR_CONTENT);
+    schedule_content.classList.add('Schedule_taskCreatorContent__3tCoD');
     schedule_content.style.padding = '0 10px 15px';
     schedule_creator.appendChild(schedule_content);
 
