@@ -1,12 +1,5 @@
 const BUTTON_BAR_WRAPPER_ELEM = '.ItemPanel_item__6lLWZ';
 const BUTTON_BAR_BUTTON_CLASS = ['ItemPanel_buttonWrapper__KgdUz', 'ItemPanel_pauseButton__hI9FU', 'HideArtifactsButton'];
-const SCHEDULE_SECTION = 'Schedule_section__8Bf3I';
-const SCHEDULE_NAME = 'Schedule_sectionName___uDY_';
-const SCHEDULE_INPUT_WRAPPER = 'Schedule_inputWrapper__uMtN0';
-const SCHEDULE_INPUT = 'Input_input__aT3TM';
-const SCHEDULE_INPUT_GLOW = 'Input_glow__nybES';
-const SCHEDULE_INPUT_INNERBORDER = 'Input_innerborder__MMhtd';
-const SCHEDULE_INPUT_INNER = 'Input_inner__SXgrG';
 const SCHEDULE_BUTTON_WRAPPER = 'Schedule_buttonsWrapper__fdOV_';
 
 const WINDOW_BACKGROUND = 'Window_window__0zdsm';
@@ -48,93 +41,66 @@ export const createSlot = function (piece, callback) {
   return SLOT;
 };
 
+const createArtifactSetDatalist = function ( ARTIFACT_SET_NAMES) {
+  const datalist = document.createElement('datalist');
+  datalist.id = 'artifactSelectorDatalist';
+
+  ARTIFACT_SET_NAMES.forEach(set_name => {
+    const _artifact = document.createElement('option');
+    _artifact.value = set_name;
+    datalist.appendChild(_artifact);
+  });
+
+  return datalist;
+};
+
 // ARTIFACT_SET_NAMES:  list of all artifact sets available
 // inputType:           used to create the input field
 // sectionName:         title for the input field
-const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, inputValue) {
-  const SECTION =
-    document.createElement('div');
-    SECTION.classList.add(SCHEDULE_SECTION);
+const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder, inputValue) {
+  const SECTION = document.createElement('div');
+  SECTION.classList.add('Schedule_section__8Bf3I');
+  SECTION.innerHTML = `
+    <p class="Schedule_sectionName___uDY_">${sectionName}</p>
+    <div class="Schedule_inputWrapper__uMtN0">
+      <div class="Input_input__aT3TM">
+        <div class="Input_glow__nybES"></div>
+        <div class="Input_innerborder__MMhtd"></div>
+        <input
+          class="Input_inner__SXgrG" name="name" type="text"
+          style="font-size: 16px; color: black;" maxlength="20"
+          value="${inputValue || ''}"
+        />
+      </div>
+    </div>
+  `;
 
-  const section_name =
-    document.createElement('p');
-    section_name.classList.add(SCHEDULE_NAME);
-    section_name.innerHTML = sectionName;
-    SECTION.appendChild(section_name);
+  const INPUT_INPUT = SECTION.querySelector('.Input_input__aT3TM');
+  const INPUT_FIELD = SECTION.querySelector('input');
 
-  const input_wrapper =
-    document.createElement('div');
-    input_wrapper.classList.add(SCHEDULE_INPUT_WRAPPER);
-    SECTION.appendChild(input_wrapper);
+  // set ID
+  INPUT_FIELD.id = inputType;
+  // set placeholder if one's given
+  if ( placeholder ) { INPUT_FIELD.placeholder = placeholder; }
 
-  const input_input =
-    document.createElement('div');
-    input_input.classList.add(SCHEDULE_INPUT);
-    input_wrapper.appendChild(input_input);
+  // artifact set list
+  if ( inputType === 'selectArtifactInput') {
+    INPUT_FIELD.setAttribute('list', 'artifactSelectorDatalist');
+    INPUT_FIELD.setAttribute('maxlength', '40');
+    // datalist contains all possible artifact sets as options
+    // and is inserted next to the artifact set input
+    INPUT_INPUT.appendChild(createArtifactSetDatalist(ARTIFACT_SET_NAMES));
+  }
 
-  const input_glow =
-    document.createElement('div');
-    input_glow.classList.add(SCHEDULE_INPUT_GLOW);
-    input_input.appendChild(input_glow);
+  // checkbox (Acquired)
+  else if ( inputType === 'artifactCheckbox' ) {
+    INPUT_FIELD.type = 'checkbox';
+    INPUT_FIELD.style.margin = '0';
+    INPUT_FIELD.checked = inputValue === 'true';
 
-  const input_innerborder =
-    document.createElement('div');
-    input_innerborder.classList.add(SCHEDULE_INPUT_INNERBORDER);
-    input_input.appendChild(input_innerborder);
-
-  const actual_input =
-    document.createElement('input');
-    actual_input.classList.add(SCHEDULE_INPUT_INNER);
-    actual_input.name = 'name'; actual_input.type = 'text';
-    actual_input.style = 'font-size: 16px; color: black;';
-    actual_input.setAttribute('maxlength', '20');
-    actual_input.value = inputValue || '';
-
-    // as the function is same for all sections,
-    // inputType parameter is used to determine how the input field is created
-    switch (inputType) {
-      case 'main_stat':
-        actual_input.id = 'artifactMainStat';
-        actual_input.placeholder = "Enter main stat...";
-        break;
-
-      case 'sub_stat':
-        actual_input.id = 'artifactSubStat';
-        actual_input.placeholder = "Enter sub stat(s)";
-        break;
-
-      case 'artifact_set_list': {
-        actual_input.id = 'selectArtifactInput';
-        actual_input.placeholder = "Enter set name...";
-        actual_input.setAttribute('list', 'artifactSelectorDatalist');
-        actual_input.setAttribute('maxlength', '40');
-
-        // datalist contains all possible artifact sets as options
-        // and is inserted next to the artifact set input field
-        const datalist =
-          document.createElement('datalist');
-          datalist.id = 'artifactSelectorDatalist';
-
-        ARTIFACT_SET_NAMES.forEach(a => {
-          const _artifact = document.createElement('option');
-          _artifact.value = a;
-          datalist.appendChild(_artifact);
-        });
-        input_input.appendChild(datalist);
-        break;
-      }
-
-      case 'checkbox':
-        actual_input.id = 'artifactCheckbox';
-        actual_input.type = 'checkbox';
-        actual_input.style.margin = '0';
-        actual_input.checked = inputValue === 'true';
-
-        input_input.style.width = '48px';
-        input_input.style.marginLeft = 'calc(50% - 24px)';
-        break;
-    }
-    input_input.appendChild(actual_input);
+    INPUT_INPUT.style.width = '48px';
+    INPUT_INPUT.style.marginLeft = 'calc(50% - 24px)';
+  }
 
   return SECTION;
 };
@@ -221,10 +187,11 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
     schedule_content.style.padding = '0 10px 15px';
     schedule_creator.appendChild(schedule_content);
 
-    schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'artifact_set_list', 'Set Name', slot.dataset.set));
-    schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat', slot.dataset.main));
-    schedule_content.appendChild(createSection(null, 'sub_stat', 'Sub Stat', slot.dataset.sub));
-    schedule_content.appendChild(createSection(null, 'checkbox', 'Acquired?', slot.dataset.check));
+
+    schedule_content.appendChild(createSection(ARTIFACT_SET_NAMES, 'selectArtifactInput', 'Set Name', 'Enter set name...', slot.dataset.set));
+    schedule_content.appendChild(createSection(null, 'artifactMainStat', 'Main Stat', 'Enter main stat...', slot.dataset.main));
+    schedule_content.appendChild(createSection(null, 'artifactSubStat', 'Sub Stat', 'Enter sub stat(s)...', slot.dataset.sub));
+    schedule_content.appendChild(createSection(null, 'artifactCheckbox', 'Obtained in-game?', null, slot.dataset.check));
     schedule_content.appendChild(warning_text);
     schedule_content.appendChild(createEditorButton(confirmArtifactEditCallback, deleteArtifactCallback, owner, piece));
 
@@ -505,7 +472,7 @@ export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCall
     schedule_content.style.padding = '0 10px 15px';
     schedule_creator.appendChild(schedule_content);
 
-    schedule_content.appendChild(createSection(null, 'main_stat', 'Main Stat', ARTIFACT_DATA));
+    schedule_content.appendChild(createSection(null, 'exportDataField', 'Export Data', null, ARTIFACT_DATA.replaceAll('"', "'")));
 
     const close_button =
       document.createElement('div');
