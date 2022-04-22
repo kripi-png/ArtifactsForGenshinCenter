@@ -1,6 +1,5 @@
 const BUTTON_BAR_WRAPPER_ELEM = '.ItemPanel_item__6lLWZ';
 const BUTTON_BAR_BUTTON_CLASS = ['ItemPanel_buttonWrapper__KgdUz', 'ItemPanel_pauseButton__hI9FU', 'HideArtifactsButton'];
-const SCHEDULE_BUTTON_WRAPPER = 'Schedule_buttonsWrapper__fdOV_';
 
 const WINDOW_BACKGROUND = 'Window_window__0zdsm';
 const WINDOW_CENTER = 'Window_center__oA34u';
@@ -93,7 +92,7 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, plac
     INPUT_INPUT.appendChild(createArtifactSetDatalist(ARTIFACT_SET_NAMES));
   }
 
-  // checkbox (Acquired)
+  // checkbox (Obtained)
   else if ( inputType === 'artifactCheckbox' ) {
     INPUT_FIELD.type = 'checkbox';
     INPUT_FIELD.style.margin = '0';
@@ -110,21 +109,14 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, plac
 // owner:               character whose artifact slot was clicked
 // piece:               name of the piece that was clicked, e.g. plume
 const createEditorButton = function (confirmArtifactEditCallback, deleteArtifactCallback, owner, piece) {
-  const BUTTON_WRAPPER =
-    document.createElement('div');
-    BUTTON_WRAPPER.classList.add(SCHEDULE_BUTTON_WRAPPER);
-
-  const delete_button =
-    document.createElement('button');
-    delete_button.innerHTML = "Delete";
-    delete_button.onclick = e => deleteArtifactCallback(e, owner, piece);
-    BUTTON_WRAPPER.append(delete_button);
-
-  const create_button =
-    document.createElement('button');
-    create_button.innerHTML = "OK";
-    create_button.onclick = e => confirmArtifactEditCallback(e, owner, piece);
-    BUTTON_WRAPPER.append(create_button);
+  const BUTTON_WRAPPER = document.createElement('div');
+  BUTTON_WRAPPER.classList.add('Schedule_buttonsWrapper__fdOV_');
+  BUTTON_WRAPPER.innerHTML = `
+    <button id="editorBtnDelete">Delete</button>
+    <button id="editorBtnConfirm">OK</button>
+  `;
+  BUTTON_WRAPPER.querySelector('#editorBtnDelete').onclick = e => deleteArtifactCallback(e, owner, piece);
+  BUTTON_WRAPPER.querySelector('#editorBtnConfirm').onclick = e => confirmArtifactEditCallback(e, owner, piece);
 
   return BUTTON_WRAPPER;
 };
@@ -477,7 +469,7 @@ export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCall
     const close_button =
       document.createElement('div');
       close_button.innerHTML = `
-        <div class="${SCHEDULE_BUTTON_WRAPPER}">
+        <div class="Schedule_buttonsWrapper__fdOV_">
           <button id="closeButton">Close</button>
         </div>`;
     close_button.querySelector('#closeButton').onclick = e => closeExportWindowCallback(e);
