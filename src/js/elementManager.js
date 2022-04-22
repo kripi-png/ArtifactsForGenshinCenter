@@ -1,19 +1,3 @@
-const OPTIONS_WINDOW_SECTION = 'PlannerOptions_section__y90n3';
-const OPTIONS_WINDOW_CONTENT = '.PlannerOptions_content__kBajJ';
-const OPTIONS_RADIO = 'Radio_radio__t_pCN';
-const OPTIONS_RADIO_LABEL = 'Radio_radioLabel__FlU7k';
-const RADIO_OPTIONS = 'Radio_options__vJPry';
-const RADIO_OPTION = 'Radio_option__6A9gc';
-const RADIO_OPTION_SELECTED = 'Radio_selected__oB7Tk';
-const OPTIONS_CONTENT = '.PlannerOptions_optionContent__2_jPR';
-
-const QUICKMENU_SECTION = 'PlannerOptions_quickSection__pWVYz';
-const QUICKMENU_TITLEWRAPPER = 'PlannerOptions_titleWrapper__pAkcp';
-const QUICKMENU_CHECKBOX = 'Checkbox_checkbox__yM8Z5';
-const QUICKMENU_CHECKBOX_BUTTON_WRAPPER = 'Checkbox_buttonWrapper__P_Q_b';
-const QUICKMENU_CHECKBOX_SVG = 'Checkbox_checkmark__wYzQF';
-const QUICKMENU_CHECKBOX_PATH = 'Checkbox_checkmarkCheck__ZKcSz';
-
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            openArtifactEditor function in content.js
 export const createSlot = function (piece, callback) {
@@ -212,45 +196,45 @@ export const createArtifactHidingButton = function (panel, character, callback) 
 export const addExportImportToOptionsWindow = function (options_window, importCallback, exportCallback) {
   const OPTION_SECTION =
     document.createElement('div');
-    OPTION_SECTION.classList.add(OPTIONS_WINDOW_SECTION);
+    OPTION_SECTION.classList.add('PlannerOptions_section__y90n3');
 
   const WRAPPER =
     document.createElement('div');
-    WRAPPER.classList.add(OPTIONS_RADIO);
+    WRAPPER.classList.add('Radio_radio__t_pCN');
     OPTION_SECTION.appendChild(WRAPPER);
 
   const title =
     document.createElement('div');
-    title.classList.add(OPTIONS_RADIO_LABEL);
+    title.classList.add('Radio_radioLabel__FlU7k');
     title.innerHTML = "Extension Setting: Import / Export Artifact Data";
     WRAPPER.appendChild(title);
 
   const button_wrapper =
     document.createElement('div');
-    button_wrapper.classList.add(RADIO_OPTIONS, 'import_export_wrapper');
+    button_wrapper.classList.add('Radio_options__vJPry', 'import_export_wrapper');
     button_wrapper.style = 'max-width: 440px';
     WRAPPER.appendChild(button_wrapper);
 
   const import_button =
     document.createElement('button');
-    import_button.classList.add(RADIO_OPTION);
+    import_button.classList.add('Radio_option__6A9gc');
     import_button.title = "Import Data";
     import_button.onclick = () => importCallback();
     import_button.innerHTML =
-      `<div class='${RADIO_OPTION_SELECTED}' style='visibility: visible; opacity: 1;` +
+      `<div class="${'Radio_selected__oB7Tk'}" style='visibility: visible; opacity: 1;` +
       "transform-origin: 50% 50% 0px;'></div>" +
       "Import Data";
     button_wrapper.appendChild(import_button);
 
   const export_button =
     document.createElement('button');
-    export_button.classList.add(RADIO_OPTION);
+    export_button.classList.add('Radio_option__6A9gc');
     export_button.title = "Export Data";
     export_button.onclick = () => exportCallback();
     export_button.innerHTML = "Export Data";
     button_wrapper.appendChild(export_button);
 
-  options_window.querySelector(OPTIONS_WINDOW_CONTENT).appendChild(OPTION_SECTION);
+  options_window.querySelector('.PlannerOptions_content__kBajJ').appendChild(OPTION_SECTION);
 };
 
 // options_menu:          the dropdown Options-list
@@ -260,19 +244,19 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
   console.log(options_menu);
   const SECTION_WRAPPER =
     document.createElement('div');
-    SECTION_WRAPPER.classList.add(QUICKMENU_SECTION);
+    SECTION_WRAPPER.classList.add('PlannerOptions_quickSection__pWVYz');
     SECTION_WRAPPER.innerHTML =
-      `<div class="${QUICKMENU_TITLEWRAPPER}">Extension Settings</div>
-      <div class="${QUICKMENU_CHECKBOX}">
-        <div class="${QUICKMENU_CHECKBOX_BUTTON_WRAPPER}">
+      `<div class="${'PlannerOptions_titleWrapper__pAkcp'}">Extension Settings</div>
+      <div class="${'Checkbox_checkbox__yM8Z5'}">
+        <div class="${'Checkbox_buttonWrapper__P_Q_b'}">
           <button>
             <svg
-              class="${QUICKMENU_CHECKBOX_SVG}"
+              class="${'Checkbox_checkmark__wYzQF'}"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 52 52">
               <path
                 id="toggleVisibilityCheckboxPath"
-                class="${QUICKMENU_CHECKBOX_PATH}"
+                class="${'Checkbox_checkmarkCheck__ZKcSz'}"
                 d="m14 27 7 7 16-16"
                 stroke-dashoffset="0px"
                 stroke-dasharray=''>
@@ -283,11 +267,11 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
         <h3>Show all artifacts</h3>
       </div>
       <br>
-      <div class="${OPTIONS_RADIO}">
-        <div class="${OPTIONS_RADIO_LABEL}"" style="text-align: left;">Import / Export artifact data</div>
-        <div class="${RADIO_OPTIONS} import_export_wrapper" style="max-width: 660px;">
-          <button id="importButton" class="${RADIO_OPTION}" style="width: 50%;">Import Data</button>
-          <button id="exportButton" class="${RADIO_OPTION}" style="width: 50%;">Export Data</button>
+      <div class="${'Radio_radio__t_pCN'}">
+        <div class="${'Radio_radioLabel__FlU7k'}"" style="text-align: left;">Import / Export artifact data</div>
+        <div class="${'Radio_options__vJPry'} import_export_wrapper" style="max-width: 660px;">
+          <button id="importButton" class="${'Radio_option__6A9gc'}" style="width: 50%;">Import Data</button>
+          <button id="exportButton" class="${'Radio_option__6A9gc'}" style="width: 50%;">Export Data</button>
         </div>
       </div>`;
 
@@ -298,14 +282,14 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
     // turns to <path stroke-dasharray='0x' [rest as attribute key]>
     // because of the space
     SECTION_WRAPPER
-      .querySelector('.' + QUICKMENU_CHECKBOX_PATH)
+      .querySelector('.' + 'Checkbox_checkmarkCheck__ZKcSz')
       .setAttribute('stroke-dasharray', hideAllCheckboxValues);
     // assign the callback function
     SECTION_WRAPPER.querySelector('button').onclick = () => toggleCallback();
 
     const reviewNotif =
       document.createElement('div');
-      reviewNotif.classList.add(OPTIONS_RADIO_LABEL);
+      reviewNotif.classList.add('Radio_radioLabel__FlU7k');
       reviewNotif.style.color = '#38a6c2';
       const storeLink = "https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno";
       const gitLink = "https://github.com/kripi-png/ArtifactsForGenshinCenter";
@@ -317,7 +301,7 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
       SECTION_WRAPPER.appendChild(reviewNotif);
 
   // last element is the More Options button
-  const options_content = options_menu.querySelector(OPTIONS_CONTENT);
+  const options_content = options_menu.querySelector('.PlannerOptions_optionContent__2_jPR');
   options_content.insertBefore(SECTION_WRAPPER, options_content.lastElementChild);
 };
 
