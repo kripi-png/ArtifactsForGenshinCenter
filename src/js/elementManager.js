@@ -143,59 +143,35 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
 // slot:                 hovered artifact
 // x, y:                 location for the popup window
 // set, piece:           names of the set and piece
-export const createTooltipBoxWrapper = function (slot, x, y, set, piece) {
-  const setName = set;
-  const pieceName = piece;
-  const WINDOW =
-    document.createElement('div');
-    WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: none;';
-    WINDOW.id = 'artifactTooltipWindow';
+export const createTooltipBoxWrapper = function (slot, loc_x, loc_y, setName, pieceName) {
+  const ICON_URL = slot.style.backgroundImage
+    .replaceAll('"', '')
+    .replace('url(', '')
+    .replace(')', '');
+  const TOOLTIP_BOX = document.createElement('div');
+  TOOLTIP_BOX.id = 'artifactTooltipWindow';
+  TOOLTIP_BOX.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: none;';
+  TOOLTIP_BOX.innerHTML = `
+    <!-- wrapper -->
+    <div class="artifactTooltip" style="position: sticky; left: ${loc_x}px; top: ${loc_y}px;">
+      <div class="tooltipTitle">
+        <p class="tooltipTitleText">
+          <span>${pieceName}</span><br />${setName}
+        </p>
+        <img src="${ICON_URL}" alt="${setName}-${pieceName}" class="tooltipTitleIcon" />
+      </div>
+      <div class="tooltipTextWrapper">
+        <p class="tooltipText">
+          Main Stat: ${slot.dataset.main}
+        </p>
+        <p class="tooltipText">
+          Sub Stat: ${slot.dataset.sub}
+        </p>
+      </div>
+    </div>
+  `;
 
-  const WRAPPER =
-    document.createElement('div');
-    WRAPPER.classList.add('artifactTooltip');
-
-    WRAPPER.style.position = 'sticky';
-    WRAPPER.style.left = x + 'px';
-    WRAPPER.style.top = y + 'px';
-
-  const titleBar = // wrapper for title text & icon
-    document.createElement('div');
-    titleBar.classList.add('tooltipTitle');
-    WRAPPER.appendChild(titleBar);
-
-  const titleText =
-    document.createElement('p');
-    titleText.classList.add('tooltipTitleText');
-    titleText.innerHTML = `<span>${pieceName}</span><br>${setName}`;
-    titleBar.appendChild(titleText);
-
-  const titleIcon = // yoink the title icon directly from the hovered element
-    document.createElement('img');
-    titleIcon.classList.add('tooltipTitleIcon');
-    titleIcon.src = slot.style.backgroundImage.replaceAll('"', '').replace('url(', '').replace(')', '');
-    titleBar.appendChild(titleIcon);
-
-  const textWrapper = // wrapper for main stat & sub stat texts
-    document.createElement('div');
-    textWrapper.classList.add('tooltipTextWrapper');
-    WRAPPER.appendChild(textWrapper);
-
-  const main =
-    document.createElement('p');
-    main.classList.add('tooltipText');
-    main.innerHTML = "Main Stat: " + slot.dataset.main;
-    textWrapper.appendChild(main);
-
-  const sub =
-    document.createElement('p');
-    sub.classList.add('tooltipText');
-    sub.innerHTML = "Sub Stat: " + slot.dataset.sub;
-    textWrapper.appendChild(sub);
-
-  WINDOW.appendChild(WRAPPER);
-
-  return WINDOW;
+  return TOOLTIP_BOX;
 };
 
 // panel:                 character panel
