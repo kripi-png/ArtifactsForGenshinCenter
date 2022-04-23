@@ -90,7 +90,7 @@ export const createArtifactEditor = (
     <div class="Window_window__0zdsm" style="opacity: 1;"></div>
     <div class="Window_center__oA34u">
       <div class="Window_modal__2s0yi" style="opacity: 1; pointer-events: all;">
-        <div class="Schedule_taskCreator__bA_eq" style="width: 360px">
+        <div class="Schedule_taskCreator__bA_eq" style="width: 360px;">
           <div class="Schedule_taskTopBar__lV1W8" style="flex-direction: column;">
             <h3>Edit Artifact</h3>
             <h4 style="padding-bottom: 10px; text-transform: capitalize;">${owner}'s ${piece}</h4>
@@ -297,58 +297,31 @@ export const createExtensionSettingsSection = (
 // toggleCallback:        hideAllArtifactsToggle function in content.js
 // hideAllCheckboxValues: values for the stroke-dasharray attribute
 export const createExportWindow = (ARTIFACT_DATA, closeExportWindowCallback) => {
-  const WINDOW =
-    document.createElement('div');
-    WINDOW.id = 'exportWindow';
-    WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
+  const EXPORT_WINDOW = document.createElement('div');
+  EXPORT_WINDOW.id = 'exportWindow';
+  EXPORT_WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
+  EXPORT_WINDOW.innerHTML = `
+    <div class="Window_window__0zdsm" style="opacity: 1;"></div>
+    <div class="Window_center__oA34u">
+      <div class="Window_modal__2s0yi" style="opacity: 1; pointer-events: all;">
+        <div class="Schedule_taskCreator__bA_eq" style="width: 360px;">
+          <div class="Schedule_taskTopBar__lV1W8" style="flex-direction: column;">
+            <h3>Export Artifact Data</h3>
+          </div>
+          <div class="Schedule_taskCreatorContent__3tCoD" style="padding: 0 10px 15px;">
+            ${createSection(null, 'exportDataField', 'Export Data', null, ARTIFACT_DATA).outerHTML}
+            <div>
+              <div class="Schedule_buttonsWrapper__fdOV_">
+                <button id="closeButton">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  // add callback
+  EXPORT_WINDOW.querySelector('#closeButton').onclick = e => closeExportWindowCallback(e);
 
-  const window_background = // element for the dark background
-    document.createElement('div');
-    window_background.classList.add('Window_window__0zdsm');
-    window_background.style.opacity = '1';
-    WINDOW.appendChild(window_background);
-
-  const window_center =
-    document.createElement('div');
-    window_center.classList.add('Window_center__oA34u');
-    WINDOW.appendChild(window_center);
-
-  const window_modal =
-    document.createElement('div');
-    window_modal.classList.add('Window_modal__2s0yi');
-    window_modal.style = 'opacity: 1; pointer-events: all;';
-    window_center.appendChild(window_modal);
-
-  const schedule_creator =
-    document.createElement('div');
-    schedule_creator.classList.add('Schedule_taskCreator__bA_eq');
-    schedule_creator.style.width = '360px';
-    window_modal.appendChild(schedule_creator);
-
-  // TITLE
-  const schedule_top_bar =
-    document.createElement('div');
-    schedule_top_bar.classList.add('Schedule_taskTopBar__lV1W8');
-    schedule_top_bar.style = 'flex-direction: column;';
-    schedule_top_bar.innerHTML = "<h3>Export Artifact Data</h3>";
-    schedule_creator.appendChild(schedule_top_bar);
-
-  const schedule_content =
-    document.createElement('div');
-    schedule_content.classList.add('Schedule_taskCreatorContent__3tCoD');
-    schedule_content.style.padding = '0 10px 15px';
-    schedule_creator.appendChild(schedule_content);
-
-    schedule_content.appendChild(createSection(null, 'exportDataField', 'Export Data', null, ARTIFACT_DATA));
-
-    const close_button =
-      document.createElement('div');
-      close_button.innerHTML = `
-        <div class="Schedule_buttonsWrapper__fdOV_">
-          <button id="closeButton">Close</button>
-        </div>`;
-    close_button.querySelector('#closeButton').onclick = e => closeExportWindowCallback(e);
-    schedule_content.appendChild(close_button);
-
-  document.body.appendChild(WINDOW);
+  document.body.appendChild(EXPORT_WINDOW);
 };
