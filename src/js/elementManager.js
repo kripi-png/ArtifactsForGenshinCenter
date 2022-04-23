@@ -1,14 +1,14 @@
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            openArtifactEditor function in content.js
-export const createSlot = function (piece, callback) {
-  const SLOT =
-    document.createElement('div');
-    SLOT.classList.add('artifactSlot', piece + 'Slot');
-    SLOT.addEventListener('click', callback);
+export const createSlot = (piece, callback) => {
+  const SLOT = document.createElement('div');
+  SLOT.classList.add('artifactSlot', piece + 'Slot');
+  SLOT.addEventListener('click', callback);
+
   return SLOT;
 };
 
-const createArtifactSetDatalist = function ( ARTIFACT_SET_NAMES) {
+const createArtifactSetDatalist = ARTIFACT_SET_NAMES => {
   const datalist = document.createElement('datalist');
   datalist.id = 'artifactSelectorDatalist';
 
@@ -24,7 +24,7 @@ const createArtifactSetDatalist = function ( ARTIFACT_SET_NAMES) {
 // ARTIFACT_SET_NAMES:  list of all artifact sets available
 // inputType:           used to create the input field
 // sectionName:         title for the input field
-const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder, inputValue) {
+const createSection = (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder, inputValue) => {
   const SECTION = document.createElement('div');
   SECTION.classList.add('Schedule_section__8Bf3I');
   SECTION.innerHTML = `
@@ -78,7 +78,11 @@ const createSection = function (ARTIFACT_SET_NAMES, inputType, sectionName, plac
 // owner:               character whose artifact slot was clicked
 // piece:               name of the piece that was clicked, e.g. plume
 // callback:            confirmArtifactEdit function in content.js
-export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, piece, confirmArtifactEditCallback, deleteArtifactCallback) {
+export const createArtifactEditor = (
+  slot, ARTIFACT_SET_NAMES,
+  owner, piece,
+  confirmArtifactEditCallback, deleteArtifactCallback
+) => {
   const WINDOW = document.createElement('div');
   WINDOW.id = 'artifactEdit';
   WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
@@ -119,7 +123,7 @@ export const createArtifactEditor = function (slot, ARTIFACT_SET_NAMES, owner, p
 // slot:                 hovered artifact
 // x, y:                 location for the popup window
 // set, piece:           names of the set and piece
-export const createTooltipBoxWrapper = function (slot, loc_x, loc_y, setName, pieceName) {
+export const createTooltipBoxWrapper = (slot, loc_x, loc_y, setName, pieceName) => {
   const ICON_URL = slot.style.backgroundImage
     .replaceAll('"', '')
     .replace('url(', '')
@@ -153,7 +157,7 @@ export const createTooltipBoxWrapper = function (slot, loc_x, loc_y, setName, pi
 // panel:                 character panel
 // owner:                 name of the character
 // callback:              hidingButtonCallback function in content.js
-export const createArtifactHidingButton = function (panel, character, callback) {
+export const createArtifactHidingButton = (panel, character, callback) => {
   const ARTIFACT_HIDING_BTN = document.createElement('div');
   ARTIFACT_HIDING_BTN.classList.add('ItemPanel_buttonWrapper__KgdUz', 'ItemPanel_pauseButton__hI9FU', 'HideArtifactsButton');
   ARTIFACT_HIDING_BTN.style = 'right: 80px';
@@ -193,7 +197,7 @@ export const createArtifactHidingButton = function (panel, character, callback) 
 // options_window:        div#options element
 // importCallback:        importArtifactData function in content.js
 // exportCallback:        exportArtifactData function in content.js
-export const createExportImportSection = function (importCallback, exportCallback) {
+export const createExportImportSection = (importCallback, exportCallback) => {
   const OPTION_SECTION = document.createElement('div');
   OPTION_SECTION.classList.add('PlannerOptions_section__y90n3');
 
@@ -222,7 +226,10 @@ export const createExportImportSection = function (importCallback, exportCallbac
 // options_menu:          the dropdown Options-list
 // toggleCallback:        hideAllArtifactsToggle function in content.js
 // hideAllCheckboxValues: values for the stroke-dasharray attribute
-export const createExtensionSettingsSection = function (options_menu, toggleCallback, hideAllCheckboxValues, importCallback, exportCallback) {
+export const createExtensionSettingsSection = (
+  options_menu, toggleCallback,
+  hideAllCheckboxValues, importCallback, exportCallback
+) => {
   console.log(options_menu);
   const SECTION_WRAPPER =
     document.createElement('div');
@@ -290,7 +297,7 @@ export const createExtensionSettingsSection = function (options_menu, toggleCall
 // options_menu:          the dropdown Options-list
 // toggleCallback:        hideAllArtifactsToggle function in content.js
 // hideAllCheckboxValues: values for the stroke-dasharray attribute
-export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCallback) {
+export const createExportWindow = (ARTIFACT_DATA, closeExportWindowCallback) => {
   const WINDOW =
     document.createElement('div');
     WINDOW.id = 'exportWindow';
