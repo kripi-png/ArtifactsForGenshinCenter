@@ -24,7 +24,7 @@ const createArtifactSetDatalist = ARTIFACT_SET_NAMES => {
 // ARTIFACT_SET_NAMES:  list of all artifact sets available
 // inputType:           used to create the input field
 // sectionName:         title for the input field
-const createSection = (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder, inputValue) => {
+const createSection = (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder) => {
   const SECTION = document.createElement('div');
   SECTION.classList.add('Schedule_section__8Bf3I');
   SECTION.innerHTML = `
@@ -46,8 +46,6 @@ const createSection = (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder, 
 
   // set ID
   INPUT_FIELD.id = inputType;
-  // set field value
-  INPUT_FIELD.value = inputValue || '';
   // set placeholder if one's given
   if ( placeholder ) { INPUT_FIELD.placeholder = placeholder; }
 
@@ -64,13 +62,23 @@ const createSection = (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder, 
   else if ( inputType === 'artifactCheckbox' ) {
     INPUT_FIELD.type = 'checkbox';
     INPUT_FIELD.style.margin = '0';
-    INPUT_FIELD.checked = inputValue === 'true';
 
     INPUT_INPUT.style.width = '48px';
     INPUT_INPUT.style.marginLeft = 'calc(50% - 24px)';
   }
 
   return SECTION;
+};
+
+const setInputValue = (WINDOW, selector, value) => {
+  const INPUT_FIELD = WINDOW.querySelector(selector);
+  if ( selector === '#artifactCheckbox') {
+    // convert string to boolean
+    INPUT_FIELD.checked = JSON.parse(value);
+    return;
+  }
+
+  INPUT_FIELD.value = value;
 };
 
 // slot                 artifact slot clicked
@@ -96,10 +104,10 @@ export const createArtifactEditor = (
             <h4 style="padding-bottom: 10px; text-transform: capitalize;">${owner}'s ${piece}</h4>
           </div>
           <div class="Schedule_taskCreatorContent__3tCoD" style="padding: 0 10px 15px">
-            ${createSection(ARTIFACT_SET_NAMES, 'selectArtifactInput', 'Set Name', 'Enter set name...', slot.dataset.set).outerHTML}
-            ${createSection(null, 'artifactMainStat', 'Main Stat', 'Enter main stat...', slot.dataset.main).outerHTML}
-            ${createSection(null, 'artifactSubStat', 'Sub Stat', 'Enter sub stat(s)...', slot.dataset.sub).outerHTML}
-            ${createSection(null, 'artifactCheckbox', 'Obtained in-game?', null, slot.dataset.check).outerHTML}
+            ${createSection(ARTIFACT_SET_NAMES, 'selectArtifactInput', 'Set Name', 'Enter set name...').outerHTML}
+            ${createSection(null, 'artifactMainStat', 'Main Stat', 'Enter main stat...').outerHTML}
+            ${createSection(null, 'artifactSubStat', 'Sub Stat', 'Enter sub stat(s)...').outerHTML}
+            ${createSection(null, 'artifactCheckbox', 'Obtained in-game?', null).outerHTML}
             <div class="Ascension_missing__FaHoD" style="font-size: 16px;">
               <p>Artifact data will be wiped when extension is uninstalled.</p>
               <p>Exporting and importing can be done in Options menu.</p>
@@ -113,6 +121,13 @@ export const createArtifactEditor = (
       </div>
     </div>
   `;
+  // set values
+  // main container, input selector, value
+  setInputValue(EDITOR_WINDOW, '#selectArtifactInput', slot.dataset.set);
+  setInputValue(EDITOR_WINDOW, '#artifactMainStat', slot.dataset.main);
+  setInputValue(EDITOR_WINDOW, '#artifactSubStat', slot.dataset.sub);
+  setInputValue(EDITOR_WINDOW, '#artifactCheckbox', slot.dataset.check);
+
   // add callbacks
   EDITOR_WINDOW.querySelector('#editorBtnDelete').onclick = e => deleteArtifactCallback(e, owner, piece);
   EDITOR_WINDOW.querySelector('#editorBtnConfirm').onclick = e => confirmArtifactEditCallback(e, owner, piece);
@@ -309,7 +324,7 @@ export const createExportWindow = (ARTIFACT_DATA, closeExportWindowCallback) => 
             <h3>Export Artifact Data</h3>
           </div>
           <div class="Schedule_taskCreatorContent__3tCoD" style="padding: 0 10px 15px;">
-            ${createSection(null, 'exportDataField', 'Export Data', null, ARTIFACT_DATA).outerHTML}
+            ${createSection(null, 'exportDataField', 'Export Data', null).outerHTML}
             <div>
               <div class="Schedule_buttonsWrapper__fdOV_">
                 <button id="closeButton">Close</button>
@@ -320,6 +335,9 @@ export const createExportWindow = (ARTIFACT_DATA, closeExportWindowCallback) => 
       </div>
     </div>
   `;
+  // set export field value
+  setInputValue(EXPORT_WINDOW, '#exportDataField', ARTIFACT_DATA);
+
   // add callback
   EXPORT_WINDOW.querySelector('#closeButton').onclick = e => closeExportWindowCallback(e);
 
