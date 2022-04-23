@@ -1,12 +1,10 @@
-import {
-  createSlot,
-  createArtifactEditor,
-  createTooltipBoxWrapper,
-  createArtifactHidingButton,
-  createExportImportSection,
-  createExtensionSettingsSection,
-  createExportWindow,
-} from './elementManager.js';
+import { createSlot } from './components/Slot.js';
+import { createExportWindow } from './components/ExportWindow.js';
+import { createTooltipBoxWrapper } from './components/HoverBox.js';
+import { createArtifactEditor } from './components/ArtifactEditor.js';
+import { createExportImportSection } from './components/ExportImportSection.js';
+import { createArtifactHidingButton } from './components/ArtifactHidingButton.js';
+import { createExtensionSettingsSection } from './components/ExtensionSettingsSection.js';
 
 const CHAR_LIST = '.Farm_itemList__EgRFB';
 const CHAR_IMAGE = '.ItemPanel_itemImage__ndELA > div';
