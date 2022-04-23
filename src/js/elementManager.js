@@ -193,48 +193,30 @@ export const createArtifactHidingButton = function (panel, character, callback) 
 // options_window:        div#options element
 // importCallback:        importArtifactData function in content.js
 // exportCallback:        exportArtifactData function in content.js
-export const addExportImportToOptionsWindow = function (options_window, importCallback, exportCallback) {
-  const OPTION_SECTION =
-    document.createElement('div');
-    OPTION_SECTION.classList.add('PlannerOptions_section__y90n3');
+export const createExportImportSection = function (importCallback, exportCallback) {
+  const OPTION_SECTION = document.createElement('div');
+  OPTION_SECTION.classList.add('PlannerOptions_section__y90n3');
 
-  const WRAPPER =
-    document.createElement('div');
-    WRAPPER.classList.add('Radio_radio__t_pCN');
-    OPTION_SECTION.appendChild(WRAPPER);
+  OPTION_SECTION.innerHTML = `
+    <div class="Radio_radio__t_pCN">
+      <div class="Radio_radioLabel__FlU7k">
+        Extension Setting: Import / Export Artifact Data
+      </div>
+      <div class="Radio_options__vJPry import_export_wrapper" style="max-width: 440px;">
+        <div id="importData" class="Radio_option__6A9gc" title="Import Data">
+          <div class="Radio_selected__oB7Tk" style="visibility: visible; opacity: 1; transform-origin: 50% 50% 0px;"></div>
+          Import Data
+        </div>
+        <div id="exportData" class="Radio_option__6A9gc" title="Export Data">Export Data</div>
+      </div>
+    </div>
+  `;
 
-  const title =
-    document.createElement('div');
-    title.classList.add('Radio_radioLabel__FlU7k');
-    title.innerHTML = "Extension Setting: Import / Export Artifact Data";
-    WRAPPER.appendChild(title);
+  // add callbacks
+  OPTION_SECTION.querySelector('#importData').onclick = () => importCallback();
+  OPTION_SECTION.querySelector('#exportData').onclick = () => exportCallback();
 
-  const button_wrapper =
-    document.createElement('div');
-    button_wrapper.classList.add('Radio_options__vJPry', 'import_export_wrapper');
-    button_wrapper.style = 'max-width: 440px';
-    WRAPPER.appendChild(button_wrapper);
-
-  const import_button =
-    document.createElement('button');
-    import_button.classList.add('Radio_option__6A9gc');
-    import_button.title = "Import Data";
-    import_button.onclick = () => importCallback();
-    import_button.innerHTML =
-      `<div class="${'Radio_selected__oB7Tk'}" style='visibility: visible; opacity: 1;` +
-      "transform-origin: 50% 50% 0px;'></div>" +
-      "Import Data";
-    button_wrapper.appendChild(import_button);
-
-  const export_button =
-    document.createElement('button');
-    export_button.classList.add('Radio_option__6A9gc');
-    export_button.title = "Export Data";
-    export_button.onclick = () => exportCallback();
-    export_button.innerHTML = "Export Data";
-    button_wrapper.appendChild(export_button);
-
-  options_window.querySelector('.PlannerOptions_content__kBajJ').appendChild(OPTION_SECTION);
+  return OPTION_SECTION;
 };
 
 // options_menu:          the dropdown Options-list
@@ -351,7 +333,7 @@ export const createExportWindow = function (ARTIFACT_DATA, closeExportWindowCall
     schedule_content.style.padding = '0 10px 15px';
     schedule_creator.appendChild(schedule_content);
 
-    schedule_content.appendChild(createSection(null, 'exportDataField', 'Export Data', null, ARTIFACT_DATA.replaceAll('"', "'")));
+    schedule_content.appendChild(createSection(null, 'exportDataField', 'Export Data', null, ARTIFACT_DATA));
 
     const close_button =
       document.createElement('div');

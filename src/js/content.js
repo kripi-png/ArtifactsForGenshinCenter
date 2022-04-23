@@ -3,7 +3,7 @@ import {
   createArtifactEditor,
   createTooltipBoxWrapper,
   createArtifactHidingButton,
-  addExportImportToOptionsWindow,
+  createExportImportSection,
   createExtensionSettingsSection,
   createExportWindow,
 } from './elementManager.js';
@@ -73,7 +73,10 @@ const main = async function () {
         // console.log(addedNode);
         // console.log(addedNode.classList);
         if ( addedNode.id === 'options' ) {
-          addExportImportToOptionsWindow(addedNode, importArtifactData, exportArtifactData);
+          const options_window = addedNode;
+          options_window
+            .querySelector('.PlannerOptions_content__kBajJ')
+            .appendChild(createExportImportSection(importArtifactData, exportArtifactData));
         }
         // quick menu
         else if ( addedNode.classList.contains(OPTIONS_MENU)) {
@@ -184,7 +187,6 @@ const importArtifactData = function () {
 
 const exportArtifactData = function () {
   const data = JSON.stringify(ARTIFACT_DATA);
-  console.log(data);
   createExportWindow(data, closeExportWindow);
 };
 
