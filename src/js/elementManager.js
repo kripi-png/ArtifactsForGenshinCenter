@@ -83,10 +83,10 @@ export const createArtifactEditor = (
   owner, piece,
   confirmArtifactEditCallback, deleteArtifactCallback
 ) => {
-  const WINDOW = document.createElement('div');
-  WINDOW.id = 'artifactEdit';
-  WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
-  WINDOW.innerHTML = `
+  const EDITOR_WINDOW = document.createElement('div');
+  EDITOR_WINDOW.id = 'artifactEdit';
+  EDITOR_WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
+  EDITOR_WINDOW.innerHTML = `
     <div class="Window_window__0zdsm" style="opacity: 1;"></div>
     <div class="Window_center__oA34u">
       <div class="Window_modal__2s0yi" style="opacity: 1; pointer-events: all;">
@@ -114,10 +114,10 @@ export const createArtifactEditor = (
     </div>
   `;
   // add callbacks
-  WINDOW.querySelector('#editorBtnDelete').onclick = e => deleteArtifactCallback(e, owner, piece);
-  WINDOW.querySelector('#editorBtnConfirm').onclick = e => confirmArtifactEditCallback(e, owner, piece);
+  EDITOR_WINDOW.querySelector('#editorBtnDelete').onclick = e => deleteArtifactCallback(e, owner, piece);
+  EDITOR_WINDOW.querySelector('#editorBtnConfirm').onclick = e => confirmArtifactEditCallback(e, owner, piece);
 
-  return WINDOW;
+  return EDITOR_WINDOW;
 };
 
 // slot:                 hovered artifact
