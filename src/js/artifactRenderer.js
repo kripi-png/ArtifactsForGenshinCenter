@@ -80,7 +80,6 @@ export const loadAndCreateAllArtifacts = function () {
 // uses custom data attribute data-character to find
 // and return a specific artifact slot of a character
 export const getArtifactSlotByOwner = function (character, slot) {
-  console.log(slot);
   // fails e.g. when character has been removed but artifact data still exists
   try {
     // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
