@@ -1,16 +1,15 @@
-import { createSlot } from './components/Slot.js';
-import { createExportWindow } from './components/ExportWindow.js';
-import { createTooltipBoxWrapper } from './components/HoverBox.js';
-import { createArtifactEditor } from './components/ArtifactEditor.js';
-import { createExportImportSection } from './components/ExportImportSection.js';
-import { createArtifactHidingButton } from './components/ArtifactHidingButton.js';
-import { createExtensionSettingsSection } from './components/ExtensionSettingsSection.js';
+import { Slot } from './components/Slot.js';
+import { ArtifactPopup } from './components/ArtifactPopup.js';
+import { ArtifactEditor } from './components/ArtifactEditor.js';
+import { ExportWindow } from './components/ExportWindow.js';
+import { ExportImportSection } from './components/ExportImportSection.js';
+import { ArtifactHidingButton } from './components/ArtifactHidingButton.js';
+import { ExtensionSettingsSection } from './components/ExtensionSettingsSection.js';
 
 const CHAR_LIST = '.Farm_itemList__EgRFB';
 const CHAR_IMAGE = '.ItemPanel_itemImage__ndELA > div';
 const CHAR_NAME_ELEM = '.ItemPanel_itemName__jxpO4 > p';
 const CHAR_PANEL = '.ItemPanel_itemContent__M9oCy';
-const OPTIONS_MENU = '.PlannerOptions_options__t3nvI';
 const MUTATION_OPT_QUICK_MENU = '.Farm_sideBar__yXGVR';
 const BUTTON_BAR_BUTTON_CLASS = '.HideArtifactsButton';
 
@@ -51,14 +50,16 @@ const main = async function () {
                         : CHECKMARK_VALUES.on;
   // mutation observer cannot track elements created before
   // it's been initialized so the function must be called once on startup
-  const options_menu = document.querySelector(OPTIONS_MENU);
-  createExtensionSettingsSection(
-    options_menu,
+  const OPTIONS_MENU = document.querySelector('.PlannerOptions_options__t3nvI');
+  const OPTIONS_SECTION_LIST = OPTIONS_MENU.querySelector('.PlannerOptions_optionContent__2_jPR');
+  const SETTINGS_SECTION = ExtensionSettingsSection(
     hideAllArtifactsToggle,
     currentCheckmarkValues,
     importArtifactData,
     exportArtifactData
   );
+  // last element is the More Options button
+  OPTIONS_SECTION_LIST.insertBefore(SETTINGS_SECTION, OPTIONS_SECTION_LIST.lastElementChild);
 
   // MutationObserver is used to monitor when
   // a) the user opens the options window
@@ -74,20 +75,22 @@ const main = async function () {
           const options_window = addedNode;
           options_window
             .querySelector('.PlannerOptions_content__kBajJ')
-            .appendChild(createExportImportSection(importArtifactData, exportArtifactData));
+            .appendChild(ExportImportSection(importArtifactData, exportArtifactData));
         }
         // quick menu
-        else if ( addedNode.classList.contains(OPTIONS_MENU)) {
-          // options_menu element does not exist until
+        else if ( addedNode.classList.contains('PlannerOptions_options__t3nvI')) {
+          // OPTIONS_MENU element does not exist until
           // quick menu is created thus it has to be (re)defined here
-          const options_menu = document.querySelector(OPTIONS_MENU);
-          createExtensionSettingsSection(
-            options_menu,
+          const OPTIONS_MENU = document.querySelector('.PlannerOptions_options__t3nvI');
+          const OPTIONS_SECTION_LIST = OPTIONS_MENU.querySelector('.PlannerOptions_optionContent__2_jPR');
+          const SETTINGS_SECTION = ExtensionSettingsSection(
             hideAllArtifactsToggle,
             currentCheckmarkValues,
             importArtifactData,
             exportArtifactData
           );
+          // last element is the More Options button
+          OPTIONS_SECTION_LIST.insertBefore(SETTINGS_SECTION, OPTIONS_SECTION_LIST.lastElementChild);
         }
       });
     });
@@ -185,7 +188,8 @@ const importArtifactData = function () {
 
 const exportArtifactData = function () {
   const data = JSON.stringify(ARTIFACT_DATA);
-  createExportWindow(data, closeExportWindow);
+  const EXPORT_WINDOW = ExportWindow(data, closeExportWindow);
+  document.body.appendChild(EXPORT_WINDOW);
 };
 
 const closeExportWindow = function () {
@@ -205,11 +209,11 @@ const createSlotsForPanel = function (panel) {
   wrapperDiv.dataset.character = panel.querySelector(CHAR_NAME_ELEM).innerHTML.toLowerCase().replaceAll(' ', '-');
   wrapperDiv.classList.add('artifactSlotsWrapper');
 
-  wrapperDiv.appendChild(createSlot('flower', openArtifactEditor));
-  wrapperDiv.appendChild(createSlot('plume', openArtifactEditor));
-  wrapperDiv.appendChild(createSlot('sands', openArtifactEditor));
-  wrapperDiv.appendChild(createSlot('goblet', openArtifactEditor));
-  wrapperDiv.appendChild(createSlot('circlet', openArtifactEditor));
+  wrapperDiv.appendChild(Slot('flower', openArtifactEditor));
+  wrapperDiv.appendChild(Slot('plume', openArtifactEditor));
+  wrapperDiv.appendChild(Slot('sands', openArtifactEditor));
+  wrapperDiv.appendChild(Slot('goblet', openArtifactEditor));
+  wrapperDiv.appendChild(Slot('circlet', openArtifactEditor));
 
   panel.querySelector(CHAR_PANEL).appendChild(wrapperDiv);
 };
@@ -219,7 +223,7 @@ const openArtifactEditor = function (event) {
   const artifactOwner = getArtifactSlotOwner(targetArtifactSlot).toLowerCase();
   const artifactType = getArtifactSlotType(targetArtifactSlot);
 
-  const editWindow = createArtifactEditor(targetArtifactSlot, ARTIFACT_SET_NAMES,
+  const editWindow = ArtifactEditor(targetArtifactSlot, ARTIFACT_SET_NAMES,
                                             artifactOwner, artifactType,
                                             confirmArtifactEdit, deleteArtifact);
 
@@ -315,25 +319,6 @@ const loadArtifact = function (character, slot) {
   };
 };
 
-const createAllArtifactHidingButtons = function () {
-  getAllCharacterPanels().forEach( panel => {
-    // get owner's name to be stored into dataset for later
-    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
-    const owner = panel.querySelector(CHAR_NAME_ELEM).innerHTML.toLowerCase().replaceAll(' ', '-');
-    createArtifactHidingButton(panel, owner, hidingButtonCallback);
-  });
-};
-
-const hidingButtonCallback = function (e) {
-  // e.target is div.CircleButton_inner__'something' so get the div element
-  const button = e.target.parentNode.parentNode;
-  // find the artifact slot wrapper by the character name stored in the button div element
-  const character = e.target.parentNode.parentNode.dataset.character;
-  const slotWrapper = document .querySelector(`.artifactSlotsWrapper[data-character=${character}]`);
-  // ARTIFACT_DATA doesn't use hypens in character names (yet) so replace them
-  hideArtifacts(button, slotWrapper, button.dataset.character.replaceAll('-', ' '));
-};
-
 const hideArtifacts = function (button, slotWrapper, character) {
   if (slotWrapper.classList.contains('disabled')) {
     button.title = "Hide Artifacts";
@@ -349,10 +334,41 @@ const hideArtifacts = function (button, slotWrapper, character) {
   saveToStorage('userArtifactData', ARTIFACT_DATA);
 };
 
+const hidingButtonCallback = function (e) {
+  // e.target is div.CircleButton_inner__'something' so get the div element
+  const button = e.target.parentNode.parentNode;
+  // find the artifact slot wrapper by the character name stored in the button div element
+  const character = e.target.parentNode.parentNode.dataset.character;
+  const slotWrapper = document.querySelector(`.artifactSlotsWrapper[data-character=${character}]`);
+  // ARTIFACT_DATA doesn't use hypens in character names (yet) so replace them
+  hideArtifacts(button, slotWrapper, button.dataset.character.replaceAll('-', ' '));
+};
+
+const createAllArtifactHidingButtons = function () {
+  getAllCharacterPanels().forEach( panel => {
+    // get owner's name to be stored into dataset for later
+    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
+    const character = panel
+      .querySelector(CHAR_NAME_ELEM).innerHTML
+      .toLowerCase()
+      .replaceAll(' ', '-');
+
+    const disabled = panel
+      .querySelector(`.artifactSlotsWrapper[data-character=${character}]`).classList
+      .contains('disabled');
+
+    const BUTTON_BAR = panel.querySelector('.ItemPanel_item__6lLWZ');
+    const ACTIVE_BUTTON = BUTTON_BAR.querySelector('div[title=Active]');
+    const HIDING_BUTTON = ArtifactHidingButton(disabled, character, hidingButtonCallback);
+    // insert artifact hiding button before the active button
+    BUTTON_BAR.insertBefore( HIDING_BUTTON, ACTIVE_BUTTON );
+  });
+};
+
 const createHoverPopup = function (event, slot, set, piece) {
   const { x, y } = calculatePopupLocation(slot);
 
-  const tooltipBox = createTooltipBoxWrapper(slot, x, y, set, piece);
+  const tooltipBox = ArtifactPopup(slot, x, y, set, piece);
   document.body.appendChild(tooltipBox);
 };
 

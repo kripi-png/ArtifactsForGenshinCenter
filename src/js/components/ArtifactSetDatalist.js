@@ -1,4 +1,4 @@
-export const createArtifactSetDatalist = ARTIFACT_SET_NAMES => {
+export const ArtifactSetDatalist = ARTIFACT_SET_NAMES => {
   const datalist = document.createElement('datalist');
   datalist.id = 'artifactSelectorDatalist';
 

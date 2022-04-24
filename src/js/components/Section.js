@@ -1,9 +1,9 @@
-import { createArtifactSetDatalist } from './ArtifactSetDatalist.js';
+import { ArtifactSetDatalist } from './ArtifactSetDatalist.js';
 
 // ARTIFACT_SET_NAMES:  list of all artifact sets available
 // inputType:           used to create the input field
 // sectionName:         title for the input field
-export const createSection = (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder) => {
+export const Section = (ARTIFACT_SET_NAMES, inputType, sectionName, placeholder) => {
   const SECTION = document.createElement('div');
   SECTION.classList.add('Schedule_section__8Bf3I');
   SECTION.innerHTML = `
@@ -34,7 +34,7 @@ export const createSection = (ARTIFACT_SET_NAMES, inputType, sectionName, placeh
     INPUT_FIELD.setAttribute('maxlength', '40');
     // datalist contains all possible artifact sets as options
     // and is inserted next to the artifact set input
-    INPUT_INPUT.appendChild(createArtifactSetDatalist(ARTIFACT_SET_NAMES));
+    INPUT_INPUT.appendChild(ArtifactSetDatalist(ARTIFACT_SET_NAMES));
   }
 
   // checkbox (Obtained)

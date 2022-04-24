@@ -1,7 +1,7 @@
 // options_window:        div#options element
 // importCallback:        importArtifactData function in content.js
 // exportCallback:        exportArtifactData function in content.js
-export const createExportImportSection = (importCallback, exportCallback) => {
+export const ExportImportSection = (importCallback, exportCallback) => {
   const OPTION_SECTION = document.createElement('div');
   OPTION_SECTION.classList.add('PlannerOptions_section__y90n3');
 

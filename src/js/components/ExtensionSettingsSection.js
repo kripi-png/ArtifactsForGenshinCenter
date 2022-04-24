@@ -1,17 +1,12 @@
-// options_menu:          the dropdown Options-list
 // toggleCallback:        hideAllArtifactsToggle function in content.js
-// hideAllCheckboxValues: values for the stroke-dasharray attribute
-export const createExtensionSettingsSection = (
-  options_menu, toggleCallback,
-  hideAllCheckboxValues, importCallback, exportCallback
-) => {
-  console.log(options_menu);
+// checkmarkValues: values for the stroke-dasharray attribute
+export const ExtensionSettingsSection = ( toggleCallback, checkmarkValues, importCallback, exportCallback ) => {
   const STORE_LINK = "https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno";
   const GITHUB_LINK = "https://github.com/kripi-png/ArtifactsForGenshinCenter";
 
-  const EXTENSION_SETTINGS = document.createElement('div');
-  EXTENSION_SETTINGS.classList.add('PlannerOptions_quickSection__pWVYz');
-  EXTENSION_SETTINGS.innerHTML = `
+  const EXTENSION_SETTINGS_SECTION = document.createElement('div');
+  EXTENSION_SETTINGS_SECTION.classList.add('PlannerOptions_quickSection__pWVYz');
+  EXTENSION_SETTINGS_SECTION.innerHTML = `
     <div class="${'PlannerOptions_titleWrapper__pAkcp'}">Extension Settings</div>
     <div class="${'Checkbox_checkbox__yM8Z5'}">
       <div class="${'Checkbox_buttonWrapper__P_Q_b'}">
@@ -52,18 +47,16 @@ export const createExtensionSettingsSection = (
   `;
 
   // add callbacks
-  EXTENSION_SETTINGS.querySelector('#importButton').onclick = () => importCallback();
-  EXTENSION_SETTINGS.querySelector('#exportButton').onclick = () => exportCallback();
-  EXTENSION_SETTINGS.querySelector('button').onclick = () => toggleCallback();
+  EXTENSION_SETTINGS_SECTION.querySelector('#importButton').onclick = () => importCallback();
+  EXTENSION_SETTINGS_SECTION.querySelector('#exportButton').onclick = () => exportCallback();
+  EXTENSION_SETTINGS_SECTION.querySelector('button').onclick = () => toggleCallback();
 
   // set the dasharray attribute afterwards as for some reason it
   // turns to <path stroke-dasharray='0x' [rest as attribute key]>
   // because of the space
-  EXTENSION_SETTINGS
+  EXTENSION_SETTINGS_SECTION
     .querySelector('.' + 'Checkbox_checkmarkCheck__ZKcSz')
-    .setAttribute('stroke-dasharray', hideAllCheckboxValues);
+    .setAttribute('stroke-dasharray', checkmarkValues);
 
-  // last element is the More Options button
-  const options_content = options_menu.querySelector('.PlannerOptions_optionContent__2_jPR');
-  options_content.insertBefore(EXTENSION_SETTINGS, options_content.lastElementChild);
+  return EXTENSION_SETTINGS_SECTION;
 };
