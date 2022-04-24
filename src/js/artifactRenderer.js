@@ -57,11 +57,6 @@ const createAllArtifactHidingButtons = function () {
   });
 };
 
-// create artifact slot elements for each character
-const createAllSlots = function () {
-  getAllCharacterPanels().forEach( panel => createSlotsForPanel(panel) );
-};
-
 export const loadAndCreateAllArtifacts = function () {
   createAllSlots();
   createAllArtifactHidingButtons();
@@ -80,6 +75,78 @@ export const loadAndCreateAllArtifacts = function () {
       }
     );
   }
+};
+
+// uses custom data attribute data-character to find
+// and return a specific artifact slot of a character
+export const getArtifactSlotByOwner = function (character, slot) {
+  console.log(slot);
+  // fails e.g. when character has been removed but artifact data still exists
+  try {
+    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
+    return document
+      .querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`)
+      .querySelector(`.${slot}Slot`);
+  } catch (e) {
+    return false;
+  }
+};
+
+export const loadArtifact = function (character, slotType) {
+  const pieceIndex = { flower: 0, plume: 1, sands: 2, goblet: 3, circlet: 4 };
+
+  // if artifacts are disabled for a character
+  // add a class to the slot panel
+  if (ARTIFACT_DATA[character]['disabled']) {
+    const _slot = getArtifactSlotByOwner(character, 'plume');
+    // optional chaining is not possible as it is
+    // not currently supported by minifier APIs
+    if (_slot.parentNode && _slot.parentNode.classList ) {
+      _slot.parentNode.classList.add('disabled');
+    }
+  }
+
+  const slot = getArtifactSlotByOwner(character, slotType);
+  if (!slot) { return; }
+
+  const type = getArtifactSlotType(slot);
+  const set = ARTIFACT_DATA[character][type] ? ARTIFACT_DATA[character][type]['set'] : '';
+  if (!set) { return; } // if no set is selected, abort
+
+  const [piece, image] = DATASET[set][pieceIndex[type]];
+  const main = ARTIFACT_DATA[character][type]['main'];
+  const sub = ARTIFACT_DATA[character][type]['sub'];
+  const check = ARTIFACT_DATA[character][type]['check'];
+
+  slot.style.backgroundImage = `url(https://i.imgur.com/${image}.png)`;
+  slot.dataset.set = set;
+  slot.dataset.main = main;
+  slot.dataset.sub = sub;
+  slot.dataset.check = check;
+
+  if (check) {
+    slot.classList.add('check');
+  } else {
+    slot.classList.remove('check');
+  }
+
+  slot.onmouseover = e => createHoverPopup(e, slot, set, piece);
+  slot.onmouseleave = () => {
+    // wrapper_window is the the wrapper for the actual pop up
+    const wrapper_window = document.querySelector('#artifactTooltipWindow');
+    // parentNode is <body>
+    wrapper_window.parentNode.removeChild(wrapper_window);
+  };
+};
+
+const createHoverPopup = function (event, slot, set, piece) {
+  const HOVER_POPUP = ArtifactPopup(slot, set, piece);
+  document.body.appendChild(HOVER_POPUP);
+};
+
+// create artifact slot elements for each character
+const createAllSlots = function () {
+  getAllCharacterPanels().forEach( panel => createSlotsForPanel(panel) );
 };
 
 // remove artifacts and buttons
@@ -112,81 +179,4 @@ const getArtifactSlotOwner = function (slot) {
 // returns the type (plume, sands) of the artifact in a slot
 const getArtifactSlotType = function (slot) {
   return slot.classList.item(1).replace('Slot', '');
-};
-
-// uses custom data attribute data-character to find
-// and return a specific artifact slot of a character
-export const getArtifactSlotByOwner = function (character, slot) {
-  // fails e.g. when character has been removed but artifact data still exists
-  try {
-    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
-    return document
-      .querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`)
-      .querySelector(`.${slot}Slot`);
-  } catch (e) {
-    return false;
-  }
-};
-
-export const loadArtifact = function (character, slot) {
-  const pieceIndex = { flower: 0, plume: 1, sands: 2, goblet: 3, circlet: 4 };
-
-  if (ARTIFACT_DATA[character]['disabled']) {
-    let slot = getArtifactSlotByOwner(character, 'plume');
-    // optional chaining is not possible as it is
-    // not currently supported by minifier APIs
-    if (slot.parentNode && slot.parentNode.classList ) {
-      slot.parentNode.classList.add('disabled');
-    }
-  }
-
-  slot = getArtifactSlotByOwner(character, slot);
-  if (!slot) { return; }
-
-  const type = getArtifactSlotType(slot);
-  const set = ARTIFACT_DATA[character][type] ? ARTIFACT_DATA[character][type]['set'] : '';
-  if (!set) { return; } // if no set is selected, abort
-  const piece = DATASET[set][pieceIndex[type]][0];
-
-  const image = DATASET[set][pieceIndex[type]][1];
-  const main = ARTIFACT_DATA[character][type]['main'];
-  const sub = ARTIFACT_DATA[character][type]['sub'];
-  const check = ARTIFACT_DATA[character][type]['check'];
-
-  slot.style.backgroundImage = `url(https://i.imgur.com/${image}.png)`;
-  slot.dataset.set = set;
-  slot.dataset.main = main;
-  slot.dataset.sub = sub;
-  slot.dataset.check = check;
-
-  if (check) {
-    slot.classList.add('check');
-  } else {
-    slot.classList.remove('check');
-  }
-
-  slot.onmouseover = e => createHoverPopup(e, slot, set, piece);
-  slot.onmouseleave = () => {
-    // wrapper_window is the the wrapper for the actual pop up
-    const wrapper_window = document.querySelector('#artifactTooltipWindow');
-    // parentNode is <body>
-    wrapper_window.parentNode.removeChild(wrapper_window);
-  };
-};
-
-const createHoverPopup = function (event, slot, set, piece) {
-  const { x, y } = calculatePopupLocation(slot);
-
-  const tooltipBox = ArtifactPopup(slot, x, y, set, piece);
-  document.body.appendChild(tooltipBox);
-};
-
-// calculates the location of the hover pop up in relation to the hovered slot
-const calculatePopupLocation = function (slot) {
-  const rect = slot.getBoundingClientRect();
-
-  const x = rect.left + slot.getBoundingClientRect().width;
-  const y = rect.bottom - rect.height;
-
-  return { x, y };
 };

@@ -1,7 +1,17 @@
+// calculates the location of the hover pop up in relation to the hovered slot
+const calculatePopupLocation = function (slot) {
+  const rect = slot.getBoundingClientRect();
+  const x = rect.left + slot.getBoundingClientRect().width;
+  const y = rect.bottom - rect.height;
+
+  return { x, y };
+};
+
 // slot:                 hovered artifact
-// x, y:                 location for the popup window
 // set, piece:           names of the set and piece
-export const ArtifactPopup = (slot, loc_x, loc_y, setName, pieceName) => {
+export const ArtifactPopup = (slot, setName, pieceName) => {
+  const { loc_x, loc_y } = calculatePopupLocation(slot);
+
   const ICON_URL = slot.style.backgroundImage
     .replaceAll('"', '')
     .replace('url(', '')
