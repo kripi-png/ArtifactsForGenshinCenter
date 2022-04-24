@@ -6,13 +6,6 @@ import { ExportImportSection } from './components/ExportImportSection.js';
 import { ArtifactHidingButton } from './components/ArtifactHidingButton.js';
 import { ExtensionSettingsSection } from './components/ExtensionSettingsSection.js';
 
-const CHAR_LIST = '.Farm_itemList__EgRFB';
-const CHAR_IMAGE = '.ItemPanel_itemImage__ndELA > div';
-const CHAR_NAME_ELEM = '.ItemPanel_itemName__jxpO4 > p';
-const CHAR_PANEL = '.ItemPanel_itemContent__M9oCy';
-const MUTATION_OPT_QUICK_MENU = '.Farm_sideBar__yXGVR';
-const BUTTON_BAR_BUTTON_CLASS = '.HideArtifactsButton';
-
 // top level await is not (yet) supported by
 // javascript minifiers so the awaits are wrapped inside async
 let DATASET, ARTIFACT_SET_NAMES, ARTIFACT_DATA;
@@ -100,7 +93,7 @@ const main = async function () {
   // options window, opened manually
   observer.observe(document.querySelector('body'), config);
   // quick menu, accessible only on screens wide enough
-  observer.observe(document.querySelector(MUTATION_OPT_QUICK_MENU), config);
+  observer.observe(document.querySelector('.Farm_sideBar__yXGVR'), config);
 };
 
 // create all slots and buttons for hiding artifacts of a single character
@@ -130,7 +123,7 @@ const removeAllArtifacts = function () {
   [...document.querySelectorAll('.artifactSlotsWrapper')]
     .forEach( slots => slots.parentNode.removeChild(slots) );
   // remove all invidual disable buttons
-  [...document.querySelectorAll(BUTTON_BAR_BUTTON_CLASS)]
+  [...document.querySelectorAll('.HideArtifactsButton')]
     .forEach( buttons => buttons.parentNode.removeChild(buttons) );
 };
 
@@ -206,7 +199,7 @@ const createAllSlots = function () {
 const createSlotsForPanel = function (panel) {
   const wrapperDiv = document.createElement('div');
   // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
-  wrapperDiv.dataset.character = panel.querySelector(CHAR_NAME_ELEM).innerHTML.toLowerCase().replaceAll(' ', '-');
+  wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML.toLowerCase().replaceAll(' ', '-');
   wrapperDiv.classList.add('artifactSlotsWrapper');
 
   wrapperDiv.appendChild(Slot('flower', openArtifactEditor));
@@ -215,7 +208,7 @@ const createSlotsForPanel = function (panel) {
   wrapperDiv.appendChild(Slot('goblet', openArtifactEditor));
   wrapperDiv.appendChild(Slot('circlet', openArtifactEditor));
 
-  panel.querySelector(CHAR_PANEL).appendChild(wrapperDiv);
+  panel.querySelector('.ItemPanel_itemContent__M9oCy').appendChild(wrapperDiv);
 };
 
 const openArtifactEditor = function (event) {
@@ -349,7 +342,7 @@ const createAllArtifactHidingButtons = function () {
     // get owner's name to be stored into dataset for later
     // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
     const character = panel
-      .querySelector(CHAR_NAME_ELEM).innerHTML
+      .querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML
       .toLowerCase()
       .replaceAll(' ', '-');
 
@@ -395,7 +388,7 @@ function loadFromStorage (name) {
 
 // returns the character name from the title element of a {slot}
 const getArtifactSlotOwner = function (slot) {
-  return slot.parentNode.parentNode.parentNode.querySelector(CHAR_NAME_ELEM).innerHTML;
+  return slot.parentNode.parentNode.parentNode.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML;
 };
 
 // returns the type (plume, sands) of the artifact in a slot
@@ -404,13 +397,13 @@ const getArtifactSlotType = function (slot) {
 };
 
 const getAllCharacterPanels = function () {
-  return [...document.querySelector(CHAR_LIST).children].filter( panel => !isWeapon(panel) );
+  return [...document.querySelector('.Farm_itemList__EgRFB').children].filter( panel => !isWeapon(panel) );
 };
 
 // returns whether {panel} is a weapon by checking the source of the panel's image
 // e.g. src='/images/weapons/regular/Deathmatch.png'
 const isWeapon = function (panel) {
-  return panel.querySelector(CHAR_IMAGE).style.backgroundImage.includes('weapons');
+  return panel.querySelector('.ItemPanel_itemImage__ndELA > div').style.backgroundImage.includes('weapons');
 };
 
 // uses custom data attribute data-character to find
@@ -446,7 +439,7 @@ async function getDataset () {
 // called from content_script.js
 export function waitForPageToLoad () {
   const waitForCharacterList = setInterval(function () {
-    if ( document.querySelector(CHAR_LIST + '> div') ) {
+    if ( document.querySelector('.Farm_itemList__EgRFB > div') ) {
       clearInterval(waitForCharacterList);
       console.log("Character list loaded!");
 
