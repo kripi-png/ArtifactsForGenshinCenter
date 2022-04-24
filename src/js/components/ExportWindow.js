@@ -36,7 +36,7 @@ export const ExportWindow = ARTIFACT_DATA => {
   setInputValue(EXPORT_WINDOW, '#exportDataField', ARTIFACT_DATA);
 
   // add callback
-  EXPORT_WINDOW.querySelector('#closeButton').onclick = e => closeExportWindow();
+  EXPORT_WINDOW.querySelector('#closeButton').onclick = () => closeExportWindow();
 
   return EXPORT_WINDOW;
 };

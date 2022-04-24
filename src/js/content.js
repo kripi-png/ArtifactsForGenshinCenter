@@ -3,16 +3,11 @@ import { ExtensionSettingsSection } from './components/ExtensionSettingsSection.
 
 import {
   DATASET,
-  ARTIFACT_SET_NAMES,
   ARTIFACT_DATA,
   loadArtifactData,
-  saveToLocalStorage,
 } from './dataManager.js';
 
-import {
-  loadAndCreateAllArtifacts,
-  loadArtifact,
-} from './artifactRenderer.js';
+import { loadAndCreateAllArtifacts } from './artifactRenderer.js';
 
 const main = async function () {
   await loadArtifactData();

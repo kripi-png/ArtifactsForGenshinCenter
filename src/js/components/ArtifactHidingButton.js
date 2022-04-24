@@ -39,7 +39,14 @@ export const ArtifactHidingButton = (disabled, character) => {
   const SLOT_WRAPPER = document.querySelector(`.artifactSlotsWrapper[data-character=${character}]`);
 
   // add callbacks
-  HIDING_BUTTON.querySelector('button').onclick = e => hideArtifacts(HIDING_BUTTON, SLOT_WRAPPER, character.replaceAll('-', ' '), disabled);
+  HIDING_BUTTON.querySelector('button')
+  .onclick = () =>
+    hideArtifacts(
+      HIDING_BUTTON,
+      SLOT_WRAPPER,
+      character.replaceAll('-', ' '),
+      disabled
+    );
   // not quite sure why but without this the button stays focused and
   // won't disappear when panel is unhovered
   HIDING_BUTTON.onmousedown = e => e.preventDefault();
