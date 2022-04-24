@@ -6,21 +6,16 @@ import { ExportImportSection } from './components/ExportImportSection.js';
 import { ArtifactHidingButton } from './components/ArtifactHidingButton.js';
 import { ExtensionSettingsSection } from './components/ExtensionSettingsSection.js';
 
+import {
+  DATASET,
+  ARTIFACT_SET_NAMES,
+  ARTIFACT_DATA,
+  loadArtifactData,
+  saveToLocalStorage
+} from './dataManager.js';
+
 // top level await is not (yet) supported by
 // javascript minifiers so the awaits are wrapped inside async
-let DATASET, ARTIFACT_SET_NAMES, ARTIFACT_DATA;
-const loadArtifactData = async function () {
-  DATASET = await getDataset();
-  ARTIFACT_SET_NAMES = Object.keys(DATASET);
-  ARTIFACT_DATA = await loadFromStorage('userArtifactData') || {};
-
-  // define __DISABLED attribute if not done previously
-  // used to disable/enable ALL artifacts, toggled via checkbox in options menu
-  if ( !ARTIFACT_DATA['__DISABLED'] ) {
-    ARTIFACT_DATA['__DISABLED'] = false;
-  }
-};
-
 // used to draw the Show all artifacts checkbox in options menu
 const CHECKMARK_VALUES = {
   on: '32.526912689208984px 32.526912689208984px',
@@ -148,10 +143,10 @@ const hideAllArtifactsToggle = function () {
     loadAndCreateAllArtifacts();
   }
 
-  saveToStorage('userArtifactData', ARTIFACT_DATA);
+  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
 };
 
-const importArtifactData = function () {
+export const importArtifactData = () => {
   let data = window.prompt("Copy and paste the data here:");
   // if user presses cancel
   if ( data === null ) { return; }
@@ -169,7 +164,7 @@ const importArtifactData = function () {
     if (!confirmation) { return; }
 
     // override previous artifacts in the local storage, then reload the page
-    saveToStorage('userArtifactData', data);
+    saveToLocalStorage('userArtifactData', data);
     window.alert("Artifact data imported! The webpage will now reload.");
     window.location.reload();
   } catch (e) {
@@ -179,7 +174,7 @@ const importArtifactData = function () {
   }
 };
 
-const exportArtifactData = function () {
+export const exportArtifactData = () => {
   const data = JSON.stringify(ARTIFACT_DATA);
   const EXPORT_WINDOW = ExportWindow(data, closeExportWindow);
   document.body.appendChild(EXPORT_WINDOW);
@@ -232,7 +227,7 @@ const confirmArtifactEdit = function (event, owner, type) {
   if (!ARTIFACT_DATA[owner]) { ARTIFACT_DATA[owner] = {}; }
   ARTIFACT_DATA[owner][type] = { set: set, main: main, sub: sub, check: check };
 
-  saveToStorage('userArtifactData', ARTIFACT_DATA);
+  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
   loadArtifact(owner, type);
 
   const editor = document.querySelector('#artifactEdit');
@@ -259,7 +254,7 @@ const deleteArtifact = function (event, owner, type) {
 
   console.log(ARTIFACT_DATA[owner]);
 
-  saveToStorage('userArtifactData', ARTIFACT_DATA);
+  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
   loadArtifact(owner, type);
 
   const editor = document.querySelector('#artifactEdit');
@@ -312,31 +307,6 @@ const loadArtifact = function (character, slot) {
   };
 };
 
-const hideArtifacts = function (button, slotWrapper, character) {
-  if (slotWrapper.classList.contains('disabled')) {
-    button.title = "Hide Artifacts";
-  } else {
-    button.title = "Show Artifacts";
-  }
-  slotWrapper.classList.toggle('disabled');
-
-  // make sure object for character exists
-  if (!ARTIFACT_DATA[character]) { ARTIFACT_DATA[character] = { disabled: false }; }
-  ARTIFACT_DATA[character]['disabled'] = !ARTIFACT_DATA[character]['disabled'];
-
-  saveToStorage('userArtifactData', ARTIFACT_DATA);
-};
-
-const hidingButtonCallback = function (e) {
-  // e.target is div.CircleButton_inner__'something' so get the div element
-  const button = e.target.parentNode.parentNode;
-  // find the artifact slot wrapper by the character name stored in the button div element
-  const character = e.target.parentNode.parentNode.dataset.character;
-  const slotWrapper = document.querySelector(`.artifactSlotsWrapper[data-character=${character}]`);
-  // ARTIFACT_DATA doesn't use hypens in character names (yet) so replace them
-  hideArtifacts(button, slotWrapper, button.dataset.character.replaceAll('-', ' '));
-};
-
 const createAllArtifactHidingButtons = function () {
   getAllCharacterPanels().forEach( panel => {
     // get owner's name to be stored into dataset for later
@@ -352,7 +322,7 @@ const createAllArtifactHidingButtons = function () {
 
     const BUTTON_BAR = panel.querySelector('.ItemPanel_item__6lLWZ');
     const ACTIVE_BUTTON = BUTTON_BAR.querySelector('div[title=Active]');
-    const HIDING_BUTTON = ArtifactHidingButton(disabled, character, hidingButtonCallback);
+    const HIDING_BUTTON = ArtifactHidingButton(disabled, character);
     // insert artifact hiding button before the active button
     BUTTON_BAR.insertBefore( HIDING_BUTTON, ACTIVE_BUTTON );
   });
@@ -364,27 +334,6 @@ const createHoverPopup = function (event, slot, set, piece) {
   const tooltipBox = ArtifactPopup(slot, x, y, set, piece);
   document.body.appendChild(tooltipBox);
 };
-
-function saveToStorage (name, data) {
-  chrome.storage.local.set({ [name]: JSON.stringify(data) });
-}
-
-function loadFromStorage (name) {
-  // chrome.storage.local.get cannot return anything unless
-  // it is wrapped inside a promise
-  return new Promise( resolve => {
-    chrome.storage.local.get([name], result => {
-      // if user uses the extension for the first time
-      // key doesn't exist and the extension would crash
-      if (!result[name]) {
-        resolve(false);
-        return;
-      }
-
-      resolve(JSON.parse(result[name]));
-    });
-  });
-}
 
 // returns the character name from the title element of a {slot}
 const getArtifactSlotOwner = function (slot) {
@@ -429,11 +378,6 @@ const calculatePopupLocation = function (slot) {
 
   return { x, y };
 };
-
-async function getDataset () {
-  const DATASET = await fetch(chrome.runtime.getURL('src/js/dataset.json'));
-  return DATASET.json();
-}
 
 // waits until the character list has loaded and then executes the main function
 // called from content_script.js
