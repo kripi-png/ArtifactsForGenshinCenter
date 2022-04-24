@@ -9,7 +9,7 @@ import {
 
 import { loadAndCreateAllArtifacts } from './artifactRenderer.js';
 
-const main = async function () {
+const main = async () => {
   await loadArtifactData();
   console.log(DATASET);
   console.log(ARTIFACT_DATA);

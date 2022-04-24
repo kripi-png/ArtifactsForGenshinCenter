@@ -1,15 +1,15 @@
 export let DATASET, ARTIFACT_SET_NAMES, ARTIFACT_DATA;
 
-async function loadDataset () {
+const loadDataset = async () => {
   const data = await fetch(chrome.runtime.getURL('src/js/dataset.json'));
   return data.json();
-}
+};
 
-export function saveToLocalStorage (name, data) {
+export const saveToLocalStorage = (name, data) => {
   chrome.storage.local.set({ [name]: JSON.stringify(data) });
-}
+};
 
-async function loadFromStorage (name) {
+const loadFromStorage = async name => {
   // chrome.storage.local.get cannot return anything unless
   // it is wrapped inside a promise
   return new Promise( resolve => {
@@ -24,9 +24,9 @@ async function loadFromStorage (name) {
       resolve(JSON.parse(result[name]));
     });
   });
-}
+};
 
-export async function loadArtifactData () {
+export const loadArtifactData = async () => {
   DATASET = await loadDataset();
   ARTIFACT_SET_NAMES = Object.keys(DATASET);
   ARTIFACT_DATA = await loadFromStorage('userArtifactData') || {};
@@ -36,4 +36,4 @@ export async function loadArtifactData () {
   if ( !ARTIFACT_DATA['__DISABLED'] ) {
     ARTIFACT_DATA['__DISABLED'] = false;
   }
-}
+};

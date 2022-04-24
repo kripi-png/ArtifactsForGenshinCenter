@@ -9,7 +9,7 @@ import {
   DATASET,
 } from './dataManager.js';
 
-const openArtifactEditor = function (event) {
+const openArtifactEditor =  event => {
   const targetArtifactSlot = event.target;
   const artifactOwner = getArtifactSlotOwner(targetArtifactSlot).toLowerCase();
   const artifactType = getArtifactSlotType(targetArtifactSlot);
@@ -21,7 +21,7 @@ const openArtifactEditor = function (event) {
 };
 
 // create all 5 artifact slots for a single {panel}
-const createSlotsForPanel = function (panel) {
+const createSlotsForPanel = panel => {
   const wrapperDiv = document.createElement('div');
   // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
   wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML.toLowerCase().replaceAll(' ', '-');
@@ -36,7 +36,7 @@ const createSlotsForPanel = function (panel) {
   panel.querySelector('.ItemPanel_itemContent__M9oCy').appendChild(wrapperDiv);
 };
 
-const createAllArtifactHidingButtons = function () {
+const createAllArtifactHidingButtons = () => {
   getAllCharacterPanels().forEach( panel => {
     // get owner's name to be stored into dataset for later
     // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
@@ -57,7 +57,7 @@ const createAllArtifactHidingButtons = function () {
   });
 };
 
-export const loadAndCreateAllArtifacts = function () {
+export const loadAndCreateAllArtifacts = () => {
   createAllSlots();
   createAllArtifactHidingButtons();
 
@@ -79,7 +79,7 @@ export const loadAndCreateAllArtifacts = function () {
 
 // uses custom data attribute data-character to find
 // and return a specific artifact slot of a character
-export const getArtifactSlotByOwner = function (character, slot) {
+export const getArtifactSlotByOwner = (character, slot) => {
   // fails e.g. when character has been removed but artifact data still exists
   try {
     // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
@@ -91,7 +91,7 @@ export const getArtifactSlotByOwner = function (character, slot) {
   }
 };
 
-export const loadArtifact = function (character, slotType) {
+export const loadArtifact = (character, slotType) => {
   const pieceIndex = { flower: 0, plume: 1, sands: 2, goblet: 3, circlet: 4 };
 
   // if artifacts are disabled for a character
@@ -138,18 +138,18 @@ export const loadArtifact = function (character, slotType) {
   };
 };
 
-const createHoverPopup = function (event, slot, set, piece) {
+const createHoverPopup = (event, slot, set, piece) => {
   const HOVER_POPUP = ArtifactPopup(slot, set, piece);
   document.body.appendChild(HOVER_POPUP);
 };
 
 // create artifact slot elements for each character
-const createAllSlots = function () {
+const createAllSlots = () => {
   getAllCharacterPanels().forEach( panel => createSlotsForPanel(panel) );
 };
 
 // remove artifacts and buttons
-export const removeAllArtifacts = function () {
+export const removeAllArtifacts = () => {
   [...document.querySelectorAll('.artifactSlotsWrapper')]
     .forEach( slots => slots.parentNode.removeChild(slots) );
   // remove all invidual disable buttons
@@ -157,25 +157,25 @@ export const removeAllArtifacts = function () {
     .forEach( buttons => buttons.parentNode.removeChild(buttons) );
 };
 
-export const getAllCharacterPanels = function () {
+export const getAllCharacterPanels = () => {
   return [...document.querySelector('.Farm_itemList__EgRFB').children]
     .filter( panel => !isWeapon(panel) );
 };
 
 // returns whether {panel} is a weapon by checking the source of the panel's image
 // e.g. src='/images/weapons/regular/Deathmatch.png'
-const isWeapon = function (panel) {
+const isWeapon = (panel) => {
   return panel
     .querySelector('.ItemPanel_itemImage__ndELA > div').style.backgroundImage
     .includes('weapons');
 };
 
 // returns the character name from the title element of a {slot}
-const getArtifactSlotOwner = function (slot) {
+const getArtifactSlotOwner = (slot) => {
   return slot.parentNode.parentNode.parentNode.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML;
 };
 
 // returns the type (plume, sands) of the artifact in a slot
-const getArtifactSlotType = function (slot) {
+const getArtifactSlotType = (slot) => {
   return slot.classList.item(1).replace('Slot', '');
 };
