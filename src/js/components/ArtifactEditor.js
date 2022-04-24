@@ -1,16 +1,68 @@
-import { setInputValue } from './helpers.js';
 import { Section } from './Section.js';
+import { setInputValue } from '../helpers.js';
+
+import {
+  ARTIFACT_DATA,
+  saveToLocalStorage,
+} from '../dataManager.js';
+
+import {
+  loadArtifact,
+  getArtifactSlotByOwner,
+} from '../artifactRenderer.js';
+
+const confirmArtifactEdit = function (event, owner, type) {
+  const set = document.querySelector('#selectArtifactInput').value;
+  const main = document.querySelector('#artifactMainStat').value;
+  const sub = document.querySelector('#artifactSubStat').value;
+  const check = document.querySelector('#artifactCheckbox').checked;
+
+  if (!ARTIFACT_DATA[owner]) { ARTIFACT_DATA[owner] = {}; }
+  ARTIFACT_DATA[owner][type] = { set: set, main: main, sub: sub, check: check };
+
+  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
+  loadArtifact(owner, type);
+
+  const editor = document.querySelector('#artifactEdit');
+  editor.parentNode.removeChild(editor); // delete the editor element once artifact is selected
+};
+
+const deleteArtifact = function (event, owner, type) {
+  if (ARTIFACT_DATA[owner]) {
+    delete ARTIFACT_DATA[owner][type];
+  }
+
+  const slot = getArtifactSlotByOwner(owner, type);
+  if (!slot) { return; }
+
+  slot.dataset.set = '';
+  slot.dataset.main = '';
+  slot.dataset.sub = '';
+  slot.dataset.check = '';
+  slot.style.backgroundImage = '';
+  slot.classList.remove('check');
+
+  slot.onmouseover = () => false;
+  slot.onmouseleave = () => false;
+
+  console.log(ARTIFACT_DATA[owner]);
+
+  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
+  loadArtifact(owner, type);
+
+  const editor = document.querySelector('#artifactEdit');
+  editor.parentNode.removeChild(editor); // delete the editor element once artifact is selected
+};
 
 // slot                 clicked artifact slot
 // ARTIFACT_SET_NAMES:  list of all artifact sets available
 // character:           character whose artifact was clicked
 // piece:               name of the piece that was clicked, e.g. plume
-// callback:            confirmArtifactEdit function in content.js
-export const ArtifactEditor = (slot, ARTIFACT_SET_NAMES, character, piece, confirmCallback, deleteCallback ) => {
+export const ArtifactEditor = (slot, ARTIFACT_SET_NAMES, character, piece ) => {
   const artifact_set = slot.dataset.set;
   const main_stat = slot.dataset.main;
   const sub_stat = slot.dataset.sub;
-  const checked = slot.dataset.sub;
+  const checked = slot.dataset.check;
 
   const EDITOR_WINDOW = document.createElement('div');
   EDITOR_WINDOW.id = 'artifactEdit';
@@ -50,8 +102,8 @@ export const ArtifactEditor = (slot, ARTIFACT_SET_NAMES, character, piece, confi
   setInputValue(EDITOR_WINDOW, '#artifactCheckbox', checked);
 
   // add callbacks
-  EDITOR_WINDOW.querySelector('#editorBtnDelete').onclick = e => deleteCallback(e, character, piece);
-  EDITOR_WINDOW.querySelector('#editorBtnConfirm').onclick = e => confirmCallback(e, character, piece);
+  EDITOR_WINDOW.querySelector('#editorBtnDelete').onclick = e => deleteArtifact(e, character, piece);
+  EDITOR_WINDOW.querySelector('#editorBtnConfirm').onclick = e => confirmArtifactEdit(e, character, piece);
 
   return EDITOR_WINDOW;
 };

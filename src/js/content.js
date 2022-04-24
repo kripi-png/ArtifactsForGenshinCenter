@@ -1,9 +1,4 @@
-import { Slot } from './components/Slot.js';
-import { ArtifactPopup } from './components/ArtifactPopup.js';
-import { ArtifactEditor } from './components/ArtifactEditor.js';
-import { ExportWindow } from './components/ExportWindow.js';
 import { ExportImportSection } from './components/ExportImportSection.js';
-import { ArtifactHidingButton } from './components/ArtifactHidingButton.js';
 import { ExtensionSettingsSection } from './components/ExtensionSettingsSection.js';
 
 import {
@@ -11,16 +6,13 @@ import {
   ARTIFACT_SET_NAMES,
   ARTIFACT_DATA,
   loadArtifactData,
-  saveToLocalStorage
+  saveToLocalStorage,
 } from './dataManager.js';
 
-// top level await is not (yet) supported by
-// javascript minifiers so the awaits are wrapped inside async
-// used to draw the Show all artifacts checkbox in options menu
-const CHECKMARK_VALUES = {
-  on: '32.526912689208984px 32.526912689208984px',
-  off: '0px 32.526912689208984px'
-};
+import {
+  loadAndCreateAllArtifacts,
+  loadArtifact,
+} from './artifactRenderer.js';
 
 const main = async function () {
   await loadArtifactData();
@@ -32,20 +24,11 @@ const main = async function () {
     loadAndCreateAllArtifacts();
   }
 
-  // decide which values to use for the check mark icon
-  const currentCheckmarkValues = ARTIFACT_DATA['__DISABLED']
-                        ? CHECKMARK_VALUES.off
-                        : CHECKMARK_VALUES.on;
   // mutation observer cannot track elements created before
   // it's been initialized so the function must be called once on startup
   const OPTIONS_MENU = document.querySelector('.PlannerOptions_options__t3nvI');
   const OPTIONS_SECTION_LIST = OPTIONS_MENU.querySelector('.PlannerOptions_optionContent__2_jPR');
-  const SETTINGS_SECTION = ExtensionSettingsSection(
-    hideAllArtifactsToggle,
-    currentCheckmarkValues,
-    importArtifactData,
-    exportArtifactData
-  );
+  const SETTINGS_SECTION = ExtensionSettingsSection();
   // last element is the More Options button
   OPTIONS_SECTION_LIST.insertBefore(SETTINGS_SECTION, OPTIONS_SECTION_LIST.lastElementChild);
 
@@ -63,7 +46,7 @@ const main = async function () {
           const options_window = addedNode;
           options_window
             .querySelector('.PlannerOptions_content__kBajJ')
-            .appendChild(ExportImportSection(importArtifactData, exportArtifactData));
+            .appendChild(ExportImportSection());
         }
         // quick menu
         else if ( addedNode.classList.contains('PlannerOptions_options__t3nvI')) {
@@ -71,12 +54,7 @@ const main = async function () {
           // quick menu is created thus it has to be (re)defined here
           const OPTIONS_MENU = document.querySelector('.PlannerOptions_options__t3nvI');
           const OPTIONS_SECTION_LIST = OPTIONS_MENU.querySelector('.PlannerOptions_optionContent__2_jPR');
-          const SETTINGS_SECTION = ExtensionSettingsSection(
-            hideAllArtifactsToggle,
-            currentCheckmarkValues,
-            importArtifactData,
-            exportArtifactData
-          );
+          const SETTINGS_SECTION = ExtensionSettingsSection();
           // last element is the More Options button
           OPTIONS_SECTION_LIST.insertBefore(SETTINGS_SECTION, OPTIONS_SECTION_LIST.lastElementChild);
         }
@@ -89,294 +67,6 @@ const main = async function () {
   observer.observe(document.querySelector('body'), config);
   // quick menu, accessible only on screens wide enough
   observer.observe(document.querySelector('.Farm_sideBar__yXGVR'), config);
-};
-
-// create all slots and buttons for hiding artifacts of a single character
-// loop through user's save data and load artifacts
-const loadAndCreateAllArtifacts = function () {
-  createAllSlots();
-  createAllArtifactHidingButtons();
-
-  // if there is data for characters
-  if ( Object.keys(ARTIFACT_DATA).length !== 0 ) {
-    // loop through all characters
-    Object.entries(ARTIFACT_DATA).forEach(
-      ([character, charData]) => {
-        // loop through all artifact pieces
-        Object.entries(charData).forEach(
-          ([piece]) => {
-            loadArtifact(character, piece);
-          }
-        );
-      }
-    );
-  }
-};
-
-// remove artifacts and buttons
-const removeAllArtifacts = function () {
-  [...document.querySelectorAll('.artifactSlotsWrapper')]
-    .forEach( slots => slots.parentNode.removeChild(slots) );
-  // remove all invidual disable buttons
-  [...document.querySelectorAll('.HideArtifactsButton')]
-    .forEach( buttons => buttons.parentNode.removeChild(buttons) );
-};
-
-// callback for toggling visibility when the setting is un/checked
-const hideAllArtifactsToggle = function () {
-  const checkbox_element = document.querySelector('#toggleVisibilityCheckboxPath');
-  const checkbox_current = checkbox_element.getAttribute('stroke-dasharray');
-
-  // toggle the check mark
-  // unfortunately the animation would (probably) be quite hard to implement
-  // I might look into it at some point
-  // but currently it's not very high on the priority list
-  if ( checkbox_current === CHECKMARK_VALUES.on ) {
-    // hide artifact
-    checkbox_element.setAttribute('stroke-dasharray', CHECKMARK_VALUES.off);
-    ARTIFACT_DATA['__DISABLED'] = true;
-    removeAllArtifacts();
-  } else {
-    // show artifacts
-    checkbox_element.setAttribute('stroke-dasharray', CHECKMARK_VALUES.on);
-    ARTIFACT_DATA['__DISABLED'] = false;
-    loadAndCreateAllArtifacts();
-  }
-
-  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
-};
-
-export const importArtifactData = () => {
-  let data = window.prompt("Copy and paste the data here:");
-  // if user presses cancel
-  if ( data === null ) { return; }
-
-  try {
-    // if the field is empty, go to catch
-    if (!data) { throw Error; }
-
-    console.log(data);
-    data = JSON.parse(data);
-    console.log("data is valid");
-
-    // cancel if user does not type "confirm"
-    const confirmation = window.prompt("Note: This will override all previous artifacts! Type CONFIRM to continue.").toLowerCase() === 'confirm';
-    if (!confirmation) { return; }
-
-    // override previous artifacts in the local storage, then reload the page
-    saveToLocalStorage('userArtifactData', data);
-    window.alert("Artifact data imported! The webpage will now reload.");
-    window.location.reload();
-  } catch (e) {
-    // if any errors were encountered, inform the user and recall the function
-    window.alert("Invalid data! Try again.");
-    importArtifactData();
-  }
-};
-
-export const exportArtifactData = () => {
-  const data = JSON.stringify(ARTIFACT_DATA);
-  const EXPORT_WINDOW = ExportWindow(data, closeExportWindow);
-  document.body.appendChild(EXPORT_WINDOW);
-};
-
-const closeExportWindow = function () {
-  // delete the editor element once artifact is selected
-  document.body.removeChild(document.querySelector('#exportWindow'));
-};
-
-// create artifact slot elements for each character
-const createAllSlots = function () {
-  getAllCharacterPanels().forEach( panel => createSlotsForPanel(panel) );
-};
-
-// create all 5 artifact slots for a single {panel}
-const createSlotsForPanel = function (panel) {
-  const wrapperDiv = document.createElement('div');
-  // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
-  wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML.toLowerCase().replaceAll(' ', '-');
-  wrapperDiv.classList.add('artifactSlotsWrapper');
-
-  wrapperDiv.appendChild(Slot('flower', openArtifactEditor));
-  wrapperDiv.appendChild(Slot('plume', openArtifactEditor));
-  wrapperDiv.appendChild(Slot('sands', openArtifactEditor));
-  wrapperDiv.appendChild(Slot('goblet', openArtifactEditor));
-  wrapperDiv.appendChild(Slot('circlet', openArtifactEditor));
-
-  panel.querySelector('.ItemPanel_itemContent__M9oCy').appendChild(wrapperDiv);
-};
-
-const openArtifactEditor = function (event) {
-  const targetArtifactSlot = event.target;
-  const artifactOwner = getArtifactSlotOwner(targetArtifactSlot).toLowerCase();
-  const artifactType = getArtifactSlotType(targetArtifactSlot);
-
-  const editWindow = ArtifactEditor(targetArtifactSlot, ARTIFACT_SET_NAMES,
-                                            artifactOwner, artifactType,
-                                            confirmArtifactEdit, deleteArtifact);
-
-  document.body.appendChild(editWindow);
-};
-
-const confirmArtifactEdit = function (event, owner, type) {
-  const set = document.querySelector('#selectArtifactInput').value;
-  const main = document.querySelector('#artifactMainStat').value;
-  const sub = document.querySelector('#artifactSubStat').value;
-  const check = document.querySelector('#artifactCheckbox').checked;
-
-  if (!ARTIFACT_DATA[owner]) { ARTIFACT_DATA[owner] = {}; }
-  ARTIFACT_DATA[owner][type] = { set: set, main: main, sub: sub, check: check };
-
-  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
-  loadArtifact(owner, type);
-
-  const editor = document.querySelector('#artifactEdit');
-  editor.parentNode.removeChild(editor); // delete the editor element once artifact is selected
-};
-
-const deleteArtifact = function (event, owner, type) {
-  if (ARTIFACT_DATA[owner]) {
-    delete ARTIFACT_DATA[owner][type];
-  }
-
-  const slot = getArtifactSlotByOwner(owner, type);
-  if (!slot) { return; }
-
-  slot.dataset.set = '';
-  slot.dataset.main = '';
-  slot.dataset.sub = '';
-  slot.dataset.check = '';
-  slot.style.backgroundImage = '';
-  slot.classList.remove('check');
-
-  slot.onmouseover = () => false;
-  slot.onmouseleave = () => false;
-
-  console.log(ARTIFACT_DATA[owner]);
-
-  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
-  loadArtifact(owner, type);
-
-  const editor = document.querySelector('#artifactEdit');
-  editor.parentNode.removeChild(editor); // delete the editor element once artifact is selected
-};
-
-const loadArtifact = function (character, slot) {
-  const pieceIndex = { flower: 0, plume: 1, sands: 2, goblet: 3, circlet: 4 };
-
-  if (ARTIFACT_DATA[character]['disabled']) {
-    let slot = getArtifactSlotByOwner(character, 'plume');
-    // optional chaining is not possible as it is
-    // not currently supported by minifier APIs
-    if (slot.parentNode && slot.parentNode.classList ) {
-      slot.parentNode.classList.add('disabled');
-    }
-  }
-
-  slot = getArtifactSlotByOwner(character, slot);
-  if (!slot) { return; }
-
-  const type = getArtifactSlotType(slot);
-  const set = ARTIFACT_DATA[character][type] ? ARTIFACT_DATA[character][type]['set'] : '';
-  if (!set) { return; } // if no set is selected, abort
-  const piece = DATASET[set][pieceIndex[type]][0];
-
-  const image = DATASET[set][pieceIndex[type]][1];
-  const main = ARTIFACT_DATA[character][type]['main'];
-  const sub = ARTIFACT_DATA[character][type]['sub'];
-  const check = ARTIFACT_DATA[character][type]['check'];
-
-  slot.style.backgroundImage = `url(https://i.imgur.com/${image}.png)`;
-  slot.dataset.set = set;
-  slot.dataset.main = main;
-  slot.dataset.sub = sub;
-  slot.dataset.check = check;
-
-  if (check) {
-    slot.classList.add('check');
-  } else {
-    slot.classList.remove('check');
-  }
-
-  slot.onmouseover = e => createHoverPopup(e, slot, set, piece);
-  slot.onmouseleave = () => {
-    // wrapper_window is the the wrapper for the actual pop up
-    const wrapper_window = document.querySelector('#artifactTooltipWindow');
-    // parentNode is <body>
-    wrapper_window.parentNode.removeChild(wrapper_window);
-  };
-};
-
-const createAllArtifactHidingButtons = function () {
-  getAllCharacterPanels().forEach( panel => {
-    // get owner's name to be stored into dataset for later
-    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
-    const character = panel
-      .querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML
-      .toLowerCase()
-      .replaceAll(' ', '-');
-
-    const disabled = panel
-      .querySelector(`.artifactSlotsWrapper[data-character=${character}]`).classList
-      .contains('disabled');
-
-    const BUTTON_BAR = panel.querySelector('.ItemPanel_item__6lLWZ');
-    const ACTIVE_BUTTON = BUTTON_BAR.querySelector('div[title=Active]');
-    const HIDING_BUTTON = ArtifactHidingButton(disabled, character);
-    // insert artifact hiding button before the active button
-    BUTTON_BAR.insertBefore( HIDING_BUTTON, ACTIVE_BUTTON );
-  });
-};
-
-const createHoverPopup = function (event, slot, set, piece) {
-  const { x, y } = calculatePopupLocation(slot);
-
-  const tooltipBox = ArtifactPopup(slot, x, y, set, piece);
-  document.body.appendChild(tooltipBox);
-};
-
-// returns the character name from the title element of a {slot}
-const getArtifactSlotOwner = function (slot) {
-  return slot.parentNode.parentNode.parentNode.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML;
-};
-
-// returns the type (plume, sands) of the artifact in a slot
-const getArtifactSlotType = function (slot) {
-  return slot.classList.item(1).replace('Slot', '');
-};
-
-const getAllCharacterPanels = function () {
-  return [...document.querySelector('.Farm_itemList__EgRFB').children].filter( panel => !isWeapon(panel) );
-};
-
-// returns whether {panel} is a weapon by checking the source of the panel's image
-// e.g. src='/images/weapons/regular/Deathmatch.png'
-const isWeapon = function (panel) {
-  return panel.querySelector('.ItemPanel_itemImage__ndELA > div').style.backgroundImage.includes('weapons');
-};
-
-// uses custom data attribute data-character to find
-// and return a specific artifact slot of a character
-const getArtifactSlotByOwner = function (character, slot) {
-  // fails e.g. when character has been removed but artifact data still exists
-  try {
-    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
-    return document
-      .querySelector(`.artifactSlotsWrapper[data-character=${character.replaceAll(' ', '-')}]`)
-      .querySelector(`.${slot}Slot`);
-  } catch (e) {
-    return false;
-  }
-};
-
-// calculates the location of the hover pop up in relation to the hovered slot
-const calculatePopupLocation = function (slot) {
-  const rect = slot.getBoundingClientRect();
-
-  const x = rect.left + slot.getBoundingClientRect().width;
-  const y = rect.bottom - rect.height;
-
-  return { x, y };
 };
 
 // waits until the character list has loaded and then executes the main function

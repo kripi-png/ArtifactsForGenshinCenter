@@ -1,9 +1,14 @@
-import { setInputValue } from './helpers.js';
+import { setInputValue } from '../helpers.js';
 import { Section } from './Section.js';
+
+const closeExportWindow = function () {
+  // delete the editor element once artifact is selected
+  document.body.removeChild(document.querySelector('#exportWindow'));
+};
 
 // toggleCallback:        hideAllArtifactsToggle function in content.js
 // hideAllCheckboxValues: values for the stroke-dasharray attribute
-export const ExportWindow = (ARTIFACT_DATA, closeExportWindowCallback) => {
+export const ExportWindow = ARTIFACT_DATA => {
   const EXPORT_WINDOW = document.createElement('div');
   EXPORT_WINDOW.id = 'exportWindow';
   EXPORT_WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
@@ -31,7 +36,7 @@ export const ExportWindow = (ARTIFACT_DATA, closeExportWindowCallback) => {
   setInputValue(EXPORT_WINDOW, '#exportDataField', ARTIFACT_DATA);
 
   // add callback
-  EXPORT_WINDOW.querySelector('#closeButton').onclick = e => closeExportWindowCallback(e);
+  EXPORT_WINDOW.querySelector('#closeButton').onclick = e => closeExportWindow();
 
   return EXPORT_WINDOW;
 };

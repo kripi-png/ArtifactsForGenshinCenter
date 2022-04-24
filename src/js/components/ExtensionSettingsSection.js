@@ -1,6 +1,51 @@
-// toggleCallback:        hideAllArtifactsToggle function in content.js
-// checkmarkValues: values for the stroke-dasharray attribute
-export const ExtensionSettingsSection = ( toggleCallback, checkmarkValues, importCallback, exportCallback ) => {
+import {
+  ARTIFACT_DATA,
+  saveToLocalStorage,
+} from '../dataManager.js';
+
+import {
+  removeAllArtifacts,
+  loadAndCreateAllArtifacts,
+} from '../artifactRenderer.js';
+
+import {
+  importArtifactData,
+  exportArtifactData,
+} from '../importExport.js';
+
+// top level await is not (yet) supported by
+// javascript minifiers so the awaits are wrapped inside async
+// used to draw the Show all artifacts checkbox in options menu
+const CHECKMARK_VALUES = {
+  on: '32.526912689208984px 32.526912689208984px',
+  off: '0px 32.526912689208984px'
+};
+
+// callback for toggling visibility when the setting is un/checked
+const hideAllArtifactsToggle = function () {
+  const checkbox_element = document.querySelector('#toggleVisibilityCheckboxPath');
+  const checkbox_current = checkbox_element.getAttribute('stroke-dasharray');
+
+  // toggle the check mark
+  // unfortunately the animation would (probably) be quite hard to implement
+  // I might look into it at some point
+  // but currently it's not very high on the priority list
+  if ( checkbox_current === CHECKMARK_VALUES.on ) {
+    // hide artifact
+    checkbox_element.setAttribute('stroke-dasharray', CHECKMARK_VALUES.off);
+    ARTIFACT_DATA['__DISABLED'] = true;
+    removeAllArtifacts();
+  } else {
+    // show artifacts
+    checkbox_element.setAttribute('stroke-dasharray', CHECKMARK_VALUES.on);
+    ARTIFACT_DATA['__DISABLED'] = false;
+    loadAndCreateAllArtifacts();
+  }
+
+  saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
+};
+
+export const ExtensionSettingsSection = () => {
   const STORE_LINK = "https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno";
   const GITHUB_LINK = "https://github.com/kripi-png/ArtifactsForGenshinCenter";
 
@@ -47,10 +92,14 @@ export const ExtensionSettingsSection = ( toggleCallback, checkmarkValues, impor
   `;
 
   // add callbacks
-  EXTENSION_SETTINGS_SECTION.querySelector('#importButton').onclick = () => importCallback();
-  EXTENSION_SETTINGS_SECTION.querySelector('#exportButton').onclick = () => exportCallback();
-  EXTENSION_SETTINGS_SECTION.querySelector('button').onclick = () => toggleCallback();
+  EXTENSION_SETTINGS_SECTION.querySelector('#importButton').onclick = () => importArtifactData();
+  EXTENSION_SETTINGS_SECTION.querySelector('#exportButton').onclick = () => exportArtifactData();
+  EXTENSION_SETTINGS_SECTION.querySelector('button').onclick = () => hideAllArtifactsToggle();
 
+  // decide which values to use for the check mark icon
+  const checkmarkValues = ARTIFACT_DATA['__DISABLED']
+                        ? CHECKMARK_VALUES.off
+                        : CHECKMARK_VALUES.on;
   // set the dasharray attribute afterwards as for some reason it
   // turns to <path stroke-dasharray='0x' [rest as attribute key]>
   // because of the space
