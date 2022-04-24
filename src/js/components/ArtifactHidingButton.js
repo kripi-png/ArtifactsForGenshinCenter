@@ -3,28 +3,18 @@ import {
   saveToLocalStorage,
 } from '../dataManager.js';
 
-const hideArtifacts = function (button, slotWrapper, character) {
-  console.log(ARTIFACT_DATA);
-
-  const disabled = slotWrapper.classList.contains('disabled');
+const hideArtifacts = (button, slotWrapper, character, disabled) => {
+  // toggle button title and class
   button.title = disabled ? "Hide Artifacts" : "Show Artifacts";
   slotWrapper.classList.toggle('disabled');
 
   // make sure object for character exists
-  if (!ARTIFACT_DATA[character]) { ARTIFACT_DATA[character] = { disabled: false }; }
+  if (!ARTIFACT_DATA[character]) {
+    ARTIFACT_DATA[character] = { disabled: false };
+  }
   ARTIFACT_DATA[character]['disabled'] = !ARTIFACT_DATA[character]['disabled'];
 
   saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
-};
-
-const hidingButtonCallback = function (e) {
-  // e.target is div.CircleButton_inner__'something' so get the div element
-  const button = e.target.parentNode.parentNode;
-  // find the artifact slot wrapper by the character name stored in the button div element
-  const character = e.target.parentNode.parentNode.dataset.character;
-  const slotWrapper = document.querySelector(`.artifactSlotsWrapper[data-character=${character}]`);
-  // ARTIFACT_DATA doesn't use hypens in character names (yet) so replace them
-  hideArtifacts(button, slotWrapper, button.dataset.character.replaceAll('-', ' '));
 };
 
 // disabled:              boolean
@@ -45,9 +35,11 @@ export const ArtifactHidingButton = (disabled, character) => {
       </div>
     </button>
   `;
+  // find the artifact slot wrapper by the character namet
+  const SLOT_WRAPPER = document.querySelector(`.artifactSlotsWrapper[data-character=${character}]`);
 
   // add callbacks
-  HIDING_BUTTON.querySelector('.CircleButton_button__WO_pU').onclick = e => hidingButtonCallback(e);
+  HIDING_BUTTON.querySelector('button').onclick = e => hideArtifacts(HIDING_BUTTON, SLOT_WRAPPER, character.replaceAll('-', ' '), disabled);
   // not quite sure why but without this the button stays focused and
   // won't disappear when panel is unhovered
   HIDING_BUTTON.onmousedown = e => e.preventDefault();
