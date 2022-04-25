@@ -10,7 +10,7 @@ const calculatePopupLocation = function (slot) {
 // slot:                 hovered artifact
 // set, piece:           names of the set and piece
 export const ArtifactPopup = (slot, setName, pieceName) => {
-  const { loc_x, loc_y } = calculatePopupLocation(slot);
+  const { x: loc_x , y: loc_y } = calculatePopupLocation(slot);
 
   const ICON_URL = slot.style.backgroundImage
     .replaceAll('"', '')
