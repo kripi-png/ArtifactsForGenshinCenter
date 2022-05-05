@@ -7,7 +7,13 @@ import {
   loadArtifactData,
 } from './dataManager.js';
 
-import { loadAndCreateAllArtifacts } from './artifactRenderer.js';
+import {
+  loadArtifact,
+  createHidingButton,
+  createSlotsForPanel,
+  getArtifactSlotByOwner,
+  loadAndCreateAllArtifacts,
+} from './artifactRenderer.js';
 
 const main = async () => {
   await loadArtifactData();
@@ -30,6 +36,7 @@ const main = async () => {
   // MutationObserver is used to monitor when
   // a) the user opens the options window
   // b) the quick menu is created on screens wide enough (laptop and wider)
+  // c) user adds a new character
   // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
   const observer = new MutationObserver( mutationList => {
     mutationList.forEach( mutation => {
@@ -53,6 +60,34 @@ const main = async () => {
           // last element is the More Options button
           OPTIONS_SECTION_LIST.insertBefore(SETTINGS_SECTION, OPTIONS_SECTION_LIST.lastElementChild);
         }
+        // new character
+        else if ( !addedNode.id && addedNode.firstElementChild.classList.contains('ItemPanel_itemWrapper__BUn4_')) {
+          const CHAR_PANEL = addedNode.firstElementChild;
+          // get name of added character
+          const charName = CHAR_PANEL.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML.toLowerCase();
+
+          // reordering characters also triggers this function so prevent it
+          // getArtifactSlotByOwner returns false if slot does not exist which means it's a new character
+          const slot = getArtifactSlotByOwner(charName, 'plume');
+          if ( slot ) { return; }
+
+          createSlotsForPanel(CHAR_PANEL);
+          createHidingButton(CHAR_PANEL);
+
+          // if character has no artifact data, return
+          if ( !Object.keys(ARTIFACT_DATA).includes(charName) ) { return; }
+
+          // find character's artifact data
+          // entry == ['name', {plume: {set: xxx, main: yyy}, circlet: {set: zzz, }, ...}]
+          // thus, entry[0] refers to the name of the character, and entry[1] to the data
+          const charData = Object.entries(ARTIFACT_DATA).find( entry => entry[0] === charName )[1];
+
+          Object.entries(charData).forEach(
+            ([piece]) => {
+              loadArtifact(charName, piece);
+            }
+          );
+        }
       });
     });
   });
@@ -62,6 +97,8 @@ const main = async () => {
   observer.observe(document.querySelector('body'), config);
   // quick menu, accessible only on screens wide enough
   observer.observe(document.querySelector('.Farm_sideBar__yXGVR'), config);
+  // observe for new character panels
+  observer.observe(document.querySelector('.Farm_itemList__EgRFB'), config);
 };
 
 // waits until the character list has loaded and then executes the main function

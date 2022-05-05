@@ -21,7 +21,7 @@ const openArtifactEditor =  event => {
 };
 
 // create all 5 artifact slots for a single {panel}
-const createSlotsForPanel = panel => {
+export const createSlotsForPanel = panel => {
   const wrapperDiv = document.createElement('div');
   // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
   wrapperDiv.dataset.character = panel.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML.toLowerCase().replaceAll(' ', '-');
@@ -36,25 +36,28 @@ const createSlotsForPanel = panel => {
   panel.querySelector('.ItemPanel_itemContent__M9oCy').appendChild(wrapperDiv);
 };
 
+export const createHidingButton = panel => {
+  // get owner's name to be stored into dataset for later
+  // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
+  const character = panel
+    .querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML
+    .toLowerCase()
+    .replaceAll(' ', '-');
+
+  const disabled = panel
+    .querySelector(`.artifactSlotsWrapper[data-character=${character}]`).classList
+    .contains('disabled');
+
+  const BUTTON_BAR = panel.querySelector('.ItemPanel_item__6lLWZ');
+  const ACTIVE_BUTTON = BUTTON_BAR.querySelector('div[title=Active]');
+  const HIDING_BUTTON = ArtifactHidingButton(disabled, character);
+  // insert artifact hiding button before the active button
+  BUTTON_BAR.insertBefore( HIDING_BUTTON, ACTIVE_BUTTON );
+};
+
 const createAllArtifactHidingButtons = () => {
-  getAllCharacterPanels().forEach( panel => {
-    // get owner's name to be stored into dataset for later
-    // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
-    const character = panel
-      .querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML
-      .toLowerCase()
-      .replaceAll(' ', '-');
-
-    const disabled = panel
-      .querySelector(`.artifactSlotsWrapper[data-character=${character}]`).classList
-      .contains('disabled');
-
-    const BUTTON_BAR = panel.querySelector('.ItemPanel_item__6lLWZ');
-    const ACTIVE_BUTTON = BUTTON_BAR.querySelector('div[title=Active]');
-    const HIDING_BUTTON = ArtifactHidingButton(disabled, character);
-    // insert artifact hiding button before the active button
-    BUTTON_BAR.insertBefore( HIDING_BUTTON, ACTIVE_BUTTON );
-  });
+  // call createHidingButton function with each panel as the value
+  getAllCharacterPanels().forEach( createHidingButton );
 };
 
 export const loadAndCreateAllArtifacts = () => {

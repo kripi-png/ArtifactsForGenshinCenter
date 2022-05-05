@@ -19,8 +19,7 @@ Questions can be asked preferably via Discord DMs (kripi#6436); the same goes fo
 - Make it so clicking on the background of Edit Artifact window saves and closes the window; same as clicking ok
 
 ## Known issues
-- Adding a new character does not create artifact slots for the character automatically; reload is required
-- After changing the priority of characters, artifacts stay on the previous panel (save-data is safe however); reload is required
+
 
 ## Credits
 Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com for faster loading times (original 256x256 .WebP images loaded quite slowly).
