@@ -1,9 +1,11 @@
-A chrome extension for [Genshin Center's Ascension Planner](https://genshin-center.com/planner) that allows users to plan which artifacts to get for their Genshin Impact character. User can also set main and sub stats for the artifacts as well as mark them as acquired.
 
-**The extension is now available on [Chrome Web Store](https://chrome.google.com/webstore/detail/artifacts-for-genshin-pla/jleonalkkhbfeafkmfgofopiadjkalno)!**
+A chrome extension for [Genshin Center's Ascension Planner](https://genshin-center.com/planner). Helps users to plan which artifacts they want to get for their Genshin Impact character. Users can also set main and sub stats for the artifacts and mark them as obtained in-game.
+<br>
+**NOTE: This is an unofficial extension developed by me (kripi), and NOT Genshin Center.**
 
-### NOTE: This is an unofficial extension developed by me (kripi), and NOT Genshin Center.
-Questions can be asked preferably via Discord DMs (kripi#6436); the same goes for possible bug reports and feedback.
+**The extension is available on [Chrome Web Store](https://chrome.google.com/webstore/detail/artifacts-for-genshin-pla/jleonalkkhbfeafkmfgofopiadjkalno)!**
+<br>
+[![Chrome Users](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Fguarded-escarpment-44013.herokuapp.com%2Fchrome_users)](https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno)
 
 ## Features
 - Each character has 5 slots for artifacts.
@@ -20,6 +22,8 @@ Questions can be asked preferably via Discord DMs (kripi#6436); the same goes fo
 
 ## Known issues
 
+## Found a bug? Got a question or feedback?
+You can either send me a message on Discord (kripi#6436), or in case of bug reports you can also open a new issue here on GitHub.
 
 ## Credits
 Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com for faster loading times (original 256x256 .WebP images loaded quite slowly).
