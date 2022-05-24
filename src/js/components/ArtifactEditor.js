@@ -68,13 +68,14 @@ export const ArtifactEditor = (slot, ARTIFACT_SET_NAMES, character, piece ) => {
   EDITOR_WINDOW.id = 'artifactEdit';
   EDITOR_WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
   EDITOR_WINDOW.innerHTML = `
-    <div class="Window_window__0zdsm" style="opacity: 1;"></div>
-    <div class="Window_center__oA34u">
+    <div class="Window_window__0zdsm" style="opacity: 1;">
       <div class="Window_modal__2s0yi" style="opacity: 1; pointer-events: all;">
         <div class="Schedule_taskCreator__bA_eq" style="width: 360px;">
           <div class="Schedule_taskTopBar__lV1W8" style="flex-direction: column;">
             <h3>Edit Artifact</h3>
-            <h4 style="padding-bottom: 10px; text-transform: capitalize;">${character}'s ${piece}</h4>
+            <h4 style="padding-bottom: 10px; text-transform: capitalize;">
+              ${character}'s ${piece}
+            </h4>
           </div>
           <div class="Schedule_taskCreatorContent__3tCoD" style="padding: 0 10px 15px">
             ${Section(ARTIFACT_SET_NAMES, 'selectArtifactInput', 'Set Name', 'Enter set name...').outerHTML}
