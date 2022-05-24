@@ -19,6 +19,10 @@ A chrome extension for [Genshin Center's Ascension Planner](https://genshin-cent
 
 ## Todo
 - Make it so clicking on the background of Edit Artifact window saves and closes the window; same as clicking ok
+- Look into localization
+- Look into Firefox extensions
+  - also some other browsers
+- Maybe notify the user about new artifact sets and such using the website's update notification system
 
 ## Known issues
 
