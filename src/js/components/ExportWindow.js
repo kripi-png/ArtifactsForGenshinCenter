@@ -13,8 +13,7 @@ export const ExportWindow = ARTIFACT_DATA => {
   EXPORT_WINDOW.id = 'exportWindow';
   EXPORT_WINDOW.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;';
   EXPORT_WINDOW.innerHTML = `
-    <div class="Window_window__0zdsm" style="opacity: 1;"></div>
-    <div class="Window_center__oA34u">
+    <div class="Window_window__0zdsm" style="opacity: 1;">
       <div class="Window_modal__2s0yi" style="opacity: 1; pointer-events: all;">
         <div class="Schedule_taskCreator__bA_eq" style="width: 360px;">
           <div class="Schedule_taskTopBar__lV1W8" style="flex-direction: column;">
