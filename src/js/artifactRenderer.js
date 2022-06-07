@@ -37,8 +37,6 @@ export const createSlotsForPanel = panel => {
 };
 
 export const createHidingButton = panel => {
-  // skip weapons
-  if ( isWeapon(panel) ) return;
   // get owner's name to be stored into dataset for later
   // if character has space(s) in their name (e.g. Hu Tao) replace them with hyphens
   const character = panel
@@ -169,7 +167,7 @@ export const getAllCharacterPanels = () => {
 
 // returns whether {panel} is a weapon by checking the source of the panel's image
 // e.g. src='/images/weapons/regular/Deathmatch.png'
-const isWeapon = (panel) => {
+export const isWeapon = (panel) => {
   return panel
     .querySelector('.ItemPanel_itemImage__ndELA > div').style.backgroundImage
     .includes('weapons');

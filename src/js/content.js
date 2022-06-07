@@ -8,6 +8,7 @@ import {
 } from './dataManager.js';
 
 import {
+  isWeapon,
   loadArtifact,
   createHidingButton,
   createSlotsForPanel,
@@ -68,8 +69,9 @@ const main = async () => {
 
           // reordering characters also triggers this function so prevent it
           // getArtifactSlotByOwner returns false if slot does not exist which means it's a new character
-          const slot = getArtifactSlotByOwner(charName, 'plume');
-          if ( slot ) { return; }
+          if ( getArtifactSlotByOwner(charName, 'plume') ) { return; }
+          // skip weapons
+          if ( isWeapon(CHAR_PANEL) ) { return; }
 
           createSlotsForPanel(CHAR_PANEL);
           createHidingButton(CHAR_PANEL);
