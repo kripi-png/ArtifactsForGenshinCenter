@@ -37,8 +37,10 @@ export const createSlotsForPanel = panel => {
 };
 
 export const createHidingButton = panel => {
+  // skip weapons
+  if ( isWeapon(panel) ) return;
   // get owner's name to be stored into dataset for later
-  // if character has space(s) in their name (e.g. Hu Tao) replace them with hypens
+  // if character has space(s) in their name (e.g. Hu Tao) replace them with hyphens
   const character = panel
     .querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML
     .toLowerCase()
