@@ -61,7 +61,7 @@ const main = async () => {
           OPTIONS_SECTION_LIST.insertBefore(SETTINGS_SECTION, OPTIONS_SECTION_LIST.lastElementChild);
         }
         // new character
-        else if ( !addedNode.id && addedNode.firstElementChild.classList.contains('ItemPanel_itemWrapper__BUn4_')) {
+        else if ( !addedNode.id && addedNode.firstElementChild?.classList.contains('ItemPanel_itemWrapper__BUn4_')) {
           const CHAR_PANEL = addedNode.firstElementChild;
           // get name of added character
           const charName = CHAR_PANEL.querySelector('.ItemPanel_itemName__jxpO4 > p').innerHTML.toLowerCase();
