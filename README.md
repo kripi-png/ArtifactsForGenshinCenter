@@ -18,17 +18,18 @@ A chrome extension for [Genshin Center's Ascension Planner](https://genshin-cent
 ![Edit window](https://i.imgur.com/f2Kxnq7.png)
 
 ## Todo
-- Make it so clicking on the background of Edit Artifact window saves and closes the window; same as clicking ok
 - Look into localization
 - Look into Firefox extensions
   - also some other browsers
 - Maybe notify the user about new artifact sets and such using the website's update notification system
 
 ## Known issues
+- Visiting another page on Genshin Center (e.g. the Weapons page) removes the slots
+  - can be fixed by reloading the page
 
 ## Found a bug? Got a question or feedback?
 You can either send me a message on Discord (kripi#6436), or in case of bug reports you can also open a new issue here on GitHub.
 
 ## Credits
-Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com for faster loading times (original 256x256 .WebP images loaded quite slowly).
+Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com.
 A few of them may also be from [Honey Impact](https://genshin.honeyhunterworld.com/) or [Project Amber](https://ambr.top/en) if impact.moe didn't have the images at the time.
