@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Artifacts for Genshin Center",
-    "version": "1.4.5",
+    "version": "1.4.6",
     "description": "Plan which artifacts you want to get for your Genshin Impact character via this extension for Genshin Center's Ascension Planner.",
     "icons": {
       "128": "src/images/icon.png"
@@ -21,6 +21,9 @@
         "run_at": "document_end"
       }
     ],
+    "background": {
+      "service_worker": "src/js/background.js"
+    },
     "permissions": [
       "storage"
     ]
