@@ -48,6 +48,7 @@ const hideAllArtifactsToggle = function () {
 export const ExtensionSettingsSection = () => {
   const STORE_LINK = "https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno";
   const GITHUB_LINK = "https://github.com/kripi-png/ArtifactsForGenshinCenter";
+  const SURVEY_LINK = "https://forms.gle/fzXzLfMit3jSLtdg8";
 
   const EXTENSION_SETTINGS_SECTION = document.createElement('div');
   EXTENSION_SETTINGS_SECTION.classList.add('PlannerOptions_quickSection__pWVYz');
@@ -84,8 +85,9 @@ export const ExtensionSettingsSection = () => {
     <div class="Radio_radioLabel__FlU7k" style="color: #38a6c2">
       <p>Enjoying the extension?</p>
       <p>
-        Consider reviewing on <a href=${STORE_LINK}>Webstore</a>
-        or starring on <a href=${GITHUB_LINK}>GitHub</a>.
+        Consider reviewing on <a target="_blank" href=${STORE_LINK}>Webstore</a>,
+        starring on <a target="_blank" href=${GITHUB_LINK}>GitHub</a>,
+        or filling out a <a target="_blank" href=${SURVEY_LINK}>feedback survey</a>.
         Thanks! <span style="color: #ccc"><3</span>
       </p>
     </div>
