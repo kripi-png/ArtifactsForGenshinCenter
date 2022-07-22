@@ -45,7 +45,7 @@ const deleteArtifact = function (event, owner, type) {
   slot.onmouseover = () => false;
   slot.onmouseleave = () => false;
 
-  console.log(ARTIFACT_DATA[owner]);
+  // console.log(ARTIFACT_DATA[owner]);
 
   saveToLocalStorage('userArtifactData', ARTIFACT_DATA);
   loadArtifact(owner, type);

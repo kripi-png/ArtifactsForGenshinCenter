@@ -18,8 +18,8 @@ import {
 
 const main = async () => {
   await loadArtifactData();
-  console.log(DATASET);
-  console.log(ARTIFACT_DATA);
+  // console.log(DATASET);
+  // console.log(ARTIFACT_DATA);
 
   // do not create the slots or the hiding buttons if artifacts are disabled
   if ( ARTIFACT_DATA['__DISABLED'] === false ) {
