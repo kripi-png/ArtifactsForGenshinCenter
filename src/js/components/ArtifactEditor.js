@@ -70,7 +70,7 @@ export const ArtifactEditor = (slot, ARTIFACT_SET_NAMES, character, piece ) => {
   EDITOR_WINDOW.innerHTML = `
     <div class="Window_window__0zdsm" style="opacity: 1;">
       <div class="Window_modal__2s0yi" style="opacity: 1; pointer-events: all;">
-        <div class="Schedule_taskCreator__bA_eq" style="width: 360px;">
+        <div class="Schedule_taskCreator__bA_eq">
           <div class="Schedule_taskTopBar__lV1W8" style="flex-direction: column;">
             <h3>Edit Artifact</h3>
             <h4 style="padding-bottom: 10px; text-transform: capitalize;">
@@ -81,8 +81,8 @@ export const ArtifactEditor = (slot, ARTIFACT_SET_NAMES, character, piece ) => {
             ${Section(ARTIFACT_SET_NAMES, 'selectArtifactInput', 'Set Name', 'Enter set name...').outerHTML}
             ${Section(null, 'artifactMainStat', 'Main Stat', 'Enter main stat...').outerHTML}
             ${Section(null, 'artifactSubStat', 'Sub Stat', 'Enter sub stat(s)...').outerHTML}
-            ${Section(null, 'artifactCheckbox', 'Obtained in-game?', null).outerHTML}
-            <div class="Ascension_missing__FaHoD" style="font-size: 16px;">
+            ${Section(null, 'artifactCheckbox', 'Already obtained', null).outerHTML}
+            <div class="Ascension_missing__FaHoD" style="font-size: 16px; color: #f54c4c; margin-bottom: 30px;">
               <p>Artifact data will be wiped when extension is uninstalled.</p>
               <p>Exporting and importing can be done in Options menu.</p>
             </div>
