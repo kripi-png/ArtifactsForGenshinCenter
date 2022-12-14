@@ -17,6 +17,12 @@
   /* width: 60px; */
   height: 72px;
   background-size: cover;
+  background-size: 72px 72px;
+  background-repeat: no-repeat;
+}
+
+.artifactSlot:hover {
+  cursor: pointer;
 }
 
 .artifactSlot.check {
@@ -38,6 +44,10 @@
   opacity: .3;
   -webkit-filter: grayscale(70%);
   filter: grayscale(70%);
+}
+
+.ItemPanel_days__3kT2G {
+  margin-bottom: 8px;
 }
 
 .artifactTooltip {
@@ -104,4 +114,41 @@
 }
 .import_export_wrapper > button:last-child {
   margin-left: 5px;
+}
+
+.Schedule_section__8Bf3I {
+  margin-top: 20px;
+}
+
+.Schedule_buttonsWrapper__fdOV_{
+  margin-top: 20px;
+}
+
+.Schedule_buttonsWrapper__fdOV_ button {
+  padding: 10px 40px;
+  border: #ece5d8 solid 1.5px;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+
+.Schedule_buttonsWrapper__fdOV_ button:hover {
+  border: #1e2231 solid 1.5px;
+  background: #ece5d8;
+  color: #1e2231;
+  cursor: pointer;
+  font-weight: 700;
+  transition: 0.2s;
+}
+
+.Schedule_buttonsWrapper__fdOV_ button:focus {
+  filter: brightness(70%);
+  transition: 0.2s;
+}
+
+.Schedule_taskCreatorContent__3tCoD {
+  width: auto;
+}
+
+.CircleButton_innerborder__OFRXM {
+  background-color: rgb(236, 229, 216);
 }
