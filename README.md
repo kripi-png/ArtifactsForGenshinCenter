@@ -5,7 +5,7 @@ A chrome extension for [Genshin Center's Ascension Planner](https://genshin-cent
 
 **The extension is available on [Chrome Web Store](https://chrome.google.com/webstore/detail/artifacts-for-genshin-pla/jleonalkkhbfeafkmfgofopiadjkalno)!**
 <br>
-[![Chrome Users](https://img.shields.io/endpoint?style=for-the-badge&url=https%3A%2F%2Fguarded-escarpment-44013.herokuapp.com%2Fchrome_users)](https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno)
+[![Chrome Users](https://img.shields.io/endpoint?url=https://untitled-o1ez295tqzik.runkit.sh/)](https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno)
 
 ## Features
 - Each character has 5 slots for artifacts.
