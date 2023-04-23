@@ -7,11 +7,13 @@
       "128": "src/images/icon.png"
     },
     "web_accessible_resources": [{
-      "resources": [ "src/images/*", "src/js/*", "src/dataset.json" ],
+      "resources": [ "src/js/content.js", "src/dataset.json" ],
       "matches": [ "https://genshin-center.com/*" ]
     }],
     "action": {
-      "default_icon": "src/images/icon.png"
+      "default_icon": {
+        "32": "src/images/icon.png"
+      }
     },
     "content_scripts": [
       {

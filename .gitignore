@@ -1,1 +1,2 @@
-.jshintrc
+/dist
+/node_modules
