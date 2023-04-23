@@ -1,7 +1,7 @@
 export let DATASET, ARTIFACT_SET_NAMES, ARTIFACT_DATA;
 
 const loadDataset = async () => {
-  const data = await fetch(chrome.runtime.getURL('src/js/dataset.json'));
+  const data = await fetch(chrome.runtime.getURL('src/dataset.json'));
   return data.json();
 };
 
