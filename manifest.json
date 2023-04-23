@@ -7,7 +7,7 @@
       "128": "src/images/icon.png"
     },
     "web_accessible_resources": [{
-      "resources": [ "src/images/*", "src/js/*" ],
+      "resources": [ "src/images/*", "src/js/*", "src/dataset.json" ],
       "matches": [ "https://genshin-center.com/*" ]
     }],
     "action": {
@@ -16,13 +16,13 @@
     "content_scripts": [
       {
         "matches": [ "https://genshin-center.com/planner" ],
-        "js": [ "src/js/content_script.js" ],
+        "js": [ "src/content_script.js" ],
         "css": [ "src/css/style.css" ],
         "run_at": "document_end"
       }
     ],
     "background": {
-      "service_worker": "src/js/background.js"
+      "service_worker": "src/background.js"
     },
     "permissions": [
       "storage"
