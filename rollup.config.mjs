@@ -12,7 +12,9 @@ export default {
     format: 'esm',
   },
   plugins: [
-    del({ targets: 'dist/*' }),
+    // for unknown reason dist/src/background.js gets corrupted when re-running npm start
+    // without removing entire dist/ folder
+    del({ targets: 'dist/' }),
     chromeExtension(),
     simpleReloader(),
     production && zip(),
