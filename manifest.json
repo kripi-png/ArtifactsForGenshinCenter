@@ -8,6 +8,7 @@
       "matches": [ "https://genshin-center.com/*" ]
     }],
     "action": {
+      "default_title": "Go to Genshin Center",
       "default_icon": {
         "32": "src/images/icon.png"
       }
