@@ -1,3 +1,34 @@
+# V2 Rewrite
+
+Now, there are not *real* reasons to do a full rewrite of the extension.
+Everything works and adding new artifacts is reasonably easy - that is all that is required.
+
+However, the project is now a few years old, and I'd like to get back to it for some time.
+I'd like to do and try new things with extensions in general, and also fix some bad taste inducing things in the addon.
+
+Some problems and minor inconveniences:
+- adding artifacts could be easier
+- the artifact dataset is kind of massive
+- circular dependencies
+  - src/js/artifactRenderer.js -> src/js/components/ArtifactEditor.js -> src/js/artifactRenderer.js
+- code is partly messy and some files are long
+- javascript vs typescript
+- vanilla js vs svelte/vue/react
+- rollup vs vite
+- npm vs pnpm
+- no hot module replacement
+
+These add up to sizeable amount of work, and, if completed, should provide a solid framework for future extensions I may or may not develop.
+
+Some sort of TODO:
+- [] change from npm to pnpm
+- [] convert rollup to vite
+- [] HMR with https://github.com/isaurssaurav/hot-reload-extension-vite-plugin
+- [] rewrite and create components with ts and vue/svelte
+- [] try redesigning the artifact dataset structure
+- [] "host" the dataset on github instead of bundling with the extension
+  - this is especially convenient as updating the json on gh is enough to add artifacts
+  - however fetching the entire thing on every reload cannot be a good idea, so need to cache it somehow
 
 A chrome extension for [Genshin Center's Ascension Planner](https://genshin-center.com/planner). Helps users to plan which artifacts they want to get for their Genshin Impact character. Users can also set main and sub stats for the artifacts and mark them as obtained in-game.
 <br>
