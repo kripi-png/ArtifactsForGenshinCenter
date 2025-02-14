@@ -21,7 +21,7 @@ export default defineManifest(async () => ({
   },
   web_accessible_resources: [
     {
-      resources: ["src/js/content.js", "src/dataset.json"],
+      resources: ["src/dataset.json"],
       matches: ["https://genshin-center.com/*"],
     },
   ],
