@@ -1,12 +1,14 @@
 {
-  "version": "1.5.8",
   "name": "Artifacts for Genshin Center",
   "description": "Plan which artifacts you want to get for your Genshin Impact character via this extension for Genshin Center's Ascension Planner.",
-  "main": "manifest.json",
+  "private": true,
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "build": "rollup -c",
-    "start": "rollup -c -w",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
     "preinstall": "npx only-allow pnpm"
   },
   "repository": {
@@ -20,9 +22,14 @@
   },
   "homepage": "https://github.com/kripi-png/ArtifactsForGenshinCenter#readme",
   "devDependencies": {
-    "rollup": "^3.20.7",
-    "rollup-plugin-chrome-extension": "^3.6.12",
-    "rollup-plugin-delete": "^2.0.0",
-    "rollup-plugin-zip": "^1.0.3"
+    "@crxjs/vite-plugin": "2.0.0-beta.29",
+    "@sveltejs/vite-plugin-svelte": "^5.0.3",
+    "@tsconfig/svelte": "^5.0.4",
+    "@types/chrome": "^0.0.304",
+    "svelte": "^5.20.0",
+    "svelte-check": "^4.1.4",
+    "tslib": "2.8.1",
+    "typescript": "~5.7.3",
+    "vite": "^6.1.0"
   }
 }
