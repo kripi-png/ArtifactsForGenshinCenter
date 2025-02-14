@@ -21,7 +21,7 @@ Some problems and minor inconveniences:
 These add up to sizeable amount of work, and, if completed, should provide a solid framework for future extensions I may or may not develop.
 
 Some sort of TODO:
-- [] change from npm to pnpm
+- [x] change from npm to pnpm
 - [] convert rollup to vite
 - [] HMR with https://github.com/isaurssaurav/hot-reload-extension-vite-plugin
 - [] rewrite and create components with ts and vue/svelte
