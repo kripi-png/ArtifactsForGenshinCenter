@@ -1,15 +1,39 @@
 <script lang="ts">
-    export let slotType: ArtifactSlotType;
-    export let charName: string;
+    import type { ArtifactSlotType } from "../types";
+    interface Props {
+        charName: string;
+        slotType: ArtifactSlotType;
+        artifactSet: string | undefined;
+    }
 
+    import { getArtifactBySetAndType } from "../content/dataManager";
+
+    const { charName, slotType, artifactSet }: Props = $props();
+    // update the artifact image when the artifact data state changes
+    let artifactImageUrl = $state("");
+    $effect(() => {
+        if (!artifactSet) {
+            artifactImageUrl = "";
+            return;
+        }
+
+        getArtifactBySetAndType(artifactSet, slotType).then((data) => {
+            artifactImageUrl = data?.imageUrl ?? "";
+        });
+    });
+
+    // TODO: open the editor modal when artifact is clicked
     const onClick = () => {
-        console.log(`Slot ${slotType} clicked`);
+        console.log(`${charName} ${slotType} ${artifactSet}`);
     };
 </script>
 
 <button
+    style={artifactImageUrl
+        ? `background-image: url(${artifactImageUrl});`
+        : ""}
     class={`${slotType}Slot`}
-    on:click={onClick}
+    onclick={onClick}
     aria-label={`${slotType} for ${charName}`}
 ></button>
 

@@ -1,9 +1,11 @@
-export type ArtifactSlotType =
-  | "flower"
-  | "plume"
-  | "sands"
-  | "goblet"
-  | "circlet";
+export enum ArtifactSlot {
+  flower = 0,
+  plume = 1,
+  sands = 2,
+  goblet = 3,
+  circlet = 4,
+}
+export type ArtifactSlotType = keyof typeof ArtifactSlot;
 
 export interface DatasetData {
   [key: string]: string[][];

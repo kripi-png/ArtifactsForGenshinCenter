@@ -1,4 +1,8 @@
-import type { DatasetData } from "../types";
+import {
+  ArtifactSlot,
+  type ArtifactSlotType,
+  type DatasetData,
+} from "../types";
 
 export const updateLocalDataset = async () => {
   /*
@@ -60,7 +64,34 @@ export const getLocalDataset = async (): Promise<DatasetData> => {
   });
 };
 
+interface ArtifactNameAndImage {
+  name: string;
+  imageUrl: string;
+}
+export const getArtifactBySetAndType = async (
+  setName: string,
+  type: ArtifactSlotType,
+): Promise<ArtifactNameAndImage | null> => {
+  /**
+   * Gets the name and image of an artifact by its set name and type.
+   * @param {string} setName The name of the artifact set.
+   * @param {ArtifactSlotType} type The type of the artifact.
+   * @returns {Promise<ArtifactNameAndImage | null>} The artifact data.
+   */
+
+  return new Promise(async (resolve) => {
+    const dataset = await getLocalDataset();
+    if (!dataset || !dataset.hasOwnProperty(setName)) {
+      return resolve(null);
+    }
+    // flower = 0, circlet = 4
+    const typeIndex: number = ArtifactSlot[type];
+    const [name, imageId] = dataset[setName][typeIndex];
+    resolve({ name, imageUrl: `https://i.imgur.com/${imageId}.png` });
+  });
+};
+
 export const setLocalStorage = (key: string, value: any) => {
   // general setter method
-  chrome.storage.local.set({ [key]: JSON.stringify(value) });
+  chrome.storage.local.set({ [key]: value });
 };
