@@ -39,7 +39,7 @@ export default defineManifest(async () => ({
     },
   ],
   background: {
-    service_worker: "src/background.js",
+    service_worker: "src/background/index.ts",
   },
   permissions: ["storage"],
 }));
