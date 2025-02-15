@@ -23,7 +23,7 @@ These add up to sizeable amount of work, and, if completed, should provide a sol
 Some sort of TODO:
 - [x] migrate from npm to pnpm
 - [x] migrate from rollup to vite
-- [] HMR with https://github.com/isaurssaurav/hot-reload-extension-vite-plugin
+- [x] HMR
 - [] rewrite and create components with ts and vue/svelte
 - [] try redesigning the artifact dataset structure
 - [] "host" the dataset on github instead of bundling with the extension
