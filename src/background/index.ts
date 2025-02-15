@@ -1,3 +1,6 @@
+import { userArtifactStore } from "../storage";
+userArtifactStore.subscribe(console.log);
+
 // take user to the uninstall survey on uninstall
 chrome.runtime.onInstalled.addListener((details) => {
   if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
