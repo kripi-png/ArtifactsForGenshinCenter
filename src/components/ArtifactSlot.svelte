@@ -1,11 +1,20 @@
 <script lang="ts">
     export let slotType: ArtifactSlotType;
+    export let charName: string;
+
+    const onClick = () => {
+        console.log(`Slot ${slotType} clicked`);
+    };
 </script>
 
-<div class={`${slotType}Slot`}></div>
+<button
+    class={`${slotType}Slot`}
+    on:click={onClick}
+    aria-label={`${slotType} for ${charName}`}
+></button>
 
 <style>
-    div {
+    button {
         flex: 1;
         /* width: 60px; */
         height: 72px;
@@ -14,7 +23,7 @@
         background-repeat: no-repeat;
     }
 
-    div:hover {
+    button:hover {
         cursor: pointer;
     }
 

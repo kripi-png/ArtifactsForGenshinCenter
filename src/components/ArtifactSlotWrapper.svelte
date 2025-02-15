@@ -13,7 +13,7 @@
 
 <div data-character={charName}>
     {#each slotTypes as slotType}
-        <ArtifactSlot {slotType} />
+        <ArtifactSlot {slotType} {charName} />
     {/each}
 </div>
 
