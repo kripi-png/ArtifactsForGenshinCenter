@@ -1,154 +1,136 @@
-.flowerSlot { background-image:url('https://i.imgur.com/GqSEgvB.png'); }
-.plumeSlot { background-image:url('https://i.imgur.com/FpKdZFQ.png'); }
-.gobletSlot { background-image:url('https://i.imgur.com/0XhOfPS.png'); }
-.sandsSlot { background-image:url('https://i.imgur.com/C1kloPS.png'); }
-.circletSlot { background-image:url('https://i.imgur.com/AO6dMV6.png'); }
-
-.artifactSlotsWrapper {
-  display: flex;
-}
-
 .artifactSlotsWrapper.disabled {
-  display: none;
-}
-
-.artifactSlot {
-  flex: 1;
-  /* width: 60px; */
-  height: 72px;
-  background-size: cover;
-  background-size: 72px 72px;
-  background-repeat: no-repeat;
-}
-
-.artifactSlot:hover {
-  cursor: pointer;
+    display: none;
 }
 
 .artifactSlot.check {
-  position: relative;
+    position: relative;
 }
 
 .artifactSlot.check::after {
-  content: '';
-  background-image: url('https://i.imgur.com/x60nTNg.png');
-  background-repeat: no-repeat;
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  right: 0;
-  left: 0;
+    content: "";
+    background-image: url("https://i.imgur.com/x60nTNg.png");
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    left: 0;
 }
 
 .ItemPanel_paused__3_1VE ~ .artifactSlotsWrapper {
-  opacity: .3;
-  -webkit-filter: grayscale(70%);
-  filter: grayscale(70%);
+    opacity: 0.3;
+    -webkit-filter: grayscale(70%);
+    filter: grayscale(70%);
 }
 
 .ItemPanel_days__3kT2G {
-  margin-bottom: 8px;
+    margin-bottom: 8px;
 }
 
 .artifactTooltip {
-  position: absolute;
-  background-color: black;
-  width: 300px;
-  font-weight: 600;
+    position: absolute;
+    background-color: black;
+    width: 300px;
+    font-weight: 600;
 }
 
 .tooltipTitle {
-  background: linear-gradient(160deg, rgba(105, 84, 83, 0.565) 0%, rgba(161, 112, 78, 0.565) 39%, rgba(228, 171, 82, 0.565) 100%);
-  display: flex;
+    background: linear-gradient(
+        160deg,
+        rgba(105, 84, 83, 0.565) 0%,
+        rgba(161, 112, 78, 0.565) 39%,
+        rgba(228, 171, 82, 0.565) 100%
+    );
+    display: flex;
 }
 
 .tooltipTitleText {
-  font-size: 18px;
-  padding: 15px 0 15px 15px;
-  flex-grow: 1;
-  color: #f7f7f7;
+    font-size: 18px;
+    padding: 15px 0 15px 15px;
+    flex-grow: 1;
+    color: #f7f7f7;
 }
 
 .tooltipTitleText > span {
-  font-size: 14px;
-  color: #ccc;
+    font-size: 14px;
+    color: #ccc;
 }
 
 .tooltipTitleIcon {
-  width: 128px;
-  height: 128px;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 0;
-  display: flex;
+    width: 128px;
+    height: 128px;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    display: flex;
 }
 
 .tooltipTextWrapper {
-  background-color: #ece5d8;
-  color: #000;
-  padding: 5px;
+    background-color: #ece5d8;
+    color: #000;
+    padding: 5px;
 }
 
 .tooltipText {
-  padding: 2px 4px;
-  margin: 2px;
+    padding: 2px 4px;
+    margin: 2px;
 }
 
 .import_export_wrapper {
-  isolation: unset !important;
-  background: unset !important;
-  border: unset !important;
+    isolation: unset !important;
+    background: unset !important;
+    border: unset !important;
 }
 
 .import_export_wrapper > button {
-  background-color: #ece5d8;
-  color: #000;
-  border: 1px solid rgba(56,166,194,.4);
-  border-radius: 5px;
-  padding: 2px;
-  width: 100%;
+    background-color: #ece5d8;
+    color: #000;
+    border: 1px solid rgba(56, 166, 194, 0.4);
+    border-radius: 5px;
+    padding: 2px;
+    width: 100%;
 }
 
 .import_export_wrapper > button:first-child {
-  margin-right: 5px;
+    margin-right: 5px;
 }
 .import_export_wrapper > button:last-child {
-  margin-left: 5px;
+    margin-left: 5px;
 }
 
 .Schedule_section__8Bf3I {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
-.Schedule_buttonsWrapper__fdOV_{
-  margin-top: 20px;
+.Schedule_buttonsWrapper__fdOV_ {
+    margin-top: 20px;
 }
 
 .Schedule_buttonsWrapper__fdOV_ button {
-  padding: 10px 40px;
-  border: #ece5d8 solid 1.5px;
-  border-radius: 20px;
-  transition: 0.2s;
+    padding: 10px 40px;
+    border: #ece5d8 solid 1.5px;
+    border-radius: 20px;
+    transition: 0.2s;
 }
 
 .Schedule_buttonsWrapper__fdOV_ button:hover {
-  border: #1e2231 solid 1.5px;
-  background: #ece5d8;
-  color: #1e2231;
-  cursor: pointer;
-  font-weight: 700;
-  transition: 0.2s;
+    border: #1e2231 solid 1.5px;
+    background: #ece5d8;
+    color: #1e2231;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.2s;
 }
 
 .Schedule_buttonsWrapper__fdOV_ button:focus {
-  filter: brightness(70%);
-  transition: 0.2s;
+    filter: brightness(70%);
+    transition: 0.2s;
 }
 
 .Schedule_taskCreatorContent__3tCoD {
-  width: auto;
+    width: auto;
 }
 
 .CircleButton_innerborder__OFRXM {
-  background-color: rgb(236, 229, 216);
+    background-color: rgb(236, 229, 216);
 }

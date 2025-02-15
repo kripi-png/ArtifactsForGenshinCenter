@@ -1,3 +1,5 @@
+import { main as newMain } from "../content";
+
 import { ExportImportSection } from "./components/ExportImportSection.js";
 import { ExtensionSettingsSection } from "./components/ExtensionSettingsSection.js";
 
@@ -135,7 +137,8 @@ function waitForPageToLoad() {
       clearInterval(waitForCharacterList);
       console.log("Character list loaded!");
 
-      main();
+      newMain();
+      // main();
     }
   }, 100);
 }
