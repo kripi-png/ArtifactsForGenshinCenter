@@ -55,8 +55,10 @@ export function persistentStore<T>(key: string, initialValue: T): Writable<T> {
 }
 
 export const userArtifactStore = persistentStore<UserArtifactData>(
-  "userArtifactData",
+  "userArtifactStore",
   {
     __DISABLED: false,
+    __VERSION: 1,
+    characters: {},
   },
 );

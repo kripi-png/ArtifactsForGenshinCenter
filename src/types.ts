@@ -18,14 +18,11 @@ export interface ArtifactData {
 
 export interface CharacterArtifactData {
   disabled: boolean;
-  flower?: ArtifactData;
-  plume?: ArtifactData;
-  sands?: ArtifactData;
-  goblet?: ArtifactData;
-  circlet?: ArtifactData;
+  artifacts: Partial<Record<ArtifactSlotType, ArtifactData>>;
 }
 
 export interface UserArtifactData {
   __DISABLED: boolean;
-  [key: string]: boolean | CharacterArtifactData;
+  __VERSION: number;
+  characters: Partial<Record<string, CharacterArtifactData>>;
 }
