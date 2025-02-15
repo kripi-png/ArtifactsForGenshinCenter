@@ -13,16 +13,14 @@ export const updateLocalDataset = async () => {
   try {
     const headResponse = await fetch(requestUrl, { method: "HEAD" });
     const newSize = Number(headResponse.headers.get("Content-Length"));
-
     const oldSize = await _getLocalDatasetVersion();
     console.log("newSize", newSize, typeof newSize);
     console.log("oldSize", oldSize, typeof oldSize);
 
     // check whether the localDataset exists, just in case
     // it is possible for the version entry to exist without the dataset
-    const localDatasetExists = await getLocalDataset().then(
-      (dataset) => Object.keys(dataset).length !== 0,
-    );
+    const localDataset = await getLocalDataset();
+    const localDatasetExists = Object.keys(localDataset).length !== 0;
     console.log("localDatasetExists", localDatasetExists);
     // if everything is in order, return.
     if (newSize === oldSize && localDatasetExists) return;
@@ -57,7 +55,7 @@ export const getLocalDataset = async (): Promise<DatasetData> => {
       if (!result?.dataset) {
         return resolve({});
       }
-      resolve(JSON.parse(result.dataset));
+      resolve(result.dataset);
     });
   });
 };
