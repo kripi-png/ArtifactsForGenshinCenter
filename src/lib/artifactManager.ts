@@ -2,12 +2,15 @@ import { mount } from "svelte";
 import ArtifactSlotWrapper from "../components/ArtifactSlotWrapper.svelte";
 
 export const initializeArtifactUI = () => {
-  const panels = getCharacterPanels();
-
-  panels.forEach((panel) => {
-    createArtifactSlotsForPanel(panel);
-    // createArtifactHidingButtonForPanel(panel);
-  });
+  const x = setTimeout(() => {
+    const panels = getCharacterPanels();
+    console.log("panels", panels);
+    panels.forEach((panel) => {
+      createArtifactSlotsForPanel(panel);
+      // createArtifactHidingButtonForPanel(panel);
+    });
+    clearTimeout(x);
+  }, 2000);
 };
 
 const createArtifactSlotsForPanel = (panel: HTMLElement) => {

@@ -1,13 +1,12 @@
 /// <reference types="vitest" />
 
-import { crx } from "@crxjs/vite-plugin";
+import path from "path";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vite";
-import manifest from "./src/manifest.config";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [svelte(), crx({ manifest })],
+  plugins: [svelte()],
   legacy: {
     skipWebSocketTokenCheck: true,
   },
@@ -19,6 +18,11 @@ export default defineConfig({
     },
     cors: {
       origin: ["chrome-extension://eglgjmiagigeejlanegodabogbmdomfk"],
+    },
+  },
+  resolve: {
+    alias: {
+      "@lib": path.resolve(__dirname, "src/lib"),
     },
   },
   test: {

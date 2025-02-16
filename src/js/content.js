@@ -1,4 +1,4 @@
-import { main as newMain } from "../content";
+import { main as newMain } from "../entrypoints/content";
 
 import { ExportImportSection } from "./components/ExportImportSection.js";
 import { ExtensionSettingsSection } from "./components/ExtensionSettingsSection.js";

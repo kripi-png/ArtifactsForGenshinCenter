@@ -4,12 +4,13 @@
   "version": "2.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "wxt",
     "test": "vitest",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
-    "preinstall": "npx only-allow pnpm"
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "wxt prepare"
   },
   "repository": {
     "type": "git",
@@ -22,15 +23,16 @@
   },
   "homepage": "https://github.com/kripi-png/ArtifactsForGenshinCenter#readme",
   "devDependencies": {
-    "@crxjs/vite-plugin": "2.0.0-beta.31",
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
     "@tsconfig/svelte": "^5.0.4",
     "@types/chrome": "^0.0.304",
+    "@wxt-dev/module-svelte": "^2.0.3",
     "svelte": "^5.20.1",
     "svelte-check": "^4.1.4",
     "tslib": "2.8.1",
-    "typescript": "~5.7.3",
+    "typescript": "^5.7.3",
     "vite": "^6.1.0",
-    "vitest": "^3.0.5"
+    "vitest": "^3.0.5",
+    "wxt": "^0.19.27"
   }
 }

@@ -9,7 +9,7 @@
     }
 
     import ArtifactSlotElement from "./ArtifactSlot.svelte";
-    import { userArtifactStore } from "../storage";
+    import { userArtifactStore } from "../lib/storage";
 
     let { charName }: Props = $props();
 

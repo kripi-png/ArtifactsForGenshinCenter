@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { ArtifactSlotType } from "../types";
+    import type { ArtifactSlotType } from "@/types";
     interface Props {
         charName: string;
         slotType: ArtifactSlotType;
         artifactSet: string | undefined;
     }
 
-    import { getArtifactBySetAndType } from "../content/dataManager";
+    import { getArtifactBySetAndType } from "../lib/dataManager";
 
     const { charName, slotType, artifactSet }: Props = $props();
     // update the artifact image when the artifact data state changes
