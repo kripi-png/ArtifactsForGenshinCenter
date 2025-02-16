@@ -63,17 +63,17 @@ You can either send me a message on Discord (kripi#6436), or in case of bug repo
 
 ## Credits
 Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com.
-A few of them may also be from [Honey Impact](https://genshin.honeyhunterworld.com/) or [Project Amber](https://ambr.top/en) if impact.moe didn't have the images at the time.
+A few of them may also be from [Honey Impact](https://genshin.honeyhunterworld.com/) or [Project Amber](https://gi.yatta.moe/en) if impact.moe didn't have the images at the time.
 
 ## Development and contributing
 - Feel free to create pull requests, issues, and whatnot. I'll review and merge them when I have time
 - Please ensure commits are (more or less) in accordance with Conventional Commits v1.0.0 guidelines: https://www.conventionalcommits.org/en/v1.0.0/
 
 ### Development
-- After cloning the repo locally, run `npm install` to install all packages
-- After installing, run `npm start`. This command watches for changes in the source code and automatically rebuilds the dist/ folder as needed.
-  - Alternatively run `npm run build` to simply generate dist/ folder and a .zip file
-- Navigate to chrome://extensions/ and enable Developer Mode from top-right corner
-- Click Load Unpacked button on top-left, and select the **dist/** folder
-- Extension should now be operational, so navigate to https://genshin-center.com/planner
-- Because rollup is watching for changes, you can simply make a change to the source code and refresh genshin center, and the changes should be visible
+- **The project uses [pnpm](https://pnpm.io/) instead of npm. Make sure to install it.**
+- After cloning the repo, run `pnpm install` to install all packages.
+- Run `pnpm dev` to start the vite development server. This command watches for changes in the source code and automatically rebuilds the dist/ folder as needed.
+- Navigate to chrome://extensions/ and enable Developer Mode from top-right corner.
+- Click Load Unpacked button on top-left, and select the **dist/** folder inside the project folder.
+- Extension should now be operational, so navigate to https://genshin-center.com/planner.
+- Thanks to Vite and crxjs' Hot Module Replacement (HMR), the extension will automatically reload when you make changes to the code.
