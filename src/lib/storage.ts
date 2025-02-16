@@ -1,5 +1,5 @@
 import { writable, type Updater, type Writable } from "svelte/store";
-import type { UserArtifactData } from "./types";
+import type { UserArtifactData } from "../types";
 
 /**
  * https://github.com/NekitCorp/chrome-extension-svelte-typescript-boilerplate/blob/454b7e446ab0e0d296bf113d179b570a129b71fe/src/storage.ts

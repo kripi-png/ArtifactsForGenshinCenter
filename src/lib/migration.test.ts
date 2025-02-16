@@ -1,6 +1,6 @@
 import { describe, expect, test } from "vitest";
 import { migrateTo_2_0_0 } from "./migration";
-import type { UserArtifactData } from "../../types";
+import type { UserArtifactData } from "../types";
 
 describe("migrates to 2.0", () => {
   test("converts an empty object", () => {

@@ -1,6 +1,16 @@
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "wxt";
 
 export default defineConfig({
+  // vite configs
+  vite: () => ({
+    plugins: [svelte() as any],
+    test: {
+      setupFiles: ["./vitest.init.ts"],
+    },
+  }),
+
+  // wxt configs
   srcDir: "src",
   outDir: "dist",
   // extensionApi: "chrome",
