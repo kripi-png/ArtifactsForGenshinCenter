@@ -24,9 +24,9 @@ Some sort of TODO:
 - [x] migrate from npm to pnpm
 - [x] migrate from rollup to vite
 - [x] HMR
-- [] rewrite and create components with ts and vue/svelte
-- [] try redesigning the artifact dataset structure
-- [] "host" the dataset on github instead of bundling with the extension
+- [ ] rewrite and create components with ts and vue/svelte
+- [ ] try redesigning the artifact dataset structure
+- [ ] "host" the dataset on github instead of bundling with the extension
   - this is especially convenient as updating the json on gh is enough to add artifacts
   - however fetching the entire thing on every reload cannot be a good idea, so need to cache it somehow
 
