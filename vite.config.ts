@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import { crx } from "@crxjs/vite-plugin";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "vite";
@@ -18,5 +20,8 @@ export default defineConfig({
     cors: {
       origin: ["chrome-extension://eglgjmiagigeejlanegodabogbmdomfk"],
     },
+  },
+  test: {
+    setupFiles: ["./vitest.init.ts"],
   },
 });
