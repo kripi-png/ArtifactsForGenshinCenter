@@ -38,9 +38,6 @@ importers:
       vitest:
         specifier: ^3.0.5
         version: 3.0.5(@types/node@18.16.0)
-      vitest-chrome:
-        specifier: ^0.1.0
-        version: 0.1.0
 
 packages:
 
@@ -347,9 +344,6 @@ packages:
 
   '@tsconfig/svelte@5.0.4':
     resolution: {integrity: sha512-BV9NplVgLmSi4mwKzD8BD/NQ8erOY/nUE/GpgWe2ckx+wIQF5RyRirn/QsSSCPeulVpc3RA/iJt6DpfTIZps0Q==}
-
-  '@types/chrome@0.0.114':
-    resolution: {integrity: sha512-i7qRr74IrxHtbnrZSKUuP5Uvd5EOKwlwJq/yp7+yTPihOXnPhNQO4Z5bqb1XTnrjdbUKEJicaVVbhcgtRijmLA==}
 
   '@types/chrome@0.0.304':
     resolution: {integrity: sha512-ms9CLILU+FEMK7gcmgz/Mtn2E81YQWiMIzCFF8ktp98EVNIIfoqaDTD4+ailOCq1sGjbnEmfJxQ1FAsQtk5M3A==}
@@ -800,9 +794,6 @@ packages:
       vite:
         optional: true
 
-  vitest-chrome@0.1.0:
-    resolution: {integrity: sha512-Bs1uywAolbc46h2tcaETQyFMTnOHjSA85iH10Zoe8ZMEl/71nuSdxs3z+KMxVZtN88TEgWicnl5vmbDO1OhoEw==}
-
   vitest@3.0.5:
     resolution: {integrity: sha512-4dof+HvqONw9bvsYxtkfUp2uHsTN9bV2CZIi1pWgoFpL1Lld8LA1ka9q/ONSsoScAKG7NVGf2stJTI7XRkXb2Q==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
@@ -1055,11 +1046,6 @@ snapshots:
       - supports-color
 
   '@tsconfig/svelte@5.0.4': {}
-
-  '@types/chrome@0.0.114':
-    dependencies:
-      '@types/filesystem': 0.0.36
-      '@types/har-format': 1.2.16
 
   '@types/chrome@0.0.304':
     dependencies:
@@ -1516,10 +1502,6 @@ snapshots:
   vitefu@1.0.5(vite@6.1.0(@types/node@18.16.0)):
     optionalDependencies:
       vite: 6.1.0(@types/node@18.16.0)
-
-  vitest-chrome@0.1.0:
-    dependencies:
-      '@types/chrome': 0.0.114
 
   vitest@3.0.5(@types/node@18.16.0):
     dependencies:

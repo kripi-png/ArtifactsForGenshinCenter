@@ -8,9 +8,6 @@ import type {
 // the rework of 2.0.0 introduced some changes to the data structure of userArtifactData,
 // and migration is required in order to avoid data loss
 export const migrateTo_2_0_0 = (data: any) => {
-  console.info("Migrating...");
-  console.log("data", data);
-
   const { __DISABLED: disabled, ...characters } = data;
   const migratedDataTemplate: UserArtifactData = {
     __DISABLED: disabled || false,
