@@ -1,10 +1,15 @@
 import { mount } from "svelte";
+import ModalBackdrop from "../components/ModalsBackdrop.svelte";
 import ArtifactSlotWrapper from "../components/ArtifactSlotWrapper.svelte";
 
 export const initializeArtifactUI = () => {
+  // TODO: add some better listener, e.g. setInterval to check for an element on page
   const x = setTimeout(() => {
+    mount(ModalBackdrop, {
+      target: document.body,
+    });
+
     const panels = getCharacterPanels();
-    console.log("panels", panels);
     panels.forEach((panel) => {
       createArtifactSlotsForPanel(panel);
       // createArtifactHidingButtonForPanel(panel);

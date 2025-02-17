@@ -5,7 +5,8 @@
         slotType: ArtifactSlotType;
         artifactSet: string | undefined;
     }
-
+    import { modals } from "svelte-modals";
+    import EditorModal from "./EditorModal.svelte";
     import { getArtifactBySetAndType } from "../lib/dataManager";
 
     const { charName, slotType, artifactSet }: Props = $props();
@@ -25,6 +26,8 @@
     // TODO: open the editor modal when artifact is clicked
     const onClick = () => {
         console.log(`${charName} ${slotType} ${artifactSet}`);
+
+        modals.open(EditorModal, { character: charName, type: slotType });
     };
 </script>
 
