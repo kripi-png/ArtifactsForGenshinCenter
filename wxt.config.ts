@@ -5,15 +5,12 @@ export default defineConfig({
   // vite configs
   vite: () => ({
     plugins: [svelte() as any],
-    test: {
-      setupFiles: ["./vitest.init.ts"],
-    },
   }),
 
   // wxt configs
   srcDir: "src",
   outDir: "dist",
-  // extensionApi: "chrome",
+  extensionApi: "chrome",
   modules: ["@wxt-dev/module-svelte"],
   manifest: {
     name: "Artifacts for Genshin Center",

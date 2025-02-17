@@ -44,7 +44,7 @@ const _getLocalDatasetVersion = async (): Promise<number> => {
   // helper method for updateLocalDataset
 
   return new Promise((resolve) => {
-    chrome.storage.local.get(["datasetVersion"], (result) => {
+    browser.storage.local.get("datasetVersion").then((result) => {
       if (!result?.datasetVersion) resolve(0);
       resolve(Number(result.datasetVersion));
     });
@@ -55,12 +55,11 @@ export const getLocalDataset = async (): Promise<DatasetData> => {
   // get the dataset from the localStorage
 
   return new Promise((resolve) => {
-    chrome.storage.local.get(["dataset"], (result) => {
-      if (!result?.dataset) {
-        return resolve({});
-      }
-      resolve(result.dataset);
-    });
+    browser.storage.local
+      .get("dataset")
+      .then((result: { dataset?: DatasetData }) => {
+        return resolve(result?.dataset || {});
+      });
   });
 };
 
@@ -93,5 +92,5 @@ export const getArtifactBySetAndType = async (
 
 export const setLocalStorage = (key: string, value: any) => {
   // general setter method
-  chrome.storage.local.set({ [key]: value });
+  browser.storage.local.set({ [key]: value });
 };
