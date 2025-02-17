@@ -1,12 +1,6 @@
-import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { defineConfig } from "wxt";
 
 export default defineConfig({
-  // vite configs
-  vite: () => ({
-    plugins: [svelte() as any],
-  }),
-
   // wxt configs
   srcDir: "src",
   outDir: "dist",

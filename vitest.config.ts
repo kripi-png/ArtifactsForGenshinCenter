@@ -6,10 +6,5 @@ export default defineConfig({
     mockReset: true,
     restoreMocks: true,
   },
-  plugins: [
-    WxtVitest() as any,
-    () => {
-      console.log("plugin loaded");
-    },
-  ],
+  plugins: [WxtVitest() as any],
 });
