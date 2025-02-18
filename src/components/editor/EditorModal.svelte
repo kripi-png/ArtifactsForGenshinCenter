@@ -1,6 +1,7 @@
 <script lang="ts">
     import { type ArtifactSlotType } from "@/types";
     import { type ModalProps } from "svelte-modals";
+    import ArtifactInput from "./ArtifactInput.svelte";
     interface Props extends ModalProps {
         character: string;
         type: ArtifactSlotType;
@@ -22,30 +23,23 @@
                 class="Schedule_taskCreatorContent__3tCoD"
                 style="padding: 0 10px 15px"
             >
-                <!-- ${Section(
-                        ARTIFACT_SET_NAMES,
-                        "selectArtifactInput",
-                        "Set Name",
-                        "Enter set name...",
-                    ).outerHTML}
-                    ${Section(
-                        null,
-                        "artifactMainStat",
-                        "Main Stat",
-                        "Enter main stat...",
-                    ).outerHTML}
-                    ${Section(
-                        null,
-                        "artifactSubStat",
-                        "Sub Stat",
-                        "Enter sub stat(s)...",
-                    ).outerHTML}
-                    ${Section(
-                        null,
-                        "artifactCheckbox",
-                        "Already obtained",
-                        null,
-                    ).outerHTML} -->
+                <ArtifactInput
+                    sectionName={"Set Name"}
+                    placeholder={"Enter set name..."}
+                    type="artifactList"
+                />
+                <ArtifactInput
+                    sectionName={"Main Stat"}
+                    placeholder={"Enter main stat..."}
+                />
+                <ArtifactInput
+                    sectionName={"Sub Stat"}
+                    placeholder={"Enter sub stat(s)..."}
+                />
+                <ArtifactInput
+                    sectionName={"Already obtained"}
+                    type="checkbox"
+                />
                 <div
                     class="Ascension_missing__FaHoD"
                     style="font-size: 16px; color: #f54c4c; margin-bottom: 30px;"
