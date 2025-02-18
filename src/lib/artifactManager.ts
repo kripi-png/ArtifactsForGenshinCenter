@@ -1,11 +1,24 @@
 import { mount } from "svelte";
+import { getAllArtifactSets } from "@/lib/dataManager";
 import ModalBackdrop from "../components/editor/ModalsBackdrop.svelte";
 import ArtifactSlotWrapper from "../components/ArtifactSlotWrapper.svelte";
 
-export const initializeArtifactUI = () => {
+export const initializeArtifactUI = async () => {
   mount(ModalBackdrop, {
     target: document.body,
   });
+
+  /* pregenerate the datalist for the editor dropdown */
+  const artifactSets = await getAllArtifactSets();
+  const datalist = document.createElement("datalist");
+  datalist.id = "artifactSelectorDatalist";
+  artifactSets.forEach((setName: string) => {
+    const option = document.createElement("option");
+    option.value = setName;
+    datalist.appendChild(option);
+  });
+  document.body.appendChild(datalist);
+
   const panels = getCharacterPanels();
   panels.forEach((panel) => {
     createArtifactSlotsForPanel(panel);

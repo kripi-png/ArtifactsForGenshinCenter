@@ -63,6 +63,11 @@ export const getLocalDataset = async (): Promise<DatasetData> => {
   });
 };
 
+export const getAllArtifactSets = async () => {
+  const data = await getLocalDataset();
+  return Object.keys(data);
+};
+
 interface ArtifactNameAndImage {
   name: string;
   imageUrl: string;
