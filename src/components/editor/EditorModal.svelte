@@ -11,18 +11,15 @@
 </script>
 
 {#if isOpen}
-    <div role="dialog" class="modal">
-        <div class="content">
-            <div class="topBar">
+    <div role="dialog" class="modal_background">
+        <div class="modal">
+            <div class="modalHeader">
                 <h3>Edit Artifact</h3>
                 <h4>
                     {character.replace("-", " ")}'s {type}
                 </h4>
             </div>
-            <div
-                class="Schedule_taskCreatorContent__3tCoD"
-                style="padding: 0 10px 15px"
-            >
+            <div class="modalContent">
                 <ArtifactInput
                     sectionName={"Set Name"}
                     placeholder={"Enter set name..."}
@@ -40,17 +37,15 @@
                     sectionName={"Already obtained"}
                     type="checkbox"
                 />
-                <div
-                    class="Ascension_missing__FaHoD"
-                    style="font-size: 16px; color: #f54c4c; margin-bottom: 30px;"
-                >
+                <div class="warning" style="">
                     <p>
                         Artifact data will be wiped when extension is
                         uninstalled.
                     </p>
                     <p>Exporting and importing can be done in Options menu.</p>
                 </div>
-                <div class="Schedule_buttonsWrapper__fdOV_">
+                <!-- TODO: change to cross / checkmark buttons like in other places on the web page -->
+                <div class="buttonWrapper">
                     <button id="editorBtnDelete">Delete</button>
                     <button id="editorBtnConfirm">OK</button>
                 </div>
@@ -60,7 +55,7 @@
 {/if}
 
 <style>
-    .modal {
+    .modal_background {
         z-index: 10000;
         position: fixed;
         top: 0;
@@ -75,7 +70,7 @@
         pointer-events: none;
     }
 
-    .content {
+    .modal {
         position: fixed;
         top: 50%;
         transform: translateY(-50%);
@@ -90,7 +85,7 @@
         pointer-events: all;
     }
 
-    .topBar {
+    .modalHeader {
         /* Schedule_taskTopBar__lV1W8 */
         display: flex;
         justify-content: space-between;
@@ -99,7 +94,7 @@
         flex-direction: column;
     }
 
-    .topBar > h3 {
+    .modalHeader > h3 {
         font-size: 26px;
         line-height: 54px;
         font-weight: 800;
@@ -107,8 +102,53 @@
         text-align: center;
     }
 
-    .topBar > h4 {
+    .modalHeader > h4 {
         padding-bottom: 10px;
         text-transform: capitalize;
+    }
+
+    .modalContent {
+        /* Schedule_taskCreatorContent__3tCoD */
+        background-color: #1e2231;
+        box-shadow: inset 0 89px 11px -90px rgba(0, 0, 0, 0.75);
+        width: 340px;
+        overflow: auto;
+        padding: 0 10px 15px;
+    }
+
+    .warning {
+        padding-bottom: 5px;
+        text-align: center;
+        font-size: 16px;
+        color: #f54c4c;
+        margin-bottom: 30px;
+    }
+
+    .buttonWrapper {
+        /* Schedule_buttonsWrapper__fdOV_ */
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+    }
+
+    .buttonWrapper button {
+        padding: 10px 40px;
+        border: #ece5d8 solid 1.5px;
+        border-radius: 20px;
+        transition: 0.2s;
+    }
+
+    .buttonWrapper button:hover {
+        border: #1e2231 solid 1.5px;
+        background: #ece5d8;
+        color: #1e2231;
+        cursor: pointer;
+        font-weight: 700;
+        transition: 0.2s;
+    }
+
+    .buttonWrapper button:focus {
+        filter: brightness(70%);
+        transition: 0.2s;
     }
 </style>

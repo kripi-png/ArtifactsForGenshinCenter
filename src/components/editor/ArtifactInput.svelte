@@ -45,6 +45,7 @@
         color: #ffd780;
         font-size: 18px;
         font-weight: 600;
+        margin-top: 20px;
         margin-bottom: 5px;
     }
     .inputWrapper {
@@ -67,7 +68,7 @@
     .inputWrapper:has(input[type="checkbox"]) {
         margin: 0;
         width: 48px;
-        margin-left: calc(50% - 24px);
+        /* margin-left: calc(50% - 24px); */
     }
 
     section .inputWrapper input {
