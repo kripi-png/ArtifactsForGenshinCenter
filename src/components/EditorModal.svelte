@@ -10,31 +10,22 @@
 </script>
 
 {#if isOpen}
-    <div
-        style="width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: all;"
-    >
-        <div class="Window_window__0zdsm" style="opacity: 1;">
+    <div role="dialog" class="modal">
+        <div class="content">
             <div
-                class="Window_modal__2s0yi"
-                style="opacity: 1; pointer-events: all;"
+                class="Schedule_taskTopBar__lV1W8"
+                style="flex-direction: column;"
             >
-                <div class="Schedule_taskCreator__bA_eq">
-                    <div
-                        class="Schedule_taskTopBar__lV1W8"
-                        style="flex-direction: column;"
-                    >
-                        <h3>Edit Artifact</h3>
-                        <h4
-                            style="padding-bottom: 10px; text-transform: capitalize;"
-                        >
-                            ${character}'s ${type}
-                        </h4>
-                    </div>
-                    <div
-                        class="Schedule_taskCreatorContent__3tCoD"
-                        style="padding: 0 10px 15px"
-                    >
-                        <!-- ${Section(
+                <h3>Edit Artifact</h3>
+                <h4 style="padding-bottom: 10px; text-transform: capitalize;">
+                    ${character}'s ${type}
+                </h4>
+            </div>
+            <div
+                class="Schedule_taskCreatorContent__3tCoD"
+                style="padding: 0 10px 15px"
+            >
+                <!-- ${Section(
                         ARTIFACT_SET_NAMES,
                         "selectArtifactInput",
                         "Set Name",
@@ -58,42 +49,29 @@
                         "Already obtained",
                         null,
                     ).outerHTML} -->
-                        <div
-                            class="Ascension_missing__FaHoD"
-                            style="font-size: 16px; color: #f54c4c; margin-bottom: 30px;"
-                        >
-                            <p>
-                                Artifact data will be wiped when extension is
-                                uninstalled.
-                            </p>
-                            <p>
-                                Exporting and importing can be done in Options
-                                menu.
-                            </p>
-                        </div>
-                        <div class="Schedule_buttonsWrapper__fdOV_">
-                            <button id="editorBtnDelete">Delete</button>
-                            <button id="editorBtnConfirm">OK</button>
-                        </div>
-                    </div>
+                <div
+                    class="Ascension_missing__FaHoD"
+                    style="font-size: 16px; color: #f54c4c; margin-bottom: 30px;"
+                >
+                    <p>
+                        Artifact data will be wiped when extension is
+                        uninstalled.
+                    </p>
+                    <p>Exporting and importing can be done in Options menu.</p>
+                </div>
+                <div class="Schedule_buttonsWrapper__fdOV_">
+                    <button id="editorBtnDelete">Delete</button>
+                    <button id="editorBtnConfirm">OK</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- <div role="dialog" class="modal">
-        <div class="contents">
-            <h2>{character}'s {type}</h2>
-            <p>lorem ipsum dolo res</p>
-            <div class="actions">
-                <button onclick={() => close()}>OK</button>
-            </div>
-        </div>
-    </div> -->
 {/if}
 
 <style>
     .modal {
-        /* position: fixed;
+        z-index: 10000;
+        position: fixed;
         top: 0;
         bottom: 0;
         right: 0;
@@ -103,35 +81,21 @@
         align-items: center;
 
         /* allow click-through to backdrop */
-        /*pointer-events: none;
-
-        z-index: 2; */
+        pointer-events: none;
     }
 
-    .contents {
-        min-width: 240px;
-        padding: 16px;
-        background: white;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        pointer-events: auto;
-    }
-
-    h2 {
-        text-align: center;
-        font-size: 24px;
-    }
-
-    p {
-        text-align: center;
-        margin-top: 16px;
-        border-radius: 6px;
-    }
-
-    .actions {
-        margin-top: 32px;
-        display: flex;
-        justify-content: flex-end;
+    .content {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        display: grid;
+        max-height: 95%;
+        max-width: 96vw;
+        background-color: #1e2231;
+        border-radius: 5px;
+        overflow: hidden;
+        grid-template-rows: auto 1fr auto;
+        opacity: 1;
+        pointer-events: all;
     }
 </style>
