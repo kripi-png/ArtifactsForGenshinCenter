@@ -12,13 +12,10 @@
 {#if isOpen}
     <div role="dialog" class="modal">
         <div class="content">
-            <div
-                class="Schedule_taskTopBar__lV1W8"
-                style="flex-direction: column;"
-            >
+            <div class="topBar">
                 <h3>Edit Artifact</h3>
-                <h4 style="padding-bottom: 10px; text-transform: capitalize;">
-                    ${character}'s ${type}
+                <h4>
+                    {character.replace("-", " ")}'s {type}
                 </h4>
             </div>
             <div
@@ -97,5 +94,27 @@
         grid-template-rows: auto 1fr auto;
         opacity: 1;
         pointer-events: all;
+    }
+
+    .topBar {
+        /* Schedule_taskTopBar__lV1W8 */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 5px;
+        flex-direction: column;
+    }
+
+    .topBar > h3 {
+        font-size: 26px;
+        line-height: 54px;
+        font-weight: 800;
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .topBar > h4 {
+        padding-bottom: 10px;
+        text-transform: capitalize;
     }
 </style>

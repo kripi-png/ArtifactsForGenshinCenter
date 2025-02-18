@@ -6,7 +6,7 @@
         artifactSet: string | undefined;
     }
     import { modals } from "svelte-modals";
-    import EditorModal from "./EditorModal.svelte";
+    import EditorModal from "./editor/EditorModal.svelte";
     import { getArtifactBySetAndType } from "../lib/dataManager";
 
     const { charName, slotType, artifactSet }: Props = $props();

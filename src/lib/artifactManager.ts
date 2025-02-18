@@ -1,5 +1,5 @@
 import { mount } from "svelte";
-import ModalBackdrop from "../components/ModalsBackdrop.svelte";
+import ModalBackdrop from "../components/editor/ModalsBackdrop.svelte";
 import ArtifactSlotWrapper from "../components/ArtifactSlotWrapper.svelte";
 
 export const initializeArtifactUI = () => {
