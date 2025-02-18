@@ -1,8 +1,6 @@
-import {
-  ArtifactSlot,
-  type ArtifactSlotType,
-  type DatasetData,
-} from "../types";
+import type { ArtifactData, ArtifactSlotType, DatasetData } from "../types";
+import { ArtifactSlot } from "../types";
+import { userArtifactStore } from "./storage";
 
 export const updateLocalDataset = async () => {
   /*
@@ -72,17 +70,16 @@ interface ArtifactNameAndImage {
   name: string;
   imageUrl: string;
 }
+/**
+ * Gets the name and image of an artifact by its set name and type.
+ * @param {string} setName The name of the artifact set.
+ * @param {ArtifactSlotType} type The type of the artifact.
+ * @returns {Promise<ArtifactNameAndImage | null>} The artifact data.
+ */
 export const getArtifactBySetAndType = async (
   setName: string,
   type: ArtifactSlotType,
 ): Promise<ArtifactNameAndImage | null> => {
-  /**
-   * Gets the name and image of an artifact by its set name and type.
-   * @param {string} setName The name of the artifact set.
-   * @param {ArtifactSlotType} type The type of the artifact.
-   * @returns {Promise<ArtifactNameAndImage | null>} The artifact data.
-   */
-
   return new Promise(async (resolve) => {
     const dataset = await getLocalDataset();
     if (!dataset || !dataset.hasOwnProperty(setName)) {
@@ -99,3 +96,101 @@ export const setLocalStorage = (key: string, value: any) => {
   // general setter method
   browser.storage.local.set({ [key]: value });
 };
+
+/**
+ * Saves the character's artifact data to the Svelte store-state, which is synced with chrome.storage.local.
+ * @param {string} characterName - Character whose artifact is being saved.
+ * @param {ArtifactSlotType} artifactType - Type of the artifact.
+ * @param {ArtifactData} artifactData - Data of the artifact.
+ */
+export const saveCharacterArtifact = (
+  characterName: string,
+  artifactType: ArtifactSlotType,
+  artifactData: ArtifactData,
+): void => {
+  userArtifactStore.update((state) => {
+    // if character does not have previous data in the store,
+    // initiate the base data along with the artifact
+    if (!state.characters[characterName]) {
+      state.characters[characterName] = {
+        disabled: false,
+        artifacts: {
+          [artifactType]: artifactData,
+        },
+      };
+      return state;
+    }
+
+    // ensure the character has an artifacts object
+    if (!state.characters[characterName].artifacts) {
+      state.characters[characterName].artifacts = {};
+    }
+
+    // if all else is fine, update the artifact data
+    state.characters[characterName].artifacts[artifactType] = artifactData;
+    return state;
+  });
+};
+
+/**
+ * Delete the character's artifact by type from the Svelte store-state.
+ * @param {string} characterName
+ * @param {ArtifactSlotType} artifactType
+ */
+export const deleteCharacterArtifact = (
+  characterName: string,
+  artifactType: ArtifactSlotType,
+) => {
+  userArtifactStore.update((state) => {
+    // if character does not exist
+    if (!state.characters[characterName]) return state;
+    // if character has no artifact of type
+    if (!state.characters[characterName].artifacts[artifactType]) return state;
+
+    // remove the artifact by type
+    delete state.characters[characterName].artifacts[artifactType];
+    // if the character has no more artifacts AND the character is NOT disabled
+    if (
+      _isEmptyObject(state.characters[characterName].artifacts) &&
+      !state.characters[characterName].disabled
+    )
+      delete state.characters[characterName];
+
+    return state;
+  });
+};
+
+/**
+ * Test whether an object or array is empty.
+ * Faster than `Object.keys(obj).length === 0`,
+ * although it is debatable whether it matters in this case.
+ * @param obj Object for testing
+ * @returns {boolean} true if the object is empty, false otherwise
+ */
+const _isEmptyObject = (obj: Record<any, any> | any[]): boolean => {
+  // check for invalid values on runtime
+  if (obj === null || obj === undefined || typeof obj !== "object")
+    return false;
+
+  for (var i in obj) return false;
+  return true;
+};
+
+// test local helper functions so they don't have to be exported
+if (import.meta.vitest) {
+  const { test, expect } = import.meta.vitest;
+
+  test("isEmptyObject", () => {
+    // object
+    expect(_isEmptyObject({})).toBe(true);
+    expect(_isEmptyObject({ a: 1, b: 2 })).toBe(false);
+    // array
+    expect(_isEmptyObject([] as any)).toBe(true);
+    expect(_isEmptyObject([1, 2, 3] as any)).toBe(false);
+
+    expect(_isEmptyObject(null as any)).toBe(false);
+    expect(_isEmptyObject("string" as any)).toBe(false);
+    expect(_isEmptyObject("" as any)).toBe(false);
+    expect(_isEmptyObject(123 as any)).toBe(false);
+  });
+}

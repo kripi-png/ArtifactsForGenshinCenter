@@ -1,13 +1,46 @@
 <script lang="ts">
-    import { type ArtifactSlotType } from "@/types";
-    import { type ModalProps } from "svelte-modals";
+    import { userArtifactStore } from "@/lib/storage";
+    import {
+        saveCharacterArtifact,
+        deleteCharacterArtifact,
+    } from "@/lib/dataManager";
+    import type { ArtifactData, ArtifactSlotType } from "@/types";
+    import { onMount } from "svelte";
+    import type { ModalProps } from "svelte-modals";
     import ArtifactInput from "./ArtifactInput.svelte";
+
     interface Props extends ModalProps {
         character: string;
         type: ArtifactSlotType;
     }
     const { isOpen, close, character, type }: Props = $props();
-    console.log(character, type);
+
+    let artifact = $state<ArtifactData>({
+        check: false,
+        artifactSet: "",
+        mainStat: "",
+        subStats: "",
+    });
+
+    onMount(() => {
+        const characterArtifact =
+            $userArtifactStore.characters[character]?.artifacts[type];
+        if (characterArtifact) {
+            artifact = { ...artifact, ...characterArtifact };
+        }
+    });
+
+    const confirmArtifact = () => {
+        if (!artifact.artifactSet) return;
+
+        saveCharacterArtifact(character, type, artifact);
+        close();
+    };
+
+    const deleteArtifact = () => {
+        deleteCharacterArtifact(character, type);
+        close();
+    };
 </script>
 
 {#if isOpen}
@@ -23,19 +56,27 @@
                 <ArtifactInput
                     sectionName={"Set Name"}
                     placeholder={"Enter set name..."}
-                    type="artifactList"
+                    listAttribute="artifactSelectorDatalist"
+                    name="artifactSet"
+                    bind:artifact
                 />
                 <ArtifactInput
                     sectionName={"Main Stat"}
                     placeholder={"Enter main stat..."}
+                    name="mainStat"
+                    bind:artifact
                 />
                 <ArtifactInput
                     sectionName={"Sub Stat"}
                     placeholder={"Enter sub stat(s)..."}
+                    name="subStats"
+                    bind:artifact
                 />
                 <ArtifactInput
                     sectionName={"Already obtained"}
                     type="checkbox"
+                    name="check"
+                    bind:artifact
                 />
                 <div class="warning" style="">
                     <p>
@@ -46,8 +87,8 @@
                 </div>
                 <!-- TODO: change to cross / checkmark buttons like in other places on the web page -->
                 <div class="buttonWrapper">
-                    <button id="editorBtnDelete">Delete</button>
-                    <button id="editorBtnConfirm">OK</button>
+                    <button onclick={deleteArtifact}>Delete</button>
+                    <button onclick={confirmArtifact}>OK</button>
                 </div>
             </div>
         </div>

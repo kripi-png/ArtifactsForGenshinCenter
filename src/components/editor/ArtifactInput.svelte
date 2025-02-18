@@ -1,31 +1,40 @@
 <script lang="ts">
-    // import { ArtifactSetDatalist } from './ArtifactSetDatalist.js';
+    import type { ArtifactData } from "@/types";
+
     interface Props {
         sectionName: string;
+        type?: "text" | "checkbox";
         placeholder?: string;
-        type?: "text" | "artifactList" | "checkbox";
+        listAttribute?: string;
+        name: keyof ArtifactData;
+        artifact: ArtifactData;
     }
-    const { sectionName, placeholder = "", type = "text" }: Props = $props();
+    const {
+        sectionName,
+        type = "text",
+        placeholder = "",
+        listAttribute,
+        name,
+        artifact = $bindable(),
+    }: Props = $props();
 </script>
-
-{#snippet input(type: string, listAttribute?: string)}
-    <input
-        type={listAttribute ? "text" : type}
-        {placeholder}
-        list={listAttribute}
-        maxlength={listAttribute ? 40 : 20}
-    />
-{/snippet}
 
 <section>
     <p class="sectionName">{sectionName}</p>
     <div class="inputWrapper">
         <div class="inputGlow"></div>
         <div class="inputInnerBorder"></div>
-        {#if type === "artifactList"}
-            {@render input("text", "artifactSelectorDatalist")}
+        {#if type === "checkbox"}
+            <input type="checkbox" bind:checked={artifact.check} {name} />
         {:else}
-            {@render input(type)}
+            <input
+                bind:value={artifact[name]}
+                type="text"
+                {name}
+                {placeholder}
+                list={listAttribute}
+                maxlength={listAttribute ? 40 : 20}
+            />
         {/if}
     </div>
 </section>

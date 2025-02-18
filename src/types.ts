@@ -11,12 +11,11 @@ export interface DatasetData {
   [key: string]: string[][];
 }
 
-export interface ArtifactData {
-  check: boolean;
-  artifactSet: string;
-  mainStat: string;
-  subStats: string;
-}
+export type ArtifactData = {
+  [K in "check" | "artifactSet" | "mainStat" | "subStats"]: K extends "check"
+    ? boolean
+    : string;
+};
 
 export interface CharacterArtifactData {
   disabled: boolean;

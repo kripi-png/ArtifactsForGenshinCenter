@@ -1,4 +1,10 @@
-import { initializeArtifactUI } from "../lib/artifactManager";
+import {
+  createArtifactSlotsForPanel,
+  getCharacterPanels,
+} from "@/lib/artifactManager";
+import { getAllArtifactSets } from "@/lib/dataManager";
+import { mount } from "svelte";
+import ModalBackdrop from "../components/editor/ModalsBackdrop.svelte";
 import { updateLocalDataset } from "../lib/dataManager";
 
 export default defineContentScript({
@@ -10,7 +16,7 @@ export default defineContentScript({
       position: "inline",
       anchor: ".Farm_itemList__EgRFB",
       onMount: (_container) => {
-        initializeArtifactUI();
+        main();
       },
     });
 
@@ -18,3 +24,26 @@ export default defineContentScript({
     ui.autoMount();
   },
 });
+
+const main = async () => {
+  mount(ModalBackdrop, {
+    target: document.body,
+  });
+
+  /* pre-generate the datalist for the editor dropdown */
+  const artifactSets = await getAllArtifactSets();
+  const datalist = document.createElement("datalist");
+  datalist.id = "artifactSelectorDatalist";
+  artifactSets.forEach((setName: string) => {
+    const option = document.createElement("option");
+    option.value = setName;
+    datalist.appendChild(option);
+  });
+  document.body.appendChild(datalist);
+
+  const panels = getCharacterPanels();
+  panels.forEach((panel) => {
+    createArtifactSlotsForPanel(panel);
+    // createArtifactHidingButtonForPanel(panel);
+  });
+};
