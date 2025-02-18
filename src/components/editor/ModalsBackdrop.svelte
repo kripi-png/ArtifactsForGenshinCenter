@@ -6,7 +6,7 @@ They are not nested in any way. This is due to the way svelte-modals works.
 This does cause some issues when using the classes and styling from Genshin Center, so those
 need to be modified.
 -->
-<script>
+<script lang="ts">
     import { Modals } from "svelte-modals";
 </script>
 
