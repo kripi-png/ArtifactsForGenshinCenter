@@ -3,11 +3,18 @@ import { updateLocalDataset } from "../lib/dataManager";
 
 export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
-  runAt: "document_end",
-  async main() {
+  async main(ctx) {
     await updateLocalDataset();
 
-    // if artifacts are not disabled:
-    initializeArtifactUI();
+    const ui = createIntegratedUi(ctx, {
+      position: "inline",
+      anchor: ".Farm_itemList__EgRFB",
+      onMount: (_container) => {
+        initializeArtifactUI();
+      },
+    });
+
+    // Call mount to add the UI to the DOM
+    ui.autoMount();
   },
 });
