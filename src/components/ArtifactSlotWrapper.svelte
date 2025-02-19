@@ -14,7 +14,7 @@
     );
 </script>
 
-<div data-character={characterName}>
+<div class="artifactSlotWrapper" data-character={characterName}>
     {#each artifactSlots as slotType}
         {@const artifact = characterArtifacts[slotType]}
         <ArtifactSlot {slotType} {characterName} {artifact} />

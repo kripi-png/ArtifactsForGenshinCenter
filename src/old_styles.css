@@ -2,12 +2,6 @@
     display: none;
 }
 
-.ItemPanel_paused__3_1VE ~ .artifactSlotsWrapper {
-    opacity: 0.3;
-    -webkit-filter: grayscale(70%);
-    filter: grayscale(70%);
-}
-
 .ItemPanel_days__3kT2G {
     margin-bottom: 8px;
 }

@@ -7,6 +7,8 @@ import { mount } from "svelte";
 import ModalBackdrop from "../components/editor/ModalsBackdrop.svelte";
 import { updateLocalDataset } from "../lib/dataManager";
 
+import "../index.css";
+
 export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
   async main(ctx) {
