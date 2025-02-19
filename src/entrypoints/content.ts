@@ -1,5 +1,7 @@
 import {
+  createArtifactHidingButtonForPanel,
   createArtifactSlotsForPanel,
+  getCharacterNameFromPanel,
   getCharacterPanels,
 } from "@/lib/artifactManager";
 import { getAllArtifactSets } from "@/lib/dataManager";
@@ -43,9 +45,15 @@ const main = async () => {
   });
   document.body.appendChild(datalist);
 
+  /* inject the artifacts and other UI to the character panels */
   const panels = getCharacterPanels();
   panels.forEach((panel) => {
-    createArtifactSlotsForPanel(panel);
-    // createArtifactHidingButtonForPanel(panel);
+    const characterName = getCharacterNameFromPanel(panel);
+    if (!characterName) {
+      console.error("Character name not found for panel", panel);
+      return;
+    }
+    createArtifactSlotsForPanel(panel, characterName);
+    createArtifactHidingButtonForPanel(panel, characterName);
   });
 };

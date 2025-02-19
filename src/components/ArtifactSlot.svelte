@@ -9,7 +9,7 @@
         slotType: ArtifactSlotType;
         artifact: ArtifactData | undefined;
     }
-    const { characterName, slotType, artifact }: Props = $props();
+    let { characterName, slotType, artifact }: Props = $props();
 
     // update the artifact image when the artifact data state changes
     let artifactImageUrl = $state("");

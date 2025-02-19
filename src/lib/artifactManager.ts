@@ -1,16 +1,11 @@
 import { mount } from "svelte";
 import ArtifactSlotWrapper from "../components/ArtifactSlotWrapper.svelte";
+import ArtifactDisableButton from "../components/ArtifactDisableButton.svelte";
 
-export const createArtifactSlotsForPanel = (panel: HTMLElement) => {
-  // character name in lowercase and hyphenated (e.g. Hu Tao -> hu-tao)
-  const characterName = panel
-    .querySelector("div.ItemPanel_itemName__jxpO4")
-    ?.textContent?.toLowerCase()
-    .replace(/\s+/g, "-");
-
-  if (!characterName)
-    return console.error("Character name not found for panel", panel);
-
+export const createArtifactSlotsForPanel = (
+  panel: HTMLElement,
+  characterName: string,
+) => {
   const contentWrapper = panel.querySelector(
     "div.ItemPanel_itemContent__M9oCy",
   ) as HTMLElement;
@@ -21,6 +16,28 @@ export const createArtifactSlotsForPanel = (panel: HTMLElement) => {
       characterName,
     },
   });
+};
+
+export const createArtifactHidingButtonForPanel = (
+  panel: HTMLElement,
+  characterName: string,
+) => {
+  mount(ArtifactDisableButton, {
+    target: panel,
+    anchor: panel.querySelector(".ItemPanel_pauseButton__hI9FU") as HTMLElement,
+    props: { characterName },
+  });
+};
+
+export const getCharacterNameFromPanel = (
+  panel: HTMLElement,
+): string | undefined => {
+  // character name in lowercase and hyphenated (e.g. Hu Tao -> hu-tao)
+  const characterName = panel
+    .querySelector("div.ItemPanel_itemName__jxpO4")
+    ?.textContent?.toLowerCase()
+    .replace(/\s+/g, "-");
+  return characterName;
 };
 
 export const getCharacterPanels = (): HTMLElement[] => {
