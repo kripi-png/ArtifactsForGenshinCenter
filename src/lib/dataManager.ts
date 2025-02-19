@@ -1,5 +1,5 @@
 import type { ArtifactData, ArtifactSlotType, DatasetData } from "../types";
-import { ArtifactSlot } from "../types";
+import { artifactSlots } from "@/constants";
 import { userArtifactStore } from "./storage";
 
 export const updateLocalDataset = async () => {
@@ -86,7 +86,7 @@ export const getArtifactBySetAndType = async (
       return resolve(null);
     }
     // flower = 0, circlet = 4
-    const typeIndex: number = ArtifactSlot[type];
+    const typeIndex: number = artifactSlots.indexOf(type);
     const [name, imageId] = dataset[setName][typeIndex];
     resolve({ name, imageUrl: `https://i.imgur.com/${imageId}.png` });
   });

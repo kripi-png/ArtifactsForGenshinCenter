@@ -3,12 +3,12 @@ import ArtifactSlotWrapper from "../components/ArtifactSlotWrapper.svelte";
 
 export const createArtifactSlotsForPanel = (panel: HTMLElement) => {
   // character name in lowercase and hyphenated (e.g. Hu Tao -> hu-tao)
-  const charName = panel
+  const characterName = panel
     .querySelector("div.ItemPanel_itemName__jxpO4")
     ?.textContent?.toLowerCase()
     .replace(/\s+/g, "-");
 
-  if (!charName)
+  if (!characterName)
     return console.error("Character name not found for panel", panel);
 
   const contentWrapper = panel.querySelector(
@@ -18,7 +18,7 @@ export const createArtifactSlotsForPanel = (panel: HTMLElement) => {
   mount(ArtifactSlotWrapper, {
     target: contentWrapper,
     props: {
-      charName,
+      characterName,
     },
   });
 };

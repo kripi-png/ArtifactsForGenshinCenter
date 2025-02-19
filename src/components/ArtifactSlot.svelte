@@ -1,33 +1,31 @@
 <script lang="ts">
-    import type { ArtifactSlotType } from "@/types";
-    interface Props {
-        charName: string;
-        slotType: ArtifactSlotType;
-        artifactSet: string | undefined;
-    }
+    import type { ArtifactData, ArtifactSlotType } from "@/types";
     import { modals } from "svelte-modals";
     import EditorModal from "./editor/EditorModal.svelte";
     import { getArtifactBySetAndType } from "../lib/dataManager";
 
-    const { charName, slotType, artifactSet }: Props = $props();
+    interface Props {
+        characterName: string;
+        slotType: ArtifactSlotType;
+        artifact: ArtifactData | undefined;
+    }
+    const { characterName, slotType, artifact }: Props = $props();
+
     // update the artifact image when the artifact data state changes
     let artifactImageUrl = $state("");
     $effect(() => {
-        if (!artifactSet) {
+        if (!artifact) {
             artifactImageUrl = "";
             return;
         }
 
-        getArtifactBySetAndType(artifactSet, slotType).then((data) => {
+        getArtifactBySetAndType(artifact.artifactSet, slotType).then((data) => {
             artifactImageUrl = data?.imageUrl ?? "";
         });
     });
 
-    // TODO: open the editor modal when artifact is clicked
-    const onClick = () => {
-        console.log(`${charName} ${slotType} ${artifactSet}`);
-
-        modals.open(EditorModal, { character: charName, type: slotType });
+    const openEditor = () => {
+        modals.open(EditorModal, { character: characterName, type: slotType });
     };
 </script>
 
@@ -36,8 +34,9 @@
         ? `background-image: url(${artifactImageUrl});`
         : ""}
     class={`${slotType}Slot`}
-    onclick={onClick}
-    aria-label={`${slotType} for ${charName}`}
+    class:check={artifact?.check}
+    onclick={openEditor}
+    aria-label={`${slotType} for ${characterName}`}
 ></button>
 
 <style>
@@ -68,5 +67,20 @@
     }
     .circletSlot {
         background-image: url("https://i.imgur.com/AO6dMV6.png");
+    }
+
+    .check {
+        position: relative;
+    }
+
+    .check::after {
+        content: "";
+        background-image: url("https://i.imgur.com/x60nTNg.png");
+        background-repeat: no-repeat;
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        left: 0;
     }
 </style>

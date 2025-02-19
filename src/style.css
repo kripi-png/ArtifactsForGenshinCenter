@@ -2,21 +2,6 @@
     display: none;
 }
 
-.artifactSlot.check {
-    position: relative;
-}
-
-.artifactSlot.check::after {
-    content: "";
-    background-image: url("https://i.imgur.com/x60nTNg.png");
-    background-repeat: no-repeat;
-    position: absolute;
-    bottom: 0;
-    top: 0;
-    right: 0;
-    left: 0;
-}
-
 .ItemPanel_paused__3_1VE ~ .artifactSlotsWrapper {
     opacity: 0.3;
     -webkit-filter: grayscale(70%);
@@ -96,35 +81,6 @@
 }
 .import_export_wrapper > button:last-child {
     margin-left: 5px;
-}
-
-.Schedule_section__8Bf3I {
-    margin-top: 20px;
-}
-
-.Schedule_buttonsWrapper__fdOV_ {
-    margin-top: 20px;
-}
-
-.Schedule_buttonsWrapper__fdOV_ button {
-    padding: 10px 40px;
-    border: #ece5d8 solid 1.5px;
-    border-radius: 20px;
-    transition: 0.2s;
-}
-
-.Schedule_buttonsWrapper__fdOV_ button:hover {
-    border: #1e2231 solid 1.5px;
-    background: #ece5d8;
-    color: #1e2231;
-    cursor: pointer;
-    font-weight: 700;
-    transition: 0.2s;
-}
-
-.Schedule_buttonsWrapper__fdOV_ button:focus {
-    filter: brightness(70%);
-    transition: 0.2s;
 }
 
 .Schedule_taskCreatorContent__3tCoD {
