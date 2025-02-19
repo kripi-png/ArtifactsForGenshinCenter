@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { CharacterArtifactData } from "@/types";
+    import type { CharacterArtifactData } from "@/types";
     import { artifactSlots } from "@/constants";
     import ArtifactSlot from "./ArtifactSlot.svelte";
     import { userArtifactStore } from "../lib/storage";
