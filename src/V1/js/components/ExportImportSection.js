@@ -1,11 +1,8 @@
-import {
-  importArtifactData,
-  exportArtifactData,
-} from '../importExport.js';
+import { exportArtifactData, importArtifactData } from "../importExport.js";
 
 export const ExportImportSection = () => {
-  const OPTION_SECTION = document.createElement('div');
-  OPTION_SECTION.classList.add('PlannerOptions_section__y90n3');
+  const OPTION_SECTION = document.createElement("div");
+  OPTION_SECTION.classList.add("PlannerOptions_section__y90n3");
 
   OPTION_SECTION.innerHTML = `
     <div class="Radio_radio__t_pCN">
@@ -23,8 +20,10 @@ export const ExportImportSection = () => {
   `;
 
   // add callbacks
-  OPTION_SECTION.querySelector('#importData').onclick = () => importArtifactData();
-  OPTION_SECTION.querySelector('#exportData').onclick = () => exportArtifactData();
+  OPTION_SECTION.querySelector("#importData").onclick = () =>
+    importArtifactData();
+  OPTION_SECTION.querySelector("#exportData").onclick = () =>
+    exportArtifactData();
 
   return OPTION_SECTION;
 };

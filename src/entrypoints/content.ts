@@ -11,6 +11,8 @@ import { updateLocalDataset } from "../lib/dataManager";
 
 import "../index.css";
 
+import "@/V1/js/content";
+
 export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
   async main(ctx) {
@@ -30,6 +32,8 @@ export default defineContentScript({
 });
 
 const main = async () => {
+  // TODO: Do none of this if userArtifactStore.__DISABLED === true
+
   mount(ModalBackdrop, {
     target: document.body,
   });

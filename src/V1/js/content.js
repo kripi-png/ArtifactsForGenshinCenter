@@ -1,31 +1,8 @@
-import { main as newMain } from "../entrypoints/content";
-
+import { getArtifactSlotByOwner, isWeapon } from "./artifactRenderer.js";
 import { ExportImportSection } from "./components/ExportImportSection.js";
 import { ExtensionSettingsSection } from "./components/ExtensionSettingsSection.js";
 
-import "../style.css";
-
-import { DATASET, ARTIFACT_DATA, loadArtifactData } from "./dataManager.js";
-
-import {
-  isWeapon,
-  loadArtifact,
-  createHidingButton,
-  createSlotsForPanel,
-  getArtifactSlotByOwner,
-  loadAndCreateAllArtifacts,
-} from "./artifactRenderer.js";
-
-const main = async () => {
-  await loadArtifactData();
-  // console.log(DATASET);
-  // console.log(ARTIFACT_DATA);
-
-  // do not create the slots or the hiding buttons if artifacts are disabled
-  if (ARTIFACT_DATA["__DISABLED"] === false) {
-    loadAndCreateAllArtifacts();
-  }
-
+export const main = async () => {
   // mutation observer cannot track elements created before
   // it's been initialized so the function must be called once on startup
   const OPTIONS_MENU = document.querySelector(".PlannerOptions_options__t3nvI");
@@ -98,7 +75,6 @@ const main = async () => {
             return;
           }
 
-          createSlotsForPanel(CHAR_PANEL);
           createHidingButton(CHAR_PANEL);
 
           // if character has no artifact data, return
@@ -129,17 +105,3 @@ const main = async () => {
   // observe for new character panels
   observer.observe(document.querySelector(".Farm_itemList__EgRFB"), config);
 };
-
-// waits until the character list has loaded and then executes the main function
-function waitForPageToLoad() {
-  const waitForCharacterList = setInterval(function () {
-    if (document.querySelector(".Farm_itemList__EgRFB > div")) {
-      clearInterval(waitForCharacterList);
-      console.log("Character list loaded!");
-
-      newMain();
-      // main();
-    }
-  }, 100);
-}
-waitForPageToLoad();

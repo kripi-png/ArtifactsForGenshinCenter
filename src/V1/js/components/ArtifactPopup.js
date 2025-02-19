@@ -9,16 +9,17 @@ const calculatePopupLocation = function (slot) {
 
 // slot:                 hovered artifact
 // set, piece:           names of the set and piece
-export const ArtifactPopup = (slot, setName, pieceName) => {
-  const { x: loc_x , y: loc_y } = calculatePopupLocation(slot);
+const ArtifactPopup = (slot, setName, pieceName) => {
+  const { x: loc_x, y: loc_y } = calculatePopupLocation(slot);
 
   const ICON_URL = slot.style.backgroundImage
-    .replaceAll('"', '')
-    .replace('url(', '')
-    .replace(')', '');
-  const ARTIFACT_POPUP = document.createElement('div');
-  ARTIFACT_POPUP.id = 'artifactTooltipWindow';
-  ARTIFACT_POPUP.style = 'width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: none;';
+    .replaceAll('"', "")
+    .replace("url(", "")
+    .replace(")", "");
+  const ARTIFACT_POPUP = document.createElement("div");
+  ARTIFACT_POPUP.id = "artifactTooltipWindow";
+  ARTIFACT_POPUP.style =
+    "width: 100vw; z-index: 10000; position: absolute; inset: 0px; pointer-events: none;";
   ARTIFACT_POPUP.innerHTML = `
     <div class="artifactTooltip" style="position: sticky; left: ${loc_x}px; top: ${loc_y}px;">
       <div class="tooltipTitle">

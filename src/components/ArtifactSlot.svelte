@@ -27,6 +27,8 @@
     const openEditor = () => {
         modals.open(EditorModal, { character: characterName, type: slotType });
     };
+
+    // TODO: Implement hovering for the tooltip popup
 </script>
 
 <button
