@@ -4,14 +4,12 @@ import {
   getCharacterNameFromPanel,
   getCharacterPanels,
 } from "@/lib/artifactManager";
-import { getAllArtifactSets } from "@/lib/dataManager";
+import { getAllArtifactSets, updateLocalDataset } from "@/lib/dataManager";
 import { mount } from "svelte";
+import ExtensionSettings from "../components/ExtensionSettings.svelte";
 import ModalBackdrop from "../components/editor/ModalsBackdrop.svelte";
-import { updateLocalDataset } from "../lib/dataManager";
 
 import "../index.css";
-
-import "@/V1/js/content";
 
 export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
@@ -26,8 +24,22 @@ export default defineContentScript({
       },
     });
 
+    // inject the modifications to the Settings Window
+    // for example the Import / Export buttons
+    const settingsInjection = createIntegratedUi(ctx, {
+      position: "inline",
+      anchor: "#options .PlannerOptions_content__kBajJ",
+      onMount: (container) => {
+        console.log(container);
+        mount(ExtensionSettings, {
+          target: container,
+        });
+      },
+    });
+
     // Call mount to add the UI to the DOM
     ui.autoMount();
+    settingsInjection.autoMount();
   },
 });
 
