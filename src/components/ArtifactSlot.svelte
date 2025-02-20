@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ArtifactData, ArtifactSlotType } from "@/types";
     import { modals } from "svelte-modals";
-    import EditorModal from "./editor/EditorModal.svelte";
+    import EditorModal from "./modals/EditorModal.svelte";
     import { getArtifactBySetAndType } from "../lib/dataManager";
 
     interface Props {

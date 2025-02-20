@@ -7,7 +7,7 @@ import {
 import { getAllArtifactSets, updateLocalDataset } from "@/lib/dataManager";
 import { mount } from "svelte";
 import ExtensionSettings from "../components/ExtensionSettings.svelte";
-import ModalBackdrop from "../components/editor/ModalsBackdrop.svelte";
+import ModalBackdrop from "../components/modals/ModalsBackdrop.svelte";
 
 import "../index.css";
 
@@ -15,6 +15,16 @@ export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
   async main(ctx) {
     await updateLocalDataset();
+
+    // TODO: consider and try something like
+    // createIntegratedUi(ctx, {
+    //   anchor: ".Farm_itemList__EgRFB",
+    //   onMount(cont => {
+    //     cont
+    //       .children.map(panel => createIntegratedUi({ anchor: panel }))
+    //       .forEach(childUI => childUI.autoMount ());
+    //   })
+    // });
 
     const ui = createIntegratedUi(ctx, {
       position: "inline",
@@ -49,6 +59,12 @@ const main = async () => {
   mount(ModalBackdrop, {
     target: document.body,
   });
+
+  // temporarily open the settings panel on reload for convenience
+  // const openSettings: HTMLElement = document.querySelector(
+  //   "div.Farm_farm__uhRH4 > div.Farm_divider__XPwtq div.PlannerOptions_options__t3nvI div > h4",
+  // ) as HTMLElement;
+  // openSettings.click();
 
   /* pre-generate the datalist for the editor dropdown */
   const artifactSets = await getAllArtifactSets();

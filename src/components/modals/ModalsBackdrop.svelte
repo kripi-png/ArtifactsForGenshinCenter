@@ -25,7 +25,7 @@ need to be modified.
 <style>
     .backdrop {
         width: 100vw;
-        z-index: 10000;
+        z-index: 50000;
         position: absolute;
         inset: 0px;
         pointer-events: all;

@@ -51,28 +51,6 @@
     margin: 2px;
 }
 
-.import_export_wrapper {
-    isolation: unset !important;
-    background: unset !important;
-    border: unset !important;
-}
-
-.import_export_wrapper > button {
-    background-color: #ece5d8;
-    color: #000;
-    border: 1px solid rgba(56, 166, 194, 0.4);
-    border-radius: 5px;
-    padding: 2px;
-    width: 100%;
-}
-
-.import_export_wrapper > button:first-child {
-    margin-right: 5px;
-}
-.import_export_wrapper > button:last-child {
-    margin-left: 5px;
-}
-
 .Schedule_taskCreatorContent__3tCoD {
     width: auto;
 }

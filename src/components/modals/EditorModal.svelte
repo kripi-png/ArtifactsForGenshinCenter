@@ -5,9 +5,10 @@
         deleteCharacterArtifact,
     } from "@/lib/dataManager";
     import type { ArtifactData, ArtifactSlotType } from "@/types";
-    import { onMount } from "svelte";
     import type { ModalProps } from "svelte-modals";
-    import ArtifactInput from "./ArtifactInput.svelte";
+    import { onMount } from "svelte";
+    import ArtifactInput from "../ArtifactInput.svelte";
+    import ModalBase from "./ModalBase.svelte";
 
     interface Props extends ModalProps {
         character: string;
@@ -32,7 +33,6 @@
 
     const confirmArtifact = () => {
         if (!artifact.artifactSet) return;
-
         saveCharacterArtifact(character, type, artifact);
         close();
     };
@@ -43,89 +43,50 @@
     };
 </script>
 
-{#if isOpen}
-    <div role="dialog" class="modal_background">
-        <div class="modal">
-            <div class="modalHeader">
-                <h3>Edit Artifact</h3>
-                <h4>
-                    {character.replace("-", " ")}'s {type}
-                </h4>
-            </div>
-            <div class="modalContent">
-                <ArtifactInput
-                    sectionName={"Set Name"}
-                    placeholder={"Enter set name..."}
-                    listAttribute="artifactSelectorDatalist"
-                    name="artifactSet"
-                    bind:artifact
-                />
-                <ArtifactInput
-                    sectionName={"Main Stat"}
-                    placeholder={"Enter main stat..."}
-                    name="mainStat"
-                    bind:artifact
-                />
-                <ArtifactInput
-                    sectionName={"Sub Stat"}
-                    placeholder={"Enter sub stat(s)..."}
-                    name="subStats"
-                    bind:artifact
-                />
-                <ArtifactInput
-                    sectionName={"Already obtained"}
-                    type="checkbox"
-                    name="check"
-                    bind:artifact
-                />
-                <div class="warning" style="">
-                    <p>
-                        Artifact data will be wiped when extension is
-                        uninstalled.
-                    </p>
-                    <p>Exporting and importing can be done in Options menu.</p>
-                </div>
-                <!-- TODO: change to cross / checkmark buttons like in other places on the web page -->
-                <div class="buttonWrapper">
-                    <button onclick={deleteArtifact}>Delete</button>
-                    <button onclick={confirmArtifact}>OK</button>
-                </div>
-            </div>
+<ModalBase {isOpen}>
+    <div class="modalHeader">
+        <h3>Edit Artifact</h3>
+        <h4>{character.replace("-", " ")}'s {type}</h4>
+    </div>
+    <div class="modalContent">
+        <ArtifactInput
+            sectionName={"Set Name"}
+            placeholder={"Enter set name..."}
+            listAttribute="artifactSelectorDatalist"
+            name="artifactSet"
+            bind:artifact
+        />
+        <ArtifactInput
+            sectionName={"Main Stat"}
+            placeholder={"Enter main stat..."}
+            name="mainStat"
+            bind:artifact
+        />
+        <ArtifactInput
+            sectionName={"Sub Stat"}
+            placeholder={"Enter sub stat(s)..."}
+            name="subStats"
+            bind:artifact
+        />
+        <ArtifactInput
+            sectionName={"Already obtained"}
+            type="checkbox"
+            name="check"
+            bind:artifact
+        />
+        <div class="warning" style="">
+            <p>Artifact data will be wiped when extension is uninstalled.</p>
+            <p>Exporting and importing can be done in Options menu.</p>
+        </div>
+        <!-- TODO: change to cross / checkmark buttons like in other places on the web page -->
+        <div class="buttonWrapper">
+            <button onclick={deleteArtifact}>Delete</button>
+            <button onclick={confirmArtifact}>OK</button>
         </div>
     </div>
-{/if}
+</ModalBase>
 
 <style>
-    .modal_background {
-        z-index: 10000;
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        /* allow click-through to backdrop */
-        pointer-events: none;
-    }
-
-    .modal {
-        position: fixed;
-        top: 50%;
-        transform: translateY(-50%);
-        display: grid;
-        max-height: 95%;
-        max-width: 96vw;
-        background-color: #1e2231;
-        border-radius: 5px;
-        overflow: hidden;
-        grid-template-rows: auto 1fr auto;
-        opacity: 1;
-        pointer-events: all;
-    }
-
     .modalHeader {
         /* Schedule_taskTopBar__lV1W8 */
         display: flex;
