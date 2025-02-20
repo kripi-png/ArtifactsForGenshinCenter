@@ -15,6 +15,12 @@
         )
             return;
 
+        // confirmation
+        const confirmation = prompt(
+            "Importing WILL override all previous information. Type CONFIRM to continue.",
+        )?.toLowerCase();
+        if (!confirmation || confirmation !== "confirm") return;
+
         importArtifactData(userInput);
     };
 
