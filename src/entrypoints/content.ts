@@ -8,6 +8,7 @@ import { getAllArtifactSets, updateLocalDataset } from "@/lib/dataManager";
 import { mount } from "svelte";
 import ExtensionSettings from "../components/ExtensionSettings.svelte";
 import ModalBackdrop from "../components/modals/ModalsBackdrop.svelte";
+import SidepanelOptions from "../components/SidepanelOptions.svelte";
 
 import "../index.css";
 
@@ -47,9 +48,24 @@ export default defineContentScript({
       },
     });
 
+    // inject the modifications to the sidepanel options list
+    const sidePanelOptions = createIntegratedUi(ctx, {
+      position: "inline",
+      anchor: ".PlannerOptions_optionContent__2_jPR",
+      append: (anchor, ui) => {
+        anchor.insertBefore(ui, anchor.lastElementChild);
+      },
+      onMount: (container) => {
+        mount(SidepanelOptions, {
+          target: container,
+        });
+      },
+    });
+
     // Call mount to add the UI to the DOM
     ui.autoMount();
     settingsInjection.autoMount();
+    sidePanelOptions.autoMount();
   },
 });
 

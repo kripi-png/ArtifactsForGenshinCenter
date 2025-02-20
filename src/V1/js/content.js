@@ -28,10 +28,6 @@ export const main = async () => {
         // console.log(addedNode);
         // console.log(addedNode.classList);
         if (addedNode.id === "options") {
-          const options_window = addedNode;
-          options_window
-            .querySelector(".PlannerOptions_content__kBajJ")
-            .appendChild(ExportImportSection());
         }
         // quick menu
         else if (
