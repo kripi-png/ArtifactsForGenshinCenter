@@ -1,5 +1,3 @@
-import { ExportWindow } from "./components/ExportWindow.js";
-
 export const importArtifactData = () => {
   let data = window.prompt("Copy and paste the data here:");
   // if user presses cancel
@@ -37,10 +35,4 @@ export const importArtifactData = () => {
     window.alert("Invalid data! Try again.");
     importArtifactData();
   }
-};
-
-export const exportArtifactData = () => {
-  const data = JSON.stringify(ARTIFACT_DATA);
-  const EXPORT_WINDOW = ExportWindow(data);
-  document.body.appendChild(EXPORT_WINDOW);
 };

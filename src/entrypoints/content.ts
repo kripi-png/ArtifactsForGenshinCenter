@@ -9,7 +9,6 @@ import { mount } from "svelte";
 import ExtensionSettings from "../components/ExtensionSettings.svelte";
 import ModalBackdrop from "../components/modals/ModalsBackdrop.svelte";
 import SidepanelOptions from "../components/SidepanelOptions.svelte";
-
 import "../index.css";
 
 export default defineContentScript({
@@ -54,6 +53,7 @@ export default defineContentScript({
       anchor: ".PlannerOptions_optionContent__2_jPR",
       append: (anchor, ui) => {
         anchor.insertBefore(ui, anchor.lastElementChild);
+        (ui as HTMLElement).style.width = "100%";
       },
       onMount: (container) => {
         mount(SidepanelOptions, {

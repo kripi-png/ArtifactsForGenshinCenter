@@ -1,55 +1,14 @@
 import { getArtifactSlotByOwner, isWeapon } from "./artifactRenderer.js";
-import { ExportImportSection } from "./components/ExportImportSection.js";
-import { ExtensionSettingsSection } from "./components/ExtensionSettingsSection.js";
 
 export const main = async () => {
-  // mutation observer cannot track elements created before
-  // it's been initialized so the function must be called once on startup
-  const OPTIONS_MENU = document.querySelector(".PlannerOptions_options__t3nvI");
-  const OPTIONS_SECTION_LIST = OPTIONS_MENU.querySelector(
-    ".PlannerOptions_optionContent__2_jPR",
-  );
-  const SETTINGS_SECTION = ExtensionSettingsSection();
-  // last element is the More Options button
-  OPTIONS_SECTION_LIST.insertBefore(
-    SETTINGS_SECTION,
-    OPTIONS_SECTION_LIST.lastElementChild,
-  );
-
   // MutationObserver is used to monitor when
-  // a) the user opens the options window
-  // b) the quick menu is created on screens wide enough (laptop and wider)
   // c) user adds a new character
   // https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
   const observer = new MutationObserver((mutationList) => {
     mutationList.forEach((mutation) => {
       mutation.addedNodes.forEach((addedNode) => {
-        // options window
-        // console.log(addedNode);
-        // console.log(addedNode.classList);
-        if (addedNode.id === "options") {
-        }
-        // quick menu
-        else if (
-          addedNode.classList.contains("PlannerOptions_options__t3nvI")
-        ) {
-          // OPTIONS_MENU element does not exist until
-          // quick menu is created thus it has to be (re)defined here
-          const OPTIONS_MENU = document.querySelector(
-            ".PlannerOptions_options__t3nvI",
-          );
-          const OPTIONS_SECTION_LIST = OPTIONS_MENU.querySelector(
-            ".PlannerOptions_optionContent__2_jPR",
-          );
-          const SETTINGS_SECTION = ExtensionSettingsSection();
-          // last element is the More Options button
-          OPTIONS_SECTION_LIST.insertBefore(
-            SETTINGS_SECTION,
-            OPTIONS_SECTION_LIST.lastElementChild,
-          );
-        }
         // new character
-        else if (
+        if (
           !addedNode.id &&
           addedNode.firstElementChild?.classList.contains(
             "ItemPanel_itemWrapper__BUn4_",
