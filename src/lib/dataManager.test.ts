@@ -2,12 +2,14 @@ import { get } from "svelte/store";
 import { beforeAll, beforeEach, describe, expect, test, vi } from "vitest";
 import {
   deleteCharacterArtifact,
+  exportArtifactData,
   getArtifactBySetAndType,
   getLocalDataset,
+  importArtifactData,
   saveCharacterArtifact,
 } from "./dataManager";
 
-import { ArtifactData } from "@/types";
+import { ArtifactData, UserArtifactData } from "@/types";
 import realDataset from "../dataset.json";
 import { userArtifactStore } from "./storage";
 
@@ -121,5 +123,68 @@ describe("modifying user artifact store-state", () => {
       "raiden-shogun",
     );
     expect(setSpy).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("importing and exporting", () => {
+  test("imports stringified data", () => {
+    const stringified =
+      '{"__DISABLED":true,"__VERSION":1,"characters":{"collei":{"artifacts":{"plume":{"artifactSet":"Echoes of an Offering","check":true,"mainStat":"","subStats":""}},"disabled":false}}}';
+    const setSpy = vi.spyOn(chrome.storage.local, "set");
+
+    importArtifactData(stringified);
+
+    expect(get(userArtifactStore)).toHaveProperty(
+      "characters.collei.artifacts.plume.check",
+      true,
+    );
+    expect(setSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test("imports object data", () => {
+    // prettier-ignore
+    const dataObj: UserArtifactData = {"__DISABLED":true,"__VERSION":1,"characters":{"collei":{"artifacts":{"plume":{"artifactSet":"Echoes of an Offering","check":true,"mainStat":"","subStats":""}},"disabled":false}}}
+    const setSpy = vi.spyOn(chrome.storage.local, "set");
+
+    importArtifactData(dataObj);
+
+    expect(get(userArtifactStore)).toHaveProperty(
+      "characters.collei.artifacts.plume.check",
+      true,
+    );
+    expect(setSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test.each([{}, { __DISABLED: false }, { characters: {} }])(
+    "imports partial data",
+    (data) => {
+      const setSpy = vi.spyOn(chrome.storage.local, "set");
+      importArtifactData(data);
+      expect(setSpy).toHaveBeenCalledWith({
+        userArtifactStore: {
+          __DISABLED: false,
+          __VERSION: 1,
+          characters: {},
+        },
+      });
+    },
+  );
+
+  test("exports character data", () => {
+    const artifact: ArtifactData = {
+      check: true,
+      artifactSet: "Nymph's Dream",
+      mainStat: "Geo DEF",
+      subStats: "Ele Mastery",
+    };
+    const setSpy = vi.spyOn(chrome.storage.local, "set");
+    saveCharacterArtifact("raiden-shogun", "goblet", artifact);
+
+    const exportedData = exportArtifactData();
+    expect(exportedData).toBeTypeOf("string");
+    expect(JSON.parse(exportedData)).toHaveProperty(
+      "characters.raiden-shogun.artifacts.goblet.mainStat",
+      "Geo DEF",
+    );
   });
 });

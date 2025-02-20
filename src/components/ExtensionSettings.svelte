@@ -1,18 +1,26 @@
 <script lang="ts">
-    import { get } from "svelte/store";
-    import { userArtifactStore } from "@/lib/storage";
     import { modals } from "svelte-modals";
     import ExportModal from "./modals/ExportModal.svelte";
+    import { exportArtifactData, importArtifactData } from "@/lib/dataManager";
 
     const importData = () => {
-        // Implementation for importing data
-        throw new Error("Not implemented");
+        // TODO: clean this up, use actual validation library or something
+        const userInput = prompt(
+            "Enter the data to import. Close to cancel:",
+        )?.trim();
+        if (
+            !userInput ||
+            !(typeof userInput === "string" || typeof userInput === "object") ||
+            !isNaN(Number(userInput)) // is number
+        )
+            return;
+
+        importArtifactData(userInput);
     };
 
     const exportData = () => {
-        const data = get(userArtifactStore);
-        const stringifiedData = JSON.stringify(data);
-        modals.open(ExportModal, { data: stringifiedData });
+        const data = exportArtifactData();
+        modals.open(ExportModal, { data });
     };
 </script>
 

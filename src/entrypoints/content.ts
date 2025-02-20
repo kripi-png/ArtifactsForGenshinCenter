@@ -40,7 +40,6 @@ export default defineContentScript({
       position: "inline",
       anchor: "#options .PlannerOptions_content__kBajJ",
       onMount: (container) => {
-        console.log(container);
         mount(ExtensionSettings, {
           target: container,
         });

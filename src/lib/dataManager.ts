@@ -1,6 +1,12 @@
-import type { ArtifactData, ArtifactSlotType, DatasetData } from "../types";
+import type {
+  ArtifactData,
+  ArtifactSlotType,
+  DatasetData,
+  UserArtifactData,
+} from "../types";
 import { artifactSlots } from "@/constants";
 import { userArtifactStore } from "./storage";
+import { get } from "svelte/store";
 
 export const updateLocalDataset = async () => {
   /*
@@ -158,6 +164,31 @@ export const deleteCharacterArtifact = (
 
     return state;
   });
+};
+
+/**
+ * Import artifact data into the store and local storage.
+ * @param {Record<string, any> | string} data Object or stringified JSON data to be imported
+ */
+export const importArtifactData = (
+  data: string | Record<string, any>,
+): void => {
+  // TODO: really need some runtime data validation, maybe with Zod?
+  const parsedData: UserArtifactData =
+    typeof data === "string" ? JSON.parse(data) : data;
+  if (!parsedData.characters) parsedData.characters = {};
+  if (!parsedData.__VERSION) parsedData.__VERSION = 1;
+  if (!parsedData.__DISABLED) parsedData.__DISABLED = false;
+
+  userArtifactStore.set(parsedData);
+};
+
+/**
+ * Stringify user's artifact data.
+ * @returns {string} JSON stringified artifact data
+ */
+export const exportArtifactData = (): string => {
+  return JSON.stringify(get(userArtifactStore));
 };
 
 /**
