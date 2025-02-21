@@ -1,5 +1,10 @@
 import { artifactSlots } from "./constants";
 
+export interface ArtifactPieceData {
+  name: string;
+  imageUrl: string;
+}
+
 export interface DatasetData {
   [key: string]: string[][];
 }

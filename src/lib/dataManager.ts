@@ -1,5 +1,6 @@
 import type {
   ArtifactData,
+  ArtifactPieceData,
   ArtifactSlotType,
   DatasetData,
   UserArtifactData,
@@ -72,20 +73,16 @@ export const getAllArtifactSets = async () => {
   return Object.keys(data);
 };
 
-interface ArtifactNameAndImage {
-  name: string;
-  imageUrl: string;
-}
 /**
  * Gets the name and image of an artifact by its set name and type.
  * @param {string} setName The name of the artifact set.
  * @param {ArtifactSlotType} type The type of the artifact.
- * @returns {Promise<ArtifactNameAndImage | null>} The artifact data.
+ * @returns {Promise<ArtifactPieceData | null>} Name and image of the artifact.
  */
 export const getArtifactBySetAndType = async (
   setName: string,
   type: ArtifactSlotType,
-): Promise<ArtifactNameAndImage | null> => {
+): Promise<ArtifactPieceData | null> => {
   return new Promise(async (resolve) => {
     const dataset = await getLocalDataset();
     if (!dataset || !dataset.hasOwnProperty(setName)) {

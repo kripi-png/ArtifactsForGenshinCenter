@@ -1,8 +1,16 @@
 <script lang="ts">
-    import type { ArtifactData, ArtifactSlotType } from "@/types";
+    import type {
+        ArtifactData,
+        ArtifactPieceData,
+        ArtifactSlotType,
+    } from "@/types";
     import { modals } from "svelte-modals";
     import EditorModal from "./modals/EditorModal.svelte";
+    import ArtifactPopup, {
+        calculatePopupLocation,
+    } from "./ArtifactPopup.svelte";
     import { getArtifactBySetAndType } from "../lib/dataManager";
+    import { mount, unmount } from "svelte";
 
     interface Props {
         characterName: string;
@@ -11,16 +19,16 @@
     }
     let { characterName, slotType, artifact }: Props = $props();
 
-    // update the artifact image when the artifact data state changes
-    let artifactImageUrl = $state("");
+    // update the artifact name and image when the artifact data state changes
+    let artifactPieceData: ArtifactPieceData | null = $state(null);
     $effect(() => {
         if (!artifact) {
-            artifactImageUrl = "";
+            artifactPieceData = null;
             return;
         }
 
         getArtifactBySetAndType(artifact.artifactSet, slotType).then((data) => {
-            artifactImageUrl = data?.imageUrl ?? "";
+            artifactPieceData = data;
         });
     });
 
@@ -28,17 +36,40 @@
         modals.open(EditorModal, { character: characterName, type: slotType });
     };
 
-    // TODO: Implement hovering for the tooltip popup
+    let slotBind: null | HTMLElement = null;
+    let mountedPopup: ReturnType<typeof mount> | null = null;
+    const handleMouseEnter = () => {
+        if (!artifact || !slotBind || !artifactPieceData) return;
+
+        const { x: locX, y: locY } = calculatePopupLocation(slotBind);
+        mountedPopup = mount(ArtifactPopup, {
+            target: document.body,
+            props: {
+                artifact,
+                name: artifactPieceData.name,
+                imageUrl: artifactPieceData.imageUrl,
+                locX,
+                locY,
+            },
+        });
+    };
+    // destroy the popup component when mouse leaves the slot
+    let handleMouseLeave = () => {
+        if (mountedPopup) unmount(mountedPopup);
+    };
 </script>
 
 <button
-    style={artifactImageUrl
-        ? `background-image: url(${artifactImageUrl});`
+    bind:this={slotBind}
+    style={artifactPieceData
+        ? `background-image: url(${artifactPieceData.imageUrl});`
         : ""}
     class={`${slotType}Slot`}
     class:check={artifact?.check}
     onclick={openEditor}
     aria-label={`${slotType} for ${characterName}`}
+    onmouseenter={handleMouseEnter}
+    onmouseleave={handleMouseLeave}
 ></button>
 
 <style>
