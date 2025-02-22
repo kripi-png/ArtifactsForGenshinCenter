@@ -12,7 +12,8 @@
 </script>
 
 <script lang="ts">
-    import { ArtifactData } from "@/types";
+    import { fade } from "svelte/transition";
+    import type { ArtifactData } from "@/types";
 
     interface Props {
         artifact: ArtifactData;
@@ -31,6 +32,7 @@
     <div
         class="artifactTooltip"
         style="position: sticky; left: {locX}px; top: {locY}px;"
+        transition:fade|global={{ duration: 100 }}
     >
         <div class="tooltipTitle">
             <p class="tooltipTitleText">
@@ -69,6 +71,8 @@
             rgba(228, 171, 82, 0.565) 100%
         );
         display: flex;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
     }
 
     .tooltipTitleText {
@@ -96,6 +100,8 @@
         background-color: #ece5d8;
         color: #000;
         padding: 5px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
     }
 
     .tooltipText {

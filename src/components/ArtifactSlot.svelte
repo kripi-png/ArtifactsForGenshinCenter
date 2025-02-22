@@ -53,9 +53,11 @@
             },
         });
     };
-    // destroy the popup component when mouse leaves the slot
     let handleMouseLeave = () => {
-        if (mountedPopup) unmount(mountedPopup);
+        // destroy the popup component when mouse leaves the slot
+        // { outro: true } plays the transition before completely destroying the component
+        if (mountedPopup) unmount(mountedPopup, { outro: true });
+        mountedPopup = null;
     };
 </script>
 
@@ -75,11 +77,12 @@
 <style>
     button {
         flex: 1;
-        /* width: 60px; */
+        width: 60px;
         height: 72px;
         background-size: cover;
         background-size: 72px 72px;
         background-repeat: no-repeat;
+        background-position: center;
     }
 
     button:hover {
