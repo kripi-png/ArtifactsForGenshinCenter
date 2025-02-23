@@ -9,7 +9,7 @@ export default defineBackground(() => {
   });
 
   // take user to Genshin Center when they click the extension icon
-  browser.action.onClicked.addListener((tab) => {
+  (browser.action ?? browser.browserAction).onClicked.addListener((tab) => {
     browser.tabs.update({
       url: "https://genshin-center.com/planner",
     });
