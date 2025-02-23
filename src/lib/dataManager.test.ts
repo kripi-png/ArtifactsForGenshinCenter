@@ -25,17 +25,8 @@ describe("data manager", () => {
     expect(getterSpy).toBeCalledWith("dataset");
     expect(dataset).toStrictEqual(realDataset);
   });
-  test("returns the correct image for artifact sets and artifacts", async () => {
-    let artifactSetData = {
-      "Desert Pavilion Chronicle": [
-        ["The First Days of the City of Kings", "xtGI1Ph"],
-        ["End of the Golden Realm", "PSp0U1A"],
-        ["Timepiece of the Lost Path", "P6adtvk"],
-        ["Defender of the Enchanting Dream", "XRtmz2j"],
-        ["Legacy of the Desert High-Born", "9pm6EUj"],
-      ],
-    };
 
+  test("returns the correct image for artifact sets and artifacts", async () => {
     const data = await getArtifactBySetAndType(
       "Desert Pavilion Chronicle",
       "plume",
@@ -55,8 +46,7 @@ describe("data manager", () => {
 describe("modifying user artifact store-state", () => {
   beforeEach(() => {
     userArtifactStore.set({
-      __DISABLED: true,
-      __VERSION: 1,
+      __DISABLED: false,
       characters: {},
     });
   });
@@ -90,22 +80,19 @@ describe("modifying user artifact store-state", () => {
     expect(get(userArtifactStore).characters).not.toHaveProperty("hu-tao");
   });
 
-  test("also modifies chrome.storage", () => {
+  test("also modifies browser.storage", () => {
     const artifact: ArtifactData = {
       check: true,
       artifactSet: "Gladiator",
       mainStat: "Geo DEF",
       subStats: "Ele Mastery",
     };
-    const setSpy = vi.spyOn(chrome.storage.local, "set");
 
     saveCharacterArtifact("traveler", "plume", artifact);
-    expect(setSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ userArtifactStore: expect.anything() }),
-    );
-
     deleteCharacterArtifact("traveler", "plume");
-    expect(setSpy).toHaveBeenCalledTimes(2);
+    expect(storage.getItem("local:userArtifactData")).not.toHaveProperty(
+      "characters.traveler.plume",
+    );
   });
 
   test("removes character if it has no artifacts", () => {
@@ -115,22 +102,26 @@ describe("modifying user artifact store-state", () => {
       mainStat: "Geo DEF",
       subStats: "Ele Mastery",
     };
-    const setSpy = vi.spyOn(chrome.storage.local, "set");
 
     saveCharacterArtifact("raiden-shogun", "goblet", artifact);
     deleteCharacterArtifact("raiden-shogun", "goblet");
     expect(get(userArtifactStore).characters).not.toHaveProperty(
       "raiden-shogun",
     );
-    expect(setSpy).toHaveBeenCalledTimes(2);
   });
 });
 
 describe("importing and exporting", () => {
+  beforeEach(() => {
+    userArtifactStore.set({
+      __DISABLED: false,
+      characters: {},
+    });
+  });
+
   test("imports stringified data", () => {
     const stringified =
-      '{"__DISABLED":true,"__VERSION":1,"characters":{"collei":{"artifacts":{"plume":{"artifactSet":"Echoes of an Offering","check":true,"mainStat":"","subStats":""}},"disabled":false}}}';
-    const setSpy = vi.spyOn(chrome.storage.local, "set");
+      '{"__DISABLED":true,"characters":{"collei":{"artifacts":{"plume":{"artifactSet":"Echoes of an Offering","check":true,"mainStat":"","subStats":""}},"disabled":false}}}';
 
     importArtifactData(stringified);
 
@@ -138,13 +129,11 @@ describe("importing and exporting", () => {
       "characters.collei.artifacts.plume.check",
       true,
     );
-    expect(setSpy).toHaveBeenCalledTimes(1);
   });
 
   test("imports object data", () => {
     // prettier-ignore
-    const dataObj: UserArtifactData = {"__DISABLED":true,"__VERSION":1,"characters":{"collei":{"artifacts":{"plume":{"artifactSet":"Echoes of an Offering","check":true,"mainStat":"","subStats":""}},"disabled":false}}}
-    const setSpy = vi.spyOn(chrome.storage.local, "set");
+    const dataObj: UserArtifactData = {"__DISABLED":true,"characters":{"collei":{"artifacts":{"plume":{"artifactSet":"Echoes of an Offering","check":true,"mainStat":"","subStats":""}},"disabled":false}}}
 
     importArtifactData(dataObj);
 
@@ -152,20 +141,15 @@ describe("importing and exporting", () => {
       "characters.collei.artifacts.plume.check",
       true,
     );
-    expect(setSpy).toHaveBeenCalledTimes(1);
   });
 
   test.each([{}, { __DISABLED: false }, { characters: {} }])(
     "imports partial data",
-    (data) => {
-      const setSpy = vi.spyOn(chrome.storage.local, "set");
+    async (data) => {
       importArtifactData(data);
-      expect(setSpy).toHaveBeenCalledWith({
-        userArtifactStore: {
-          __DISABLED: false,
-          __VERSION: 1,
-          characters: {},
-        },
+      expect(await storage.getItem("local:userArtifactData")).toStrictEqual({
+        __DISABLED: false,
+        characters: {},
       });
     },
   );
@@ -177,7 +161,6 @@ describe("importing and exporting", () => {
       mainStat: "Geo DEF",
       subStats: "Ele Mastery",
     };
-    const setSpy = vi.spyOn(chrome.storage.local, "set");
     saveCharacterArtifact("raiden-shogun", "goblet", artifact);
 
     const exportedData = exportArtifactData();

@@ -174,7 +174,6 @@ export const importArtifactData = (
   const parsedData: UserArtifactData =
     typeof data === "string" ? JSON.parse(data) : data;
   if (!parsedData.characters) parsedData.characters = {};
-  if (!parsedData.__VERSION) parsedData.__VERSION = 1;
   if (!parsedData.__DISABLED) parsedData.__DISABLED = false;
 
   userArtifactStore.set(parsedData);

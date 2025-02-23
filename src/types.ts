@@ -24,6 +24,5 @@ export interface CharacterArtifactData {
 
 export interface UserArtifactData {
   __DISABLED: boolean;
-  __VERSION: number;
   characters: Partial<Record<string, CharacterArtifactData>>;
 }

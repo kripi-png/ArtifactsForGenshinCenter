@@ -7,7 +7,6 @@ describe("migrates to 2.0", () => {
     const emptyTest = {};
     const emptyResult: UserArtifactData = {
       __DISABLED: false,
-      __VERSION: 1,
       characters: {},
     };
     expect(migrateTo_2_0_0(emptyTest)).toStrictEqual(emptyResult);

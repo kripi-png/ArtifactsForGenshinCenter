@@ -1,38 +1,49 @@
 import { writable, type Updater, type Writable } from "svelte/store";
 import type { UserArtifactData } from "../types";
+import { migrateTo_2_0_0 } from "./migration";
+
+type StorageKey =
+  | `local:${string}`
+  | `session:${string}`
+  | `sync:${string}`
+  | `managed:${string}`;
 
 /**
  * https://github.com/NekitCorp/chrome-extension-svelte-typescript-boilerplate/blob/454b7e446ab0e0d296bf113d179b570a129b71fe/src/storage.ts
  *
- * Creates a persistent Svelte store backed by Chrome's local storage.
+ * Creates a persistent Svelte store backed by Chrome's local storage utilizing wxt/storage package.
  *
  * @template T The type of the store's value.
- * @param {string} key The key to use for the store in Chrome's local storage.
+ * @param {StorageKey} key The key to use for the store in Chrome's storage. Must be prefixed with the storage area.
  * @param {T} initialValue The initial value of the store.
  * @returns {Writable<T>} A writable Svelte store.
  */
-
-export function persistentStore<T>(key: string, initialValue: T): Writable<T> {
+export function persistentStore<T>(
+  key: StorageKey,
+  initialValue: T,
+): Writable<T> {
   const store = writable<T>(initialValue);
+  const _userArtifactData = storage.defineItem<T>(key, {
+    fallback: initialValue,
+    version: 2,
+    migrations: {
+      2: async (data) => migrateTo_2_0_0(data),
+    },
+  });
 
-  function updateChromeStorage(value: T): void {
-    browser.storage.local.set({ [key]: value });
+  function updateChromeStorage(value: T) {
+    _userArtifactData.setValue(value);
   }
 
   function watchChromeStorage() {
-    browser.storage.local.onChanged.addListener((changes) => {
-      if (Object.hasOwn(changes, key)) {
-        store.set(changes[key].newValue);
-      }
+    _userArtifactData.watch((newData) => {
+      store.set(newData);
     });
   }
 
-  function initStoreFromChromeStorage() {
-    browser.storage.local.get(key).then((result) => {
-      if (Object.hasOwn(result, key)) {
-        store.set(result[key]);
-      }
-    });
+  async function initStoreFromChromeStorage() {
+    const data = await _userArtifactData.getValue();
+    store.set(data);
   }
 
   initStoreFromChromeStorage();
@@ -55,10 +66,9 @@ export function persistentStore<T>(key: string, initialValue: T): Writable<T> {
 }
 
 export const userArtifactStore = persistentStore<UserArtifactData>(
-  "userArtifactStore",
+  "local:userArtifactData",
   {
     __DISABLED: false,
-    __VERSION: 1,
     characters: {},
   },
 );
