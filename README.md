@@ -20,15 +20,22 @@ Some problems and minor inconveniences:
 
 These add up to sizeable amount of work, and, if completed, should provide a solid framework for future extensions I may or may not develop.
 
-Some sort of TODO:
+Some sort of a TODO:
 - [x] migrate from npm to pnpm
 - [x] migrate from rollup to vite
-- [x] HMR
-- [ ] rewrite and create components with ts and vue/svelte
-- [ ] try redesigning the artifact dataset structure
-- [ ] "host" the dataset on github instead of bundling with the extension
-  - this is especially convenient as updating the json on gh is enough to add artifacts
-  - however fetching the entire thing on every reload cannot be a good idea, so need to cache it somehow
+- [x] ~~HMR~~
+- [x] rewrite and create components with ts and vue/svelte
+- [x] try redesigning the artifact dataset structure
+- [x] "host" the dataset on github instead of bundling with the extension
+- [ ] improve content script's mounting
+- [ ] listen for new character panels as well as detect when they are removed
+- [ ] tests for Svelte components?
+- [ ] rewrite the README
+- [ ] ensure Firefox compatibility
+- [ ] publish on Firefox and find testers -> collect feedback
+  - especially important is robust migration of data from V1 to V2
+  - [ ] for this, utilize WXT storage API and its migration feature
+- [ ] publish on Chrome Web Store
 
 A chrome extension for [Genshin Center's Ascension Planner](https://genshin-center.com/planner). Helps users to plan which artifacts they want to get for their Genshin Impact character. Users can also set main and sub stats for the artifacts and mark them as obtained in-game.
 <br>
