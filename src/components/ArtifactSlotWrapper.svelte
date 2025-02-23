@@ -20,7 +20,7 @@
 
 <div
     class="artifactSlotWrapper"
-    class:disabled={characterData.disabled}
+    class:disabled={characterData.disabled || $userArtifactStore.__DISABLED}
     data-character={characterName}
 >
     {#each artifactSlots as slotType}
