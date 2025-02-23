@@ -16,11 +16,11 @@ export function persistentStore<T>(key: string, initialValue: T): Writable<T> {
   const store = writable<T>(initialValue);
 
   function updateChromeStorage(value: T): void {
-    chrome.storage.local.set({ [key]: value });
+    browser.storage.local.set({ [key]: value });
   }
 
   function watchChromeStorage() {
-    chrome.storage.local.onChanged.addListener((changes) => {
+    browser.storage.local.onChanged.addListener((changes) => {
       if (Object.hasOwn(changes, key)) {
         store.set(changes[key].newValue);
       }
@@ -28,7 +28,7 @@ export function persistentStore<T>(key: string, initialValue: T): Writable<T> {
   }
 
   function initStoreFromChromeStorage() {
-    chrome.storage.local.get(key).then((result) => {
+    browser.storage.local.get(key).then((result) => {
       if (Object.hasOwn(result, key)) {
         store.set(result[key]);
       }
