@@ -33,7 +33,9 @@
 
     const confirmArtifact = () => {
         if (!artifact.artifactSet) return;
-        saveCharacterArtifact(character, type, artifact);
+
+        const artifactSnapshot: ArtifactData = $state.snapshot(artifact);
+        saveCharacterArtifact(character, type, artifactSnapshot);
         close();
     };
 
