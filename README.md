@@ -29,9 +29,12 @@ Some sort of a TODO:
 - [x] "host" the dataset on github instead of bundling with the extension
 - [ ] improve content script's mounting
 - [ ] listen for new character panels as well as detect when they are removed
+- [ ] consider wxt/storage's versioning for dataset fetching
 - [ ] tests for Svelte components?
+- [ ] go through the answers to the Feedback form and check for any suggestions for new features
 - [ ] rewrite the README
-- [ ] ensure Firefox compatibility
+- [ ] ensure Firefox compatibility?
+  - this was not nearly as easy and straightforward as I thought it would be, or frankly, should be
 - [ ] publish on Firefox and find testers -> collect feedback
   - especially important is robust migration of data from V1 to V2
   - [ ] for this, utilize WXT storage API and its migration feature
