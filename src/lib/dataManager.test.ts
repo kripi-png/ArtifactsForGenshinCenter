@@ -4,7 +4,6 @@ import {
   deleteCharacterArtifact,
   exportArtifactData,
   getArtifactBySetAndType,
-  getLocalDataset,
   importArtifactData,
   saveCharacterArtifact,
 } from "./dataManager";
@@ -20,7 +19,7 @@ describe("data manager", () => {
 
   test("loads the dataset", async () => {
     const getterSpy = vi.spyOn(browser.storage.local, "get");
-    const dataset = await getLocalDataset();
+    const dataset = await storage.getItem("local:dataset");
 
     expect(getterSpy).toBeCalledWith("dataset");
     expect(dataset).toStrictEqual(realDataset);
