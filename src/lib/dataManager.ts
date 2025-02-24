@@ -1,3 +1,5 @@
+import { artifactSlots, DATASET_URL } from "@/constants";
+import { get } from "svelte/store";
 import type {
   ArtifactData,
   ArtifactPieceData,
@@ -5,9 +7,7 @@ import type {
   DatasetData,
   UserArtifactData,
 } from "../types";
-import { artifactSlots, DATASET_URL } from "@/constants";
 import { userArtifactStore } from "./storage";
-import { get } from "svelte/store";
 
 // initialize the dataset storage item
 const dataset = storage.defineItem<DatasetData, { v: number }>(
