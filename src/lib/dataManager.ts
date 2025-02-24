@@ -5,55 +5,57 @@ import type {
   DatasetData,
   UserArtifactData,
 } from "../types";
-import { artifactSlots } from "@/constants";
+import { artifactSlots, DATASET_URL } from "@/constants";
 import { userArtifactStore } from "./storage";
 import { get } from "svelte/store";
 
+// initialize the dataset item
+const dataset = storage.defineItem<DatasetData, { v: number }>(
+  "local:dataset",
+  {
+    init: () => {
+      storage.setMeta("local:dataset", { v: 0 });
+      return {};
+    },
+  },
+);
+
+/**
+ * Compare the local dataset version with the remote dataset version.
+ * If they are different, update the local dataset.
+ */
 export const updateLocalDataset = async () => {
-  /*
-  Make a HEAD request to the raw dataset json stored on Github.
-  The Content-Length header is used to check whether the dataset
-  has been changed since last time, and if so, the local dataset in the
-  localStorage is updated.
-  */
-  const requestUrl =
-    "https://raw.githubusercontent.com/kripi-png/ArtifactsForGenshinCenter/main/src/dataset.json";
+  // make a HEAD request to the raw dataset on Github for the Content-Length header.
+  // This header is used to check whether the dataset has been changed since last time.
+  // Both the dataset and the version metadata are saved to the localStorage.
 
+  // check the new version
   try {
-    const headResponse = await fetch(requestUrl, { method: "HEAD" });
-    const newSize = Number(headResponse.headers.get("Content-Length"));
-    const oldSize = await _getLocalDatasetVersion();
-    console.log("newSize", newSize, typeof newSize);
-    console.log("oldSize", oldSize, typeof oldSize);
-
-    // check whether the localDataset exists, just in case
-    // it is possible for the version entry to exist without the dataset
-    const localDataset = await getLocalDataset();
-    const localDatasetExists = Object.keys(localDataset).length !== 0;
-    console.log("localDatasetExists", localDatasetExists);
-    // if everything is in order, return.
-    if (newSize === oldSize && localDatasetExists) return;
-
-    // if the dataset has changed, fetch the new json
-    // and save it to localStorage along with the new version
-    const response = await fetch(requestUrl);
-    const resJson = (await response.json()) as DatasetData;
-    setLocalStorage("dataset", resJson);
-    setLocalStorage("datasetVersion", newSize);
+    const headResponse = await fetch(DATASET_URL, { method: "HEAD" });
+    const remoteVersion =
+      Number(headResponse.headers.get("Content-Length")) || 0;
+    // get the local version
+    const localVersion = (await dataset.getMeta())?.v ?? 0;
+    // if the versions match, abort
+    if (remoteVersion === localVersion) return;
   } catch (error) {
-    console.error(error);
+    console.error("Failed to check for the newest version of dataset:", error);
   }
-};
 
-const _getLocalDatasetVersion = async (): Promise<number> => {
-  // helper method for updateLocalDataset
-
-  return new Promise((resolve) => {
-    browser.storage.local.get("datasetVersion").then((result) => {
-      if (!result?.datasetVersion) resolve(0);
-      resolve(Number(result.datasetVersion));
-    });
-  });
+  // fetch the new dataset
+  try {
+    const response = await fetch(DATASET_URL);
+    const data = await response.json();
+    await Promise.all([
+      dataset.setValue(data),
+      dataset.setMeta({
+        v: Number(response.headers.get("Content-Length") ?? 0),
+      }),
+    ]);
+    console.info("Dataset updated successfully");
+  } catch (error) {
+    console.error("Failed to update dataset:", error);
+  }
 };
 
 export const getLocalDataset = async (): Promise<DatasetData> => {

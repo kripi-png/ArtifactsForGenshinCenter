@@ -7,13 +7,10 @@ import ExtensionSettings from "../components/ExtensionSettings.svelte";
 import ModalBackdrop from "../components/modals/ModalsBackdrop.svelte";
 import SidepanelOptions from "../components/SidepanelOptions.svelte";
 import "../index.css";
-import { updateLocalDataset } from "@/lib/dataManager";
 
 export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
   async main(ctx) {
-    await updateLocalDataset();
-
     // important: backdrop for modals, e.g. the Editor
     mount(ModalBackdrop, {
       target: document.body,

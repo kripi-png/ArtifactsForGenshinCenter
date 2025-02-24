@@ -29,7 +29,7 @@ Some sort of a TODO:
 - [x] "host" the dataset on github instead of bundling with the extension
 - [x] improve content script's mounting
 - [x] listen for new character panels ~~as well as detect when they are removed~~
-- [ ] consider wxt/storage's versioning for dataset fetching
+- [x] consider wxt/storage's versioning for dataset fetching
 - [ ] tests for Svelte components?
 - [ ] go through the answers to the Feedback form and check for any suggestions for new features
 - [ ] rewrite the README

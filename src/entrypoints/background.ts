@@ -1,3 +1,5 @@
+import { updateLocalDataset } from "@/lib/dataManager";
+
 export default defineBackground(() => {
   // take user to the uninstall survey on uninstall
   browser.runtime.onInstalled.addListener((details) => {
@@ -12,4 +14,6 @@ export default defineBackground(() => {
       url: "https://genshin-center.com/planner",
     });
   });
+
+  updateLocalDataset();
 });
