@@ -16,6 +16,12 @@ export const migrateTo_2_0_0 = (data: any) => {
     characters: {},
   };
 
+  // abort if migrated data is being re-migrated
+  if (characters.hasOwnProperty("characters")) {
+    migratedData.characters = characters.characters;
+    return migratedData;
+  }
+
   for (const character of Object.keys(characters)) {
     // console.log("Migrating", character);
     const { disabled, ...artifacts } = characters[character];

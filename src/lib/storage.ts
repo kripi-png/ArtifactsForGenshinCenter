@@ -9,14 +9,13 @@ type StorageKey =
   | `managed:${string}`;
 
 /**
- * https://github.com/NekitCorp/chrome-extension-svelte-typescript-boilerplate/blob/454b7e446ab0e0d296bf113d179b570a129b71fe/src/storage.ts
- *
  * Creates a persistent Svelte store backed by Chrome's local storage utilizing wxt/storage package.
  *
  * @template T The type of the store's value.
  * @param {StorageKey} key The key to use for the store in Chrome's storage. Must be prefixed with the storage area.
  * @param {T} initialValue The initial value of the store.
  * @returns {Writable<T>} A writable Svelte store.
+ * @see based on https://github.com/NekitCorp/chrome-extension-svelte-typescript-boilerplate/blob/454b7e446ab0e0d296bf113d179b570a129b71fe/src/storage.ts
  */
 export function persistentStore<T>(
   key: StorageKey,
@@ -24,8 +23,11 @@ export function persistentStore<T>(
 ): Writable<T> {
   const store = writable<T>(initialValue);
   const _userArtifactData = storage.defineItem<T>(key, {
-    fallback: initialValue,
     version: 2,
+    init: () => {
+      storage.setMeta(key, { v: 2 });
+      return initialValue;
+    },
     migrations: {
       2: async (data) => migrateTo_2_0_0(data),
     },
