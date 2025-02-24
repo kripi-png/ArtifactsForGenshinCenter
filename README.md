@@ -1,4 +1,3 @@
-<!--
 # V2 Rewrite
 
 Some sort of a TODO:
@@ -13,7 +12,7 @@ Some sort of a TODO:
 - [x] consider wxt/storage's versioning for dataset fetching
 - [ ] tests for Svelte components?
 - [ ] go through the answers to the Feedback form and check for any suggestions for new features
-- [ ] rewrite the README
+- [x] rewrite the README
 - [ ] ensure Firefox compatibility?
   - this was not nearly as easy and straightforward as I thought it would be, or frankly, should be
 - [ ] publish on Firefox and find testers -> collect feedback
@@ -22,10 +21,9 @@ Some sort of a TODO:
 - [ ] publish on Chrome Web Store
 - [ ] use a library to validate the editor data; especially the set's name
   - [ArkType](https://arktype.io/) seems pretty fast
-- [ ] localization
+- [ ] internationalization / i18n
   - perhaps store a ID for sets in the dataset, and have localizations bundled with the extension
-- [ ] notification system
--->
+- [ ] notification system for updates
 
 [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/jleonalkkhbfeafkmfgofopiadjkalno?style=for-the-badge&logo=googlechrome&label=Chrome%20Users&color=orange)](https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno)
 
@@ -46,35 +44,32 @@ It is also possible to set the main and sub stats for the artifacts and mark the
   - Syncing between user's devices is currently not possible, but this allows for sharing the data between devices (or users)
 
 ### Examples
-![Ningguang's Artifacts](https://i.imgur.com/aZwUY54.png "Ningguang's Artifacts")
-![Edit window](https://i.imgur.com/f2Kxnq7.png)
+![Yumemizuki Artifacts](https://i.imgur.com/04fzgtD.png)
+![Edit window](https://i.imgur.com/xIz2QoV.png)
 
-## Todo
-- Look into localization
-- Look into Firefox extensions
-  - also some other browsers
-- Maybe notify the user about new artifact sets and such using the website's update notification system
+## Possible new features
+- Localization
+- Porting to Firefox
+- Notifications on new artifact sets and extension updates
 
-## Known issues
-- Visiting another page on Genshin Center (e.g. the Weapons page) removes the slots
-  - can be fixed by reloading the page
-
-## Found a bug? Got a question or feedback?
-You can either send me a message on Discord (kripi#6436), or in case of bug reports you can also open a new issue here on GitHub.
-
-## Credits
-Artifact icons (src/js/dataset.json) are originally from [impact.moe](https://impact.moe/) using their API but later converted to .PNG and uploaded to imgur.com.
-A few of them may also be from [Honey Impact](https://genshin.honeyhunterworld.com/) or [Project Amber](https://gi.yatta.moe/en) if impact.moe didn't have the images at the time.
+## Bugs, questions, feedback
+- You can contact me on Discord (kripi#6436, can be found on Genshin Center server)
+- In case of bug reports, you can also open a new issue here on GitHub.
+- There is also the Support Center on Web Store
 
 ## Development and contributing
 - Feel free to create pull requests, issues, and whatnot. I'll review and merge them when I have time
-- Please ensure commits are (more or less) in accordance with Conventional Commits v1.0.0 guidelines: https://www.conventionalcommits.org/en/v1.0.0/
+- When writing commit messages, please try to follow the [Conventional Commits v1.0.0 guidelines](https://www.conventionalcommits.org/en/v1.0.0/).
+  - This helps with consistency and clarity in the messages
 
 ### Development
-- **The project uses [pnpm](https://pnpm.io/) instead of npm. Make sure to install it.**
-- After cloning the repo, run `pnpm install` to install all packages.
-- Run `pnpm dev` to start the vite development server. This command watches for changes in the source code and automatically rebuilds the dist/ folder as needed.
-- Navigate to chrome://extensions/ and enable Developer Mode from top-right corner.
-- Click Load Unpacked button on top-left, and select the **dist/** folder inside the project folder.
-- Extension should now be operational, so navigate to https://genshin-center.com/planner.
-- Thanks to Vite and crxjs' Hot Module Replacement (HMR), the extension will automatically reload when you make changes to the code.
+**Note**: the project uses [pnpm](https://pnpm.io/) instead of npm.
+
+1. Clone the repository
+2. Install dependencies with `pnpm install`
+3. Run `pnpm dev` to start the project and generate the dist\ directory
+4. Navigate to chrome://extensions/ and enable Developer Mode from top-right corner.
+5. Click Load Unpacked button on top-left, and select the dist\chrome-mv3\ directory
+6. Navigate to https://genshin-center.com/planner. Everything should now work.
+
+When the source code is changed, WXT automatically rebuilds the dist\ directory and reloads the extension.
