@@ -37,8 +37,13 @@ Some sort of a TODO:
   - this was not nearly as easy and straightforward as I thought it would be, or frankly, should be
 - [ ] publish on Firefox and find testers -> collect feedback
   - especially important is robust migration of data from V1 to V2
-  - [ ] for this, utilize WXT storage API and its migration feature
+  - [x] for this, utilize WXT storage API and its migration feature
 - [ ] publish on Chrome Web Store
+- [ ] use a library to validate the editor data; especially the set's name
+  - [ArkType](https://arktype.io/) seems pretty fast
+- [ ] localization
+  - perhaps store a ID for sets in the dataset, and have localizations bundled with the extension
+- [ ] notification system
 
 A chrome extension for [Genshin Center's Ascension Planner](https://genshin-center.com/planner). Helps users to plan which artifacts they want to get for their Genshin Impact character. Users can also set main and sub stats for the artifacts and mark them as obtained in-game.
 <br>
