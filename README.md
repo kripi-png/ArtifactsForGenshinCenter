@@ -11,11 +11,11 @@ Some sort of a TODO:
 - [x] listen for new character panels ~~as well as detect when they are removed~~
 - [x] consider wxt/storage's versioning for dataset fetching
 - [ ] tests for Svelte components?
-- [ ] go through the answers to the Feedback form and check for any suggestions for new features
+- [x] go through the answers to the Feedback form and check for any suggestions for new features
 - [x] rewrite the README
 - [ ] ensure Firefox compatibility?
   - this was not nearly as easy and straightforward as I thought it would be, or frankly, should be
-- [ ] publish on Firefox and find testers -> collect feedback
+  - [ ] publish on Firefox and find testers -> collect feedback
   - especially important is robust migration of data from V1 to V2
   - [x] for this, utilize WXT storage API and its migration feature
 - [ ] publish on Chrome Web Store
@@ -24,6 +24,17 @@ Some sort of a TODO:
 - [ ] internationalization / i18n
   - perhaps store a ID for sets in the dataset, and have localizations bundled with the extension
 - [ ] notification system for updates
+
+## New features / suggestions in consideration
+- smaller artifacts slots & icons
+  - currently they are a bit larger than the planner's native material icons
+- use the [same checkmark](https://genshin-center.com/images/general/check.png) as the planner
+- less opacity when disabled, similar to the materials
+- drop down menu for stats
+- field for notes, shared between all artifacts, and displayed below the artifacts?
+- field for artifact level?
+- locked main stat for flower and plume
+- better explanation for import / export
 
 [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/jleonalkkhbfeafkmfgofopiadjkalno?style=for-the-badge&logo=googlechrome&label=Chrome%20Users&color=orange)](https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno)
 
