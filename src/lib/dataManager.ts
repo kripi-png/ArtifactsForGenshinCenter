@@ -9,7 +9,7 @@ import { artifactSlots, DATASET_URL } from "@/constants";
 import { userArtifactStore } from "./storage";
 import { get } from "svelte/store";
 
-// initialize the dataset item
+// initialize the dataset storage item
 const dataset = storage.defineItem<DatasetData, { v: number }>(
   "local:dataset",
   {
@@ -58,20 +58,12 @@ export const updateLocalDataset = async () => {
   }
 };
 
-export const getLocalDataset = async (): Promise<DatasetData> => {
-  // get the dataset from the localStorage
-
-  return new Promise((resolve) => {
-    browser.storage.local
-      .get("dataset")
-      .then((result: { dataset?: DatasetData }) => {
-        return resolve(result?.dataset || {});
-      });
-  });
-};
-
-export const getAllArtifactSets = async () => {
-  const data = await getLocalDataset();
+/**
+ * Get all artifact set names from the local dataset.
+ * @returns a list of all artifact set names
+ */
+export const getAllArtifactSets = async (): Promise<string[]> => {
+  const data = await dataset.getValue();
   return Object.keys(data);
 };
 
@@ -85,21 +77,13 @@ export const getArtifactBySetAndType = async (
   setName: string,
   type: ArtifactSlotType,
 ): Promise<ArtifactPieceData | null> => {
-  return new Promise(async (resolve) => {
-    const dataset = await getLocalDataset();
-    if (!dataset || !dataset.hasOwnProperty(setName)) {
-      return resolve(null);
-    }
-    // flower = 0, circlet = 4
-    const typeIndex: number = artifactSlots.indexOf(type);
-    const [name, imageId] = dataset[setName][typeIndex];
-    resolve({ name, imageUrl: `https://i.imgur.com/${imageId}.png` });
-  });
-};
+  const data = await dataset.getValue();
+  if (!data || !data.hasOwnProperty(setName)) return null;
 
-export const setLocalStorage = (key: string, value: any) => {
-  // general setter method
-  browser.storage.local.set({ [key]: value });
+  // flower = 0, circlet = 4
+  const typeIndex: number = artifactSlots.indexOf(type);
+  const [name, imageId] = data[setName][typeIndex];
+  return { name, imageUrl: `https://i.imgur.com/${imageId}.png` };
 };
 
 /**
