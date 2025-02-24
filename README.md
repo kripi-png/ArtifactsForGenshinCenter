@@ -44,7 +44,7 @@ It is also possible to set the main and sub stats for the artifacts and mark the
   - Syncing between user's devices is currently not possible, but this allows for sharing the data between devices (or users)
 
 ### Examples
-![Yumemizuki Artifacts](https://i.imgur.com/04fzgtD.png)
+![Yumemizuki Artifacts](https://i.imgur.com/pwfE1fC.png)
 ![Edit window](https://i.imgur.com/xIz2QoV.png)
 
 ## Possible new features
