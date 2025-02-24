@@ -113,6 +113,7 @@
         content: "";
         background-image: url("https://i.imgur.com/x60nTNg.png");
         background-repeat: no-repeat;
+        background-position: center center;
         position: absolute;
         bottom: 0;
         top: 0;
