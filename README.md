@@ -1,24 +1,5 @@
+<!--
 # V2 Rewrite
-
-Now, there are not *real* reasons to do a full rewrite of the extension.
-Everything works and adding new artifacts is reasonably easy - that is all that is required.
-
-However, the project is now a few years old, and I'd like to get back to it for some time.
-I'd like to do and try new things with extensions in general, and also fix some bad taste inducing things in the addon.
-
-Some problems and minor inconveniences:
-- adding artifacts could be easier
-- the artifact dataset is kind of massive
-- circular dependencies
-  - src/js/artifactRenderer.js -> src/js/components/ArtifactEditor.js -> src/js/artifactRenderer.js
-- code is partly messy and some files are long
-- javascript vs typescript
-- vanilla js vs svelte/vue/react
-- rollup vs vite
-- npm vs pnpm
-- no hot module replacement
-
-These add up to sizeable amount of work, and, if completed, should provide a solid framework for future extensions I may or may not develop.
 
 Some sort of a TODO:
 - [x] migrate from npm to pnpm
@@ -44,23 +25,27 @@ Some sort of a TODO:
 - [ ] localization
   - perhaps store a ID for sets in the dataset, and have localizations bundled with the extension
 - [ ] notification system
+-->
 
-A chrome extension for [Genshin Center's Ascension Planner](https://genshin-center.com/planner). Helps users to plan which artifacts they want to get for their Genshin Impact character. Users can also set main and sub stats for the artifacts and mark them as obtained in-game.
-<br>
-**NOTE: This is an unofficial extension developed by me (kripi), and NOT Genshin Center.**
-
-**The extension is available on [Chrome Web Store](https://chrome.google.com/webstore/detail/artifacts-for-genshin-pla/jleonalkkhbfeafkmfgofopiadjkalno)!**
-<br>
 [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/jleonalkkhbfeafkmfgofopiadjkalno?style=for-the-badge&logo=googlechrome&label=Chrome%20Users&color=orange)](https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno)
 
+# Artifacts for Genshin Center
+**NOTE: This is an unofficial extension developed by [@kripi-png](https://github.com/kripi-png), and NOT Genshin Center.**
+
+A chrome extension for [Genshin Center's Ascension Planner](https://genshin-center.com/planner).
+It helps users with planning which artifacts they want to get for their Genshin Impact character.
+It is also possible to set the main and sub stats for the artifacts and mark them as obtained in-game.
+
+**The extension is available on [Chrome Web Store](https://chrome.google.com/webstore/detail/artifacts-for-genshin-pla/jleonalkkhbfeafkmfgofopiadjkalno)!**
 
 ## Features
 - Each character has 5 slots for artifacts.
-- When clicked, the user can select the set (from a list) and set the main and sub stats to whatever they wish.
+- When clicked, the user can select the set (from a list) and write down the main and sub stats.
 - When a slot with an artifact is hovered, a pop-up will show the stats along with the name of the set
-- On the options menu, there are buttons for exporting and importing artifact save data. It can be copy & pasted to/from a text file or such
-  - This is useful if the user uses multiple devices (laptop/PC) as cross-saving is (currently) not possible.
+- In the options menu, there are buttons for exporting and importing artifact save data.
+  - Syncing between user's devices is currently not possible, but this allows for sharing the data between devices (or users)
 
+### Examples
 ![Ningguang's Artifacts](https://i.imgur.com/aZwUY54.png "Ningguang's Artifacts")
 ![Edit window](https://i.imgur.com/f2Kxnq7.png)
 
