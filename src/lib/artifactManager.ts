@@ -72,6 +72,7 @@ const isPanelWeapon = (panel: HTMLElement): boolean => {
 /**
  * Create a mutation observer that listens for character panels.
  * When the extension loads for the first time, generate an Integrated UI for all existing panels.
+ * If any characters are added afterwards, create an UI for those as well.
  * @param ctx Content script context from the content script
  * @returns {MutationObserver} mutation observer that listens for character panels
  */
@@ -114,11 +115,19 @@ export const generateCharacterObserver = (
               ),
             ] as HTMLElement[];
 
-            console.log(panels);
             // for each panel, create and mount an integrated ui
             panels.forEach((panel) => mountSlots(panel));
-          } else if (false) {
-            // if new character is added
+          }
+          // if the element is a newly added character panel
+          else if (
+            (node as HTMLElement).firstElementChild?.classList?.contains(
+              "ItemPanel_itemWrapper__BUn4_",
+            )
+          ) {
+            const newPanel = (node as HTMLElement).querySelector(
+              ".ItemPanel_item__6lLWZ",
+            ) as HTMLElement | null;
+            if (newPanel) mountSlots(newPanel);
           }
         });
       }
