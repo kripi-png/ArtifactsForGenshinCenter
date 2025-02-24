@@ -4,28 +4,6 @@ import ArtifactDisableButton from "../components/ArtifactDisableButton.svelte";
 import ArtifactSlotWrapper from "../components/ArtifactSlotWrapper.svelte";
 import { getAllArtifactSets } from "./dataManager";
 
-export const createArtifactSlotsForPanel = (
-  container: HTMLElement,
-  characterName: string,
-) => {
-  mount(ArtifactSlotWrapper, {
-    target: container,
-    props: {
-      characterName,
-    },
-  });
-};
-
-export const createArtifactHidingButtonForPanel = (
-  container: HTMLElement,
-  characterName: string,
-) => {
-  mount(ArtifactDisableButton, {
-    target: container,
-    props: { characterName },
-  });
-};
-
 export const generateArtifactDatalist = async () => {
   /* pre-generate the datalist for the editor dropdown */
   const artifactSets = await getAllArtifactSets();
@@ -41,22 +19,35 @@ export const generateArtifactDatalist = async () => {
   document.body.appendChild(datalist);
 };
 
-export const getCharacterNameFromPanel = (
-  panel: HTMLElement,
-): string | undefined => {
+const createArtifactSlotsForPanel = (
+  container: HTMLElement,
+  characterName: string,
+) => {
+  mount(ArtifactSlotWrapper, {
+    target: container,
+    props: {
+      characterName,
+    },
+  });
+};
+
+const createArtifactHidingButtonForPanel = (
+  container: HTMLElement,
+  characterName: string,
+) => {
+  mount(ArtifactDisableButton, {
+    target: container,
+    props: { characterName },
+  });
+};
+
+const getCharacterNameFromPanel = (panel: HTMLElement): string | undefined => {
   // character name in lowercase and hyphenated (e.g. Hu Tao -> hu-tao)
   const characterName = panel
     .querySelector("div.ItemPanel_itemName__jxpO4")
     ?.textContent?.toLowerCase()
     .replace(/\s+/g, "-");
   return characterName;
-};
-
-export const getCharacterPanels = (): HTMLElement[] => {
-  const panels = [
-    ...document.querySelectorAll<HTMLElement>("div.ItemPanel_item__6lLWZ"),
-  ].filter((panel) => !isPanelWeapon(panel));
-  return panels;
 };
 
 const isPanelWeapon = (panel: HTMLElement): boolean => {
@@ -85,7 +76,7 @@ export const generateCharacterObserver = (
       console.error("Character name not found for panel", panel);
       return;
     }
-    // create and mount artifactWrapper and disabling button
+    // create and mount artifactWrapper
     createIntegratedUi(ctx, {
       position: "inline",
       anchor: panel.querySelector("div.ItemPanel_itemContent__M9oCy"),
@@ -93,6 +84,7 @@ export const generateCharacterObserver = (
         createArtifactSlotsForPanel(container, characterName);
       },
     }).mount();
+    // create and mount the Disable button
     createIntegratedUi(ctx, {
       position: "inline",
       anchor: panel.querySelector(".ItemPanel_pauseButton__hI9FU"),
@@ -115,8 +107,10 @@ export const generateCharacterObserver = (
               ),
             ] as HTMLElement[];
 
-            // for each panel, create and mount an integrated ui
-            panels.forEach((panel) => mountSlots(panel));
+            // for each panel, except those of weapons, create and mount an integrated ui
+            panels
+              .filter((panel) => !isPanelWeapon(panel))
+              .forEach((panel) => mountSlots(panel));
           }
           // if the element is a newly added character panel
           else if (
