@@ -27,8 +27,8 @@ Some sort of a TODO:
 - [x] rewrite and create components with ts and vue/svelte
 - [x] try redesigning the artifact dataset structure
 - [x] "host" the dataset on github instead of bundling with the extension
-- [ ] improve content script's mounting
-- [ ] listen for new character panels as well as detect when they are removed
+- [x] improve content script's mounting
+- [x] listen for new character panels ~~as well as detect when they are removed~~
 - [ ] consider wxt/storage's versioning for dataset fetching
 - [ ] tests for Svelte components?
 - [ ] go through the answers to the Feedback form and check for any suggestions for new features
