@@ -127,7 +127,12 @@ export const generateCharacterObserver = (
             const newPanel = (node as HTMLElement).querySelector(
               ".ItemPanel_item__6lLWZ",
             ) as HTMLElement | null;
-            if (newPanel) mountSlots(newPanel);
+            // observer triggers also when the characters are re-ordered
+            // which would lead to duplicated artifact wrappers
+            // thus check if the panel already has artifacts before mounting
+            const hasArtifacts =
+              newPanel?.querySelector(".artifactSlotWrapper") !== null;
+            if (newPanel && !hasArtifacts) mountSlots(newPanel);
           }
         });
       }
