@@ -36,6 +36,7 @@
         modals.open(EditorModal, { character: characterName, type: slotType });
     };
 
+    // display Artifact popup on mouse hover
     let slotBind: null | HTMLElement = null;
     let mountedPopup: ReturnType<typeof mount> | null = null;
     const handleMouseEnter = () => {
@@ -53,8 +54,8 @@
             },
         });
     };
-    let handleMouseLeave = () => {
-        // destroy the popup component when mouse leaves the slot
+    // destroy the popup component when mouse leaves the slot
+    const handleMouseLeave = () => {
         // { outro: true } plays the transition before completely destroying the component
         if (mountedPopup) unmount(mountedPopup, { outro: true });
         mountedPopup = null;
