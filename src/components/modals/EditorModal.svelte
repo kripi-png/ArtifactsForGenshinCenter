@@ -7,7 +7,7 @@
     import type { ArtifactData, ArtifactSlotType } from "@/types";
     import type { ModalProps } from "svelte-modals";
     import { onMount } from "svelte";
-    import ArtifactInput from "../ArtifactInput.svelte";
+    import EditorInput from "./EditorInput.svelte";
     import ModalBase from "./ModalBase.svelte";
 
     interface Props extends ModalProps {
@@ -51,26 +51,26 @@
         <h4>{character.replace("-", " ")}'s {type}</h4>
     </div>
     <div class="modalContent">
-        <ArtifactInput
+        <EditorInput
             sectionName={"Set Name"}
             placeholder={"Enter set name..."}
             listAttribute="artifactSelectorDatalist"
             name="artifactSet"
             bind:artifact
         />
-        <ArtifactInput
+        <EditorInput
             sectionName={"Main Stat"}
             placeholder={"Enter main stat..."}
             name="mainStat"
             bind:artifact
         />
-        <ArtifactInput
+        <EditorInput
             sectionName={"Sub Stat"}
             placeholder={"Enter sub stat(s)..."}
             name="subStats"
             bind:artifact
         />
-        <ArtifactInput
+        <EditorInput
             sectionName={"Already obtained"}
             type="checkbox"
             name="check"

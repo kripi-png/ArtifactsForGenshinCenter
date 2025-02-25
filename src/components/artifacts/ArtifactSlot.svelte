@@ -5,11 +5,11 @@
         ArtifactSlotType,
     } from "@/types";
     import { modals } from "svelte-modals";
-    import EditorModal from "./modals/EditorModal.svelte";
+    import EditorModal from "../modals/EditorModal.svelte";
     import ArtifactPopup, {
         calculatePopupLocation,
     } from "./ArtifactPopup.svelte";
-    import { getArtifactBySetAndType } from "../lib/dataManager";
+    import { getArtifactBySetAndType } from "../../lib/dataManager";
     import { mount, unmount } from "svelte";
 
     interface Props {

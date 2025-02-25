@@ -1,7 +1,7 @@
 import { mount } from "svelte";
 import type { ContentScriptContext } from "wxt/client";
-import ArtifactDisableButton from "../components/ArtifactDisableButton.svelte";
-import ArtifactSlotWrapper from "../components/ArtifactSlotWrapper.svelte";
+import ArtifactDisableButton from "../components/artifacts/ArtifactDisableButton.svelte";
+import ArtifactSlotWrapper from "../components/artifacts/ArtifactSlotWrapper.svelte";
 import { getAllArtifactSets } from "./dataManager";
 
 export const generateArtifactDatalist = async () => {
