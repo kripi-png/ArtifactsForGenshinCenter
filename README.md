@@ -10,20 +10,21 @@ Some sort of a TODO:
 - [x] improve content script's mounting
 - [x] listen for new character panels ~~as well as detect when they are removed~~
 - [x] consider wxt/storage's versioning for dataset fetching
-- [ ] tests for Svelte components?
+- [x] ~~tests for Svelte components?~~
 - [x] go through the answers to the Feedback form and check for any suggestions for new features
 - [x] rewrite the README
 - [ ] ensure Firefox compatibility?
   - this was not nearly as easy and straightforward as I thought it would be, or frankly, should be
   - [ ] publish on Firefox and find testers -> collect feedback
-  - especially important is robust migration of data from V1 to V2
-  - [x] for this, utilize WXT storage API and its migration feature
 - [ ] publish on Chrome Web Store
 - [ ] use a library to validate the editor data; especially the set's name
   - [ArkType](https://arktype.io/) seems pretty fast
 - [ ] internationalization / i18n
   - perhaps store a ID for sets in the dataset, and have localizations bundled with the extension
 - [ ] notification system for updates
+- [ ] try using a temporary automounting UI to wait for the panels, loop through them, mount a separate UI for each, and then unmount the main UI
+  - this can replace a half of the current mutation observer, leaving it in charge of new panels rather than all of them
+  - not sure if unmounting the main UI also unmounts the panel UIs but I find that unlikely
 
 ## New features / suggestions in consideration
 - smaller artifacts slots & icons
