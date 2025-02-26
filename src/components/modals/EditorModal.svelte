@@ -14,7 +14,7 @@
         character: string;
         type: ArtifactSlotType;
     }
-    const { isOpen, close, character, type }: Props = $props();
+    let { isOpen, close, character, type }: Props = $props();
 
     let artifact = $state<ArtifactData>({
         check: false,

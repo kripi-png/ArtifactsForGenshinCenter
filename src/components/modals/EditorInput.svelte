@@ -9,7 +9,7 @@
         name: keyof ArtifactData;
         artifact: ArtifactData;
     }
-    const {
+    let {
         sectionName,
         type = "text",
         placeholder = "",
