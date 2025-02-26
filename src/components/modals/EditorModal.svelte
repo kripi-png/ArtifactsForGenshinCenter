@@ -6,7 +6,6 @@
     } from "@/lib/dataManager";
     import type { ArtifactData, ArtifactSlotType } from "@/types";
     import type { ModalProps } from "svelte-modals";
-    import { onMount } from "svelte";
     import EditorInput from "./EditorInput.svelte";
     import ModalBase from "./ModalBase.svelte";
 
@@ -16,20 +15,18 @@
     }
     let { isOpen, close, character, type }: Props = $props();
 
-    let artifact = $state<ArtifactData>({
+    let initialState: ArtifactData = {
         check: false,
         artifactSet: "",
         mainStat: "",
         subStats: "",
-    });
-
-    onMount(() => {
-        const characterArtifact =
-            $userArtifactStore.characters[character]?.artifacts[type];
-        if (characterArtifact) {
-            artifact = { ...artifact, ...characterArtifact };
-        }
-    });
+    };
+    // if character has data for the artifact, use it. Otherwise use the initial empty state
+    const characterArtifact =
+        $userArtifactStore.characters[character]?.artifacts[type];
+    let artifact = $state<ArtifactData>(
+        characterArtifact ? characterArtifact : initialState,
+    );
 
     const confirmArtifact = () => {
         if (!artifact.artifactSet) return;
