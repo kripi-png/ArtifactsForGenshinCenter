@@ -42,7 +42,7 @@
     };
 </script>
 
-<ModalBase {isOpen}>
+<ModalBase {isOpen} bind:artifact>
     <div class="modalHeader">
         <h3>Edit Artifact</h3>
         <h4>{character.replace("-", " ")}'s {type}</h4>
