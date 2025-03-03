@@ -5,11 +5,13 @@ import {
 import { mount } from "svelte";
 import ExtensionSettings from "../components/ExtensionSettings.svelte";
 import SidepanelOptions from "../components/SidepanelOptions.svelte";
+import Modals from "../components/modals/Modals.svelte";
 import "../index.css";
 
 export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
   async main(ctx) {
+    mount(Modals, { target: document.body });
     // listen and look for character panels
     const observer = generateCharacterObserver(ctx);
     observer.observe(document.body, {
