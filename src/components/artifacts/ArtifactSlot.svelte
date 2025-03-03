@@ -4,7 +4,6 @@
         ArtifactPieceData,
         ArtifactSlotType,
     } from "@/types";
-    import { modals } from "svelte-modals";
     import EditorModal from "../modals/EditorModal.svelte";
     import ArtifactPopup, {
         calculatePopupLocation,
@@ -32,8 +31,23 @@
         });
     });
 
+    let modalRef: any = null;
     const openEditor = () => {
-        modals.open(EditorModal, { character: characterName, type: slotType });
+        if (modalRef !== null) {
+            console.error("Modal already exists!");
+            return;
+        }
+        // callback
+        const close = () => {
+            if (!modalRef) return;
+            unmount(modalRef);
+            modalRef = null;
+        };
+        // mount the modal with props and close callback
+        modalRef = mount(EditorModal, {
+            target: document.body,
+            props: { close, character: characterName, type: slotType },
+        });
     };
 
     // display Artifact popup on mouse hover

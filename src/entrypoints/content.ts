@@ -4,18 +4,12 @@ import {
 } from "@/lib/artifactManager";
 import { mount } from "svelte";
 import ExtensionSettings from "../components/ExtensionSettings.svelte";
-import ModalBackdrop from "../components/modals/ModalsBackdrop.svelte";
 import SidepanelOptions from "../components/SidepanelOptions.svelte";
 import "../index.css";
 
 export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
   async main(ctx) {
-    // important: backdrop for modals, e.g. the Editor
-    mount(ModalBackdrop, {
-      target: document.body,
-    });
-
     // listen and look for character panels
     const observer = generateCharacterObserver(ctx);
     observer.observe(document.body, {

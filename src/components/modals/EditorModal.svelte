@@ -1,19 +1,19 @@
 <script lang="ts">
+    import type { ArtifactData, ArtifactSlotType } from "@/types";
     import { userArtifactStore } from "@/lib/storage";
     import {
         saveCharacterArtifact,
         deleteCharacterArtifact,
     } from "@/lib/dataManager";
-    import type { ArtifactData, ArtifactSlotType } from "@/types";
-    import type { ModalProps } from "svelte-modals";
     import EditorInput from "./EditorInput.svelte";
     import ModalBase from "./ModalBase.svelte";
 
-    interface Props extends ModalProps {
+    interface Props {
+        close: () => void;
         character: string;
         type: ArtifactSlotType;
     }
-    let { isOpen, close, character, type }: Props = $props();
+    let { close, character, type }: Props = $props();
 
     let initialState: ArtifactData = {
         check: false,
@@ -42,7 +42,7 @@
     };
 </script>
 
-<ModalBase {isOpen} bind:artifact>
+<ModalBase {close} bind:bindFix={artifact}>
     <div class="modalHeader">
         <h3>Edit Artifact</h3>
         <h4>{character.replace("-", " ")}'s {type}</h4>
