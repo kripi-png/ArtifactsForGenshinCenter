@@ -22,8 +22,6 @@ export class Modal {
     component: ModalComponent<any, any, any>,
     props?: Record<string, any>,
   ) {
-    console.log("constructing modal");
-
     this.component = component;
     this.modals = modals;
     this._props = props || {};
