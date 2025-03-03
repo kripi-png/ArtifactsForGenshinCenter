@@ -10,6 +10,7 @@
     } from "./ArtifactPopup.svelte";
     import { getArtifactBySetAndType } from "../../lib/dataManager";
     import { mount, unmount } from "svelte";
+    import { modals } from "../modals/Modals.svelte";
 
     interface Props {
         characterName: string;
@@ -31,23 +32,8 @@
         });
     });
 
-    let modalRef: any = null;
     const openEditor = () => {
-        if (modalRef !== null) {
-            console.error("Modal already exists!");
-            return;
-        }
-        // callback
-        const close = () => {
-            if (!modalRef) return;
-            unmount(modalRef);
-            modalRef = null;
-        };
-        // mount the modal with props and close callback
-        modalRef = mount(EditorModal, {
-            target: document.body,
-            props: { close, character: characterName, type: slotType },
-        });
+        modals.open(EditorModal, { character: characterName, type: slotType });
     };
 
     // display Artifact popup on mouse hover

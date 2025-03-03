@@ -1,13 +1,13 @@
 <script lang="ts">
+    import type { ModalProps } from "@/lib/modals/Modal.svelte";
     import ModalBase from "./ModalBase.svelte";
-    interface Props {
-        close: () => void;
+    interface Props extends ModalProps {
         data: string;
     }
-    let { close, data }: Props = $props();
+    let { isOpen, data }: Props = $props();
 </script>
 
-<ModalBase {close}>
+<ModalBase {isOpen}>
     <!-- <div>{data}</div> -->
     <div class="modalHeader">
         <h3>Export Artifact Data</h3>

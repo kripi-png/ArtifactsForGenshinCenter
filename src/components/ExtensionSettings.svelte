@@ -1,7 +1,7 @@
 <script lang="ts">
     import ExportModal from "./modals/ExportModal.svelte";
     import { exportArtifactData, importArtifactData } from "@/lib/dataManager";
-    import { mount, unmount } from "svelte";
+    import { modals } from "./modals/Modals.svelte";
 
     const importData = () => {
         // TODO: clean this up, use actual validation library or something
@@ -24,23 +24,9 @@
         importArtifactData(userInput);
     };
 
-    let modalRef: any = null;
     const exportData = () => {
-        if (modalRef !== null) {
-            console.error("Modal already exists!");
-            return;
-        }
-        const close = () => {
-            if (!modalRef) return;
-            unmount(modalRef);
-            modalRef = null;
-        };
-
         const data = exportArtifactData();
-        modalRef = mount(ExportModal, {
-            target: document.body,
-            props: { close, data },
-        });
+        modals.open(ExportModal, { data });
     };
 </script>
 

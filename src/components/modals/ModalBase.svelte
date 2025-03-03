@@ -1,24 +1,28 @@
 <script lang="ts">
+    import type { ModalProps } from "@/lib/modals/Modal.svelte";
     import type { Snippet } from "svelte";
-    interface Props {
-        close: () => void;
+    // omit Close as not needed
+    interface Props extends Omit<ModalProps, "close"> {
         children: Snippet;
         // temporary fix for incorrect ownership warning on snippets with bindable properties
         bindFix?: any;
     }
-    let { close, children, bindFix = $bindable() }: Props = $props();
+    let { isOpen, children, bindFix = $bindable() }: Props = $props();
 </script>
 
-<!-- TODO: create a wrapper for modals for easier management -->
-<div class="backdrop">
-    <div>
-        <div class="window">
-            <div role="dialog" class="modal">
-                {@render children()}
+<!-- TODO: It is not necessary to nest the elements; have them as siblings -->
+<!-- TODO: add close() to ModalManager, and call it when backdrop is clicked -->
+{#if isOpen}
+    <div class="backdrop">
+        <div>
+            <div class="window">
+                <div role="dialog" class="modal">
+                    {@render children()}
+                </div>
             </div>
         </div>
     </div>
-</div>
+{/if}
 
 <style>
     .backdrop {
