@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { ModalProps } from "@/lib/modals/Modal.svelte";
     import type { Snippet } from "svelte";
-    // omit Close as not needed
-    interface Props extends Omit<ModalProps, "close"> {
+    // only need isOpen so Pick just that
+    interface Props extends Pick<ModalProps, "isOpen"> {
         children: Snippet;
         // temporary fix for incorrect ownership warning on snippets with bindable properties
         bindFix?: any;

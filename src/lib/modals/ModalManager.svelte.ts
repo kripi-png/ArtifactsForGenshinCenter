@@ -35,4 +35,8 @@ export class ModalManager {
     const modal = new Modal(this, component, props);
     this.stack.push(modal);
   };
+
+  close = () => {
+    throw new Error("Not implemented");
+  };
 }
