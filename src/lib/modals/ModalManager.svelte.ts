@@ -36,7 +36,8 @@ export class ModalManager {
     this.stack.push(modal);
   };
 
+  // close topmost modal
   close = () => {
-    throw new Error("Not implemented");
+    this.stack.splice(this.stack.length - 1, 1);
   };
 }

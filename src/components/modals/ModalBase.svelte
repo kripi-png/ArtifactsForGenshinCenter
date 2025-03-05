@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { ModalProps } from "@/lib/modals/Modal.svelte";
     import type { Snippet } from "svelte";
+    import { modals } from "./Modals.svelte";
     // only need isOpen so Pick just that
     interface Props extends Pick<ModalProps, "isOpen"> {
         children: Snippet;
@@ -10,16 +11,11 @@
     let { isOpen, children, bindFix = $bindable() }: Props = $props();
 </script>
 
-<!-- TODO: It is not necessary to nest the elements; have them as siblings -->
-<!-- TODO: add close() to ModalManager, and call it when backdrop is clicked -->
 {#if isOpen}
-    <div class="backdrop">
-        <div>
-            <div class="window">
-                <div role="dialog" class="modal">
-                    {@render children()}
-                </div>
-            </div>
+    <div role="presentation" class="backdrop" onclick={modals.close}></div>
+    <div class="modal_background">
+        <div role="dialog" class="modal">
+            {@render children()}
         </div>
     </div>
 {/if}
@@ -33,7 +29,8 @@
         pointer-events: all;
     }
 
-    .window {
+    .modal_background {
+        z-index: 10000;
         display: flex;
         position: fixed;
         justify-content: center;
@@ -41,6 +38,7 @@
         background-color: rgba(10, 10, 20, 0.96);
         width: 100vw;
         height: 100%;
+        pointer-events: none;
     }
 
     .modal {
@@ -54,5 +52,6 @@
         background-color: #1e2231;
         border-radius: 5px;
         overflow: hidden;
+        pointer-events: all;
     }
 </style>
