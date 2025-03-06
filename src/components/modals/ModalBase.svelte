@@ -23,14 +23,14 @@
 <style>
     .backdrop {
         width: 100vw;
-        z-index: 10000;
+        z-index: 20000;
         position: absolute;
         inset: 0px;
         pointer-events: all;
     }
 
     .modal_background {
-        z-index: 10000;
+        z-index: 20000;
         display: flex;
         position: fixed;
         justify-content: center;
