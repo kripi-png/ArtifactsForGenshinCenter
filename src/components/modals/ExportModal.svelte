@@ -4,7 +4,7 @@
     interface Props extends ModalProps {
         data: string;
     }
-    let { isOpen, data }: Props = $props();
+    let { isOpen, close, data }: Props = $props();
 </script>
 
 <ModalBase {isOpen}>
@@ -22,7 +22,7 @@
             </div>
         </section>
         <div class="buttonWrapper">
-            <button onclick={close}>Close</button>
+            <button onclick={() => close()}>Close</button>
         </div>
     </div>
 </ModalBase>
