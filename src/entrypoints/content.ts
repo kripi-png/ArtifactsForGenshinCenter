@@ -1,6 +1,8 @@
 import {
   generateArtifactDatalist,
   generateCharacterObserver,
+  isPanelWeapon,
+  mountSlots,
 } from "@/lib/artifactManager";
 import { mount } from "svelte";
 import ExtensionSettings from "../components/ExtensionSettings.svelte";
@@ -11,7 +13,29 @@ import "../index.css";
 export default defineContentScript({
   matches: ["https://genshin-center.com/planner"],
   async main(ctx) {
+    // mount the Modal base
     mount(Modals, { target: document.body });
+
+    // on initial load, find all character panels and add the UI
+    // later changes are managed by a mutation observer
+    createIntegratedUi(ctx, {
+      position: "inline",
+      anchor: ".Farm_itemList__EgRFB",
+      onMount: (container) => {
+        // find all panels https://stackoverflow.com/a/842346
+        const panels = [];
+        let n = container.parentNode!.firstChild as HTMLElement;
+        for (; n; n = n.nextSibling as HTMLElement) {
+          // nodeType 1 is ELEMENT_NODE (2 = ATTRIBUTE_NODE etc.)
+          if (n.nodeType == 1 && n != container && !isPanelWeapon(n))
+            panels.push(n);
+        }
+        panels.forEach((panel) => mountSlots(ctx, panel));
+        // remove the helper UI / self
+        container.remove();
+      },
+    }).autoMount();
+
     // listen and look for character panels
     const observer = generateCharacterObserver(ctx);
     observer.observe(document.body, {
