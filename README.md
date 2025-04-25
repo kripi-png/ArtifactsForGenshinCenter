@@ -22,9 +22,8 @@ Some sort of a TODO:
 - [ ] internationalization / i18n
   - perhaps store a ID for sets in the dataset, and have localizations bundled with the extension
 - [ ] notification system for updates
-- [ ] try using a temporary automounting UI to wait for the panels, loop through them, mount a separate UI for each, and then unmount the main UI
+- [x] try using a temporary automounting UI to wait for the panels, loop through them, mount a separate UI for each, and then unmount the main UI
   - this can replace a half of the current mutation observer, leaving it in charge of new panels rather than all of them
-  - not sure if unmounting the main UI also unmounts the panel UIs but I find that unlikely
 
 ## New features / suggestions in consideration
 - smaller artifacts slots & icons
