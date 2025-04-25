@@ -13,6 +13,8 @@ export default defineBackground(() => {
     browser.tabs.update({
       url: "https://genshin-center.com/planner",
     });
+    // also update the dataset
+    updateLocalDataset();
   });
 
   updateLocalDataset();
