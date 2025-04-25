@@ -11,10 +11,13 @@
 
     // derive the artifact data from the whole data, and ensure it is not undefined
     let characterData: CharacterArtifactData = $derived(
-        $userArtifactStore.characters[characterName] || {
-            disabled: false,
-            artifacts: {},
-        },
+        $userArtifactStore.characters &&
+            $userArtifactStore.characters[characterName]
+            ? $userArtifactStore?.characters[characterName]
+            : {
+                  disabled: false,
+                  artifacts: {},
+              },
     );
 </script>
 
