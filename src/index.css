@@ -1,0 +1,8 @@
+/* file for styles that modify or utilize the page's existing styles */
+/* component's styling should be in the component itself when possible */
+
+.ItemPanel_pausedItem___4Ja0 div.artifactSlotWrapper {
+    opacity: 0.3;
+    -webkit-filter: grayscale(70%);
+    filter: grayscale(70%);
+}
