@@ -21,6 +21,7 @@ new_artifacts/*.png
 new_artifacts/*.json
 
 # Editor directories and files
+.zed
 .vscode/*
 !.vscode/extensions.json
 .idea
