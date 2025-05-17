@@ -90,6 +90,10 @@
         cursor: pointer;
     }
 
+    button.check {
+        opacity: 0.4; /* follow similar styling with completed materials */
+    }
+
     .flowerSlot {
         background-image: url("https://i.imgur.com/GqSEgvB.png");
     }

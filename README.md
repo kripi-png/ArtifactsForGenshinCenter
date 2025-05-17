@@ -16,7 +16,7 @@ Some sort of a TODO:
 - [ ] ensure Firefox compatibility?
   - this was not nearly as easy and straightforward as I thought it would be, or frankly, should be
   - [ ] publish on Firefox and find testers -> collect feedback
-- [ ] publish on Chrome Web Store
+- [x] publish on Chrome Web Store
 - [ ] use a library to validate the editor data; especially the set's name
   - [ArkType](https://arktype.io/) seems pretty fast
 - [ ] internationalization / i18n
@@ -26,10 +26,6 @@ Some sort of a TODO:
   - this can replace a half of the current mutation observer, leaving it in charge of new panels rather than all of them
 
 ## New features / suggestions in consideration
-- smaller artifacts slots & icons
-  - currently they are a bit larger than the planner's native material icons
-- use the [same checkmark](https://genshin-center.com/images/general/check.png) as the planner
-- less opacity when disabled, similar to the materials
 - drop down menu for stats
 - field for notes, shared between all artifacts, and displayed below the artifacts?
 - field for artifact level?
