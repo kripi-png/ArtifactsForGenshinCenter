@@ -13,8 +13,8 @@
     <div class="PlannerOptions_infoBox__41So_">
         <h3>Export</h3>
         <p>
-            Export extension's save data. The data can then be saved to file and
-            saved between users or computers, for example.
+            Export extension's save data. The data can then be saved to a file
+            and moved between users or devices.
         </p>
         <h3>Import</h3>
         <p>
@@ -23,6 +23,9 @@
                 >This does NOT support GOOD format or others!</span
             >
         </p>
+    </div>
+    <div class="buttonWrapper">
+        <button onclick={() => close()}>OK</button>
     </div>
 </ModalBase>
 
@@ -42,5 +45,21 @@
         font-weight: 800;
         flex-grow: 1;
         text-align: center;
+    }
+
+    .buttonWrapper {
+        /* Schedule_buttonsWrapper__fdOV_ */
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+    }
+
+    .buttonWrapper button {
+        padding: 10px 40px;
+        color: #000;
+        background: #ece5d8;
+        border-radius: 20px;
+        transition: 0.2s;
+        cursor: pointer;
     }
 </style>
