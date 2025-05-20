@@ -1,36 +1,21 @@
 # V2 Rewrite
 
 Some sort of a TODO:
-- [x] migrate from npm to pnpm
-- [x] migrate from rollup to vite
-- [x] ~~HMR~~
-- [x] rewrite and create components with ts and vue/svelte
-- [x] try redesigning the artifact dataset structure
-- [x] "host" the dataset on github instead of bundling with the extension
-- [x] improve content script's mounting
-- [x] listen for new character panels ~~as well as detect when they are removed~~
-- [x] consider wxt/storage's versioning for dataset fetching
-- [x] ~~tests for Svelte components?~~
-- [x] go through the answers to the Feedback form and check for any suggestions for new features
-- [x] rewrite the README
-- [ ] ensure Firefox compatibility?
-  - this was not nearly as easy and straightforward as I thought it would be, or frankly, should be
-  - [ ] publish on Firefox and find testers -> collect feedback
-- [x] publish on Chrome Web Store
-- [ ] use a library to validate the editor data; especially the set's name
+- [ ] use a library to validate the editor data; especially the set's name?
   - [ArkType](https://arktype.io/) seems pretty fast
-- [ ] internationalization / i18n
+- [ ] translations
   - perhaps store a ID for sets in the dataset, and have localizations bundled with the extension
+  - default language to same as 1) browser's 2) Genshin Center's 3) user choice
 - [ ] notification system for updates
-- [x] try using a temporary automounting UI to wait for the panels, loop through them, mount a separate UI for each, and then unmount the main UI
-  - this can replace a half of the current mutation observer, leaving it in charge of new panels rather than all of them
+  - similar to dataset, read changelog or such from GitHub repo
+- [] locked main stat for flower and plume
+- [] drop down menu for (main) stats
+  - allow custom too
+- [ ] port to Firefox and publish
 
 ## New features / suggestions in consideration
-- drop down menu for stats
 - field for notes, shared between all artifacts, and displayed below the artifacts?
 - field for artifact level?
-- locked main stat for flower and plume
-- better explanation for import / export
 
 [![Chrome Web Store Users](https://img.shields.io/chrome-web-store/users/jleonalkkhbfeafkmfgofopiadjkalno?style=for-the-badge&logo=googlechrome&label=Chrome%20Users&color=orange)](https://chrome.google.com/webstore/detail/artifacts-for-genshin-cen/jleonalkkhbfeafkmfgofopiadjkalno)
 
