@@ -1,5 +1,6 @@
 <script lang="ts">
     import ExportModal from "./modals/ExportModal.svelte";
+    import ImportExportInfoModal from "./modals/ImportExportInfoModal.svelte";
     import { exportArtifactData, importArtifactData } from "@/lib/dataManager";
     import { modals } from "./modals/Modals.svelte";
 
@@ -28,16 +29,40 @@
         const data = exportArtifactData();
         modals.open(ExportModal, { data });
     };
+
+    const openInfoModal = () => {
+        // modal for displaying detailed info about import / export
+        modals.open(ImportExportInfoModal);
+    };
 </script>
 
 <div class="PlannerOptions_section__y90n3">
     <div class="Radio_radio__t_pCN">
-        <div class="Radio_radioLabel__FlU7k">Import & Export Artifact Data</div>
+        <div class="Radio_radioLabel__FlU7k">
+            <div class="PlannerOptions_titleWrapper__pAkcp">
+                <h3>Import & Export Artifact Data</h3>
+                <button
+                    onclick={openInfoModal}
+                    class="PlannerOptions_info__h9H24"
+                    aria-label="Info on Import & Export"
+                >
+                    <div class="PlannerOptions_infoImg__VQwIY"></div>
+                </button>
+            </div>
+        </div>
         <div class="import_export_wrapper" style="max-width: 440px;">
-            <button onclick={importData} class="" title="Import Data">
+            <button
+                class="import-export"
+                onclick={importData}
+                title="Import Data"
+            >
                 Import Data
             </button>
-            <button onclick={exportData} title="Export Data">
+            <button
+                class="import-export"
+                onclick={exportData}
+                title="Export Data"
+            >
                 Export Data
             </button>
         </div>
@@ -51,7 +76,7 @@
         width: 100%;
     }
 
-    button {
+    button.import-export {
         background-color: #ece5d8;
         color: #000;
         border-radius: 5px;
