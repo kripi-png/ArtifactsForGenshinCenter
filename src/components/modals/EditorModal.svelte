@@ -66,12 +66,15 @@
             name="artifactSet"
             bind:artifact
         />
+        <!-- disable dropdown for flower and plume -->
         <EditorInput
             sectionName={"Main Stat"}
             placeholder={"Enter main stat..."}
             name="mainStat"
             bind:artifact
-            listAttribute="mainStatOptions"
+            listAttribute={type === "flower" || type === "plume"
+                ? ""
+                : "mainStatOptions"}
         />
         <EditorInput
             sectionName={"Sub Stat"}
