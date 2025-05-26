@@ -1,6 +1,7 @@
 import {
   generateArtifactDatalist,
   generateCharacterObserver,
+  generateMainStatDatalist,
   isPanelWeapon,
   mountSlots,
 } from "@/lib/artifactManager";
@@ -77,6 +78,7 @@ export default defineContentScript({
     }).autoMount();
 
     generateArtifactDatalist();
+    generateMainStatDatalist();
   },
 });
 

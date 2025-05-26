@@ -71,6 +71,7 @@
             placeholder={"Enter main stat..."}
             name="mainStat"
             bind:artifact
+            listAttribute="mainStatOptions"
         />
         <EditorInput
             sectionName={"Sub Stat"}
