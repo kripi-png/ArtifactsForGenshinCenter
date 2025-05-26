@@ -15,10 +15,21 @@
     }
     let { isOpen, close, character, type }: Props = $props();
 
+    const getMainStatDefaultValue = (type: ArtifactSlotType): string => {
+        /* flower/plume always has HP/ATK as the main stat. */
+        if (type === "flower") {
+            return "HP";
+        }
+        if (type === "plume") {
+            return "ATK";
+        }
+        return "";
+    };
+
     let initialState: ArtifactData = {
         check: false,
         artifactSet: "",
-        mainStat: "",
+        mainStat: getMainStatDefaultValue(type),
         subStats: "",
     };
     // if character has data for the artifact, use it. Otherwise use the initial empty state

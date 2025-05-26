@@ -8,7 +8,6 @@ Some sort of a TODO:
   - default language to same as 1) browser's 2) Genshin Center's 3) user choice
 - [ ] notification system for updates
   - similar to dataset, read changelog or such from GitHub repo
-- [ ] locked main stat for flower and plume
 - [ ] drop down menu for (main) stats
   - allow custom too
 - [ ] port to Firefox and publish
