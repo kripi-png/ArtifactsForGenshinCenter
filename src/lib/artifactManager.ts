@@ -3,6 +3,7 @@ import type { ContentScriptContext } from "wxt/client";
 import ArtifactDisableButton from "../components/artifacts/ArtifactDisableButton.svelte";
 import ArtifactSlotWrapper from "../components/artifacts/ArtifactSlotWrapper.svelte";
 import { getAllArtifactSets } from "./dataManager";
+import { MAIN_STAT_OPTIONS } from "@/constants";
 
 export const generateArtifactDatalist = async () => {
   /* pre-generate the datalist for the editor dropdown */
@@ -13,6 +14,24 @@ export const generateArtifactDatalist = async () => {
   artifactSets.forEach((setName: string) => {
     const option = document.createElement("option");
     option.value = setName;
+    datalist.appendChild(option);
+  });
+
+  document.body.appendChild(datalist);
+};
+
+export const generateMainStatDatalist = async () => {
+  /*
+  pre-generate the datalist for the main stat input of the artifact editor.
+  The possible options are defined in src/constants.ts
+  */
+
+  const datalist = document.createElement("datalist");
+  datalist.id = "mainStatOptions";
+
+  MAIN_STAT_OPTIONS.forEach((value: string) => {
+    const option = document.createElement("option");
+    option.value = value;
     datalist.appendChild(option);
   });
 

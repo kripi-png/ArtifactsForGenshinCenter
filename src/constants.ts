@@ -21,3 +21,18 @@ export const CHECKMARK_VALUES = {
 
 export const DATASET_URL =
   "https://raw.githubusercontent.com/kripi-png/ArtifactsForGenshinCenter/main/src/dataset.json";
+
+export const MAIN_STAT_OPTIONS = [
+  "HP",
+  "HP%",
+  "ATK",
+  "ATK%",
+  "DEF%",
+  "Elemental Mastery",
+  "Elemental Recharge",
+  "Physical DMG %",
+  "Elemental DMG % <element>",
+  "CRIT Rate %",
+  "CRIT DMG %",
+  "Healing Bonus %",
+];
