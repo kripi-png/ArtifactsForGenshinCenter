@@ -1,31 +1,28 @@
 ### INSTRUCTIONS FOR ADDING A NEW ARTIFACT SET
-1. Download all images for the artifact set and place them in this directory
-    - You can find the images for example from https://ambr.top/en/archive/reliquary. God bless them.
-    - Alternatively run `scraper.py`
+1. Setup the .env file
+    1. Create an Imgur account and log in
 
-2. Rename the files in this format: SET_TYPE_NAME.png
-  - type can be flower, plume, sands, goblet, or circlet
-  - So, for example, **Flower of Paradise Lost_plume_Wilting Feast.png**
-  - `scraper.py` does this automatically
+    2. Access https://api.imgur.com/oauth2/addclient
 
-3. Create a dotenv file (literally .env)
-  - You need a Client ID and secret for Imgur API.
+    3. Follow instructions here: https://dubble.so/guides/how-to-get-imgur-client-id-purlxhv84a0m3mlsiak7
 
-  1. Create an Imgur account and log in
+    4. Create a .env file in the `./new_artifacts` directory
 
-  2. Access https://api.imgur.com/oauth2/addclient
+    5. After getting your Client ID and Client Secret, add them to the .env file similarily to the example below
 
-  3. Follow instructions here: https://dubble.so/guides/how-to-get-imgur-client-id-purlxhv84a0m3mlsiak7
+    ![](https://i.imgur.com/8R9vJTk.png)
 
-  4. After getting your Client ID and Client Secret, add them to the .env file similarily to the example below
+2. Run `1_scraper.py` to check for new artifacts and download their images if necessary.
+    - They will be saved in the `new_artifacts` directory in `set_type_name.png` format.
 
-  ![](https://i.imgur.com/8R9vJTk.png)
+3. Run `2_uploadToImgur.py` to upload all images to Imgur and generate `new_artifacts.json` file.
+    - This uses the credentials in .env-file. The `new_artifacts.json` file has the same format as `./src/dataset.json`.
 
-4. Run uploadToImgur.py to generate new_artifacts.json file.
+4. Run `3_updateDataset.py` to combine new_artifacts.json into a copy of dataset.json.
+    - This will copy `./src/dataset.json` to `./new_artifacts/dataset.json` and modify that.
 
-5. Copy/paste the real dataset from /src to this directory
+5. Move the edited `dataset.json` back into `./src` and replace the previous. It now has the new artifacts added to it.
 
-6. Run updateDataset.py to combine new_artifacts.json into dataset.json.
-  This will not generate a new file but instead edits dataset.json so a backup may be in order.
+6. Remove the downloaded images from `./new_artifacts` directory. Remove the `new_artifacts.json` file as well as the `./new_artifacts/dataset.json` if it stille exists.
 
-7. Copy/paste dataset.json back to /src.
+7. Commit and create a PR.
