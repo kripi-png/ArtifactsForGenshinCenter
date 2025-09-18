@@ -101,7 +101,7 @@ def main():
 
     # if there are no new sets, abort
     if not set_data:
-        raise RuntimeError("Dataset already up to date")
+        return print("Dataset already up to date")
 
     print("Fetching data for the following sets:")
     [print("- {}".format(x["name"])) for x in set_data]
