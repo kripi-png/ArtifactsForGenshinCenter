@@ -3,6 +3,9 @@ import os.path
 
 import requests
 
+# use the file location instead of the current working dir
+# so the scripts can be called anywhere rather than only inside new_artifacts/
+ARTIFACTS_DIR = os.path.dirname(__file__)
 # possible locations for the dataset.json
 DATASET_LOCATION = ["./dataset.json", "../src/dataset.json"]
 # API url for artifact data
@@ -14,6 +17,8 @@ BASE_ASSET_URL = "https://gi.yatta.moe/assets/UI/reliquary/"
 def get_dataset():
     """Go through the list of possible locations. If the file exists in a location, return the json data."""
     for path in DATASET_LOCATION:
+        # DATASET_LOCATIONs are relative so make them absolute by using the file path rather than working path
+        path = os.path.join(ARTIFACTS_DIR, path)
         if os.path.isfile(path):
             with open(path) as file:
                 return json.load(file)
@@ -65,7 +70,8 @@ def download_images(data):
             )
             # save image to the directory
             image_data = requests.get(image_url).content
-            with open(image_file_name, "wb") as file:
+            save_path = os.path.join(ARTIFACTS_DIR, image_file_name)
+            with open(save_path, "wb") as file:
                 file.write(image_data)
             print(" ---- DONE")
 
@@ -95,7 +101,7 @@ def main():
 
     # if there are no new sets, abort
     if not set_data:
-        raise RuntimeError("Dataset already up to date")
+        return print("Dataset already up to date")
 
     print("Fetching data for the following sets:")
     [print("- {}".format(x["name"])) for x in set_data]
