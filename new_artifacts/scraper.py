@@ -16,11 +16,9 @@ BASE_ASSET_URL = "https://gi.yatta.moe/assets/UI/reliquary/"
 
 def get_dataset():
     """Go through the list of possible locations. If the file exists in a location, return the json data."""
-    # DATASET_LOCATIONs are relative so make them absolute by using the file path rather than working path
-    absolute_paths = [
-        os.path.join(ARTIFACTS_DIR, path) for path in DATASET_LOCATION
-    ]
-    for path in absolute_paths:
+    for path in DATASET_LOCATION:
+        # DATASET_LOCATIONs are relative so make them absolute by using the file path rather than working path
+        path = os.path.join(ARTIFACTS_DIR, path)
         if os.path.isfile(path):
             with open(path) as file:
                 return json.load(file)
